@@ -118,7 +118,12 @@ class Updates extends Component {
 							text: '未选中文件',
 							spinning: false,
 						});
-					} else { this.setState({ spinning: false, upLoig: false }); }
+					} else { this.setState({ spinning: false, upLoig: false });
+						window._guider.Utils.alert({
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				} else {
 					window._guider.Utils.alert({
 						message: '请上传下于30MB文件',
