@@ -1,0 +1,134 @@
+/* eslint-disable indent */
+//@flow
+
+import React, { Component } from 'react';
+import Api from './../../api';
+import Bar from '../component/Bar/deviceSeleclass';
+import Pagination from '../component/Paginations/Paginations';
+import { Table, Button, Badge } from 'antd';
+import { observable, toJS, autorun } from 'mobx';
+import { observer, inject, } from 'mobx-react';
+import('./update.scss');
+
+const updateStyle = {
+  width: '80rem'
+};
+type Props = {
+  match: Object,
+  history: Object,
+  location: Object
+};
+
+@inject('Update')
+@observer
+class DeviceSele extends Component<Props> {
+  @observable school = null;
+  @observable classid = null;
+  @observable columns = [
+    { title: '位置', dataIndex: 'school_room', key: 'school_room' },
+    { title: '中控ID号', dataIndex: 'imei_no', key: 'imei_no' },
+    { title: '当前固件版本', dataIndex: 'versionname', key: 'versionname' },
+  ];
+  @observable count = null;
+  @observable selectedRowKeys = [];
+  async componentDidMount() {
+    let school = window.localStorage.getItem('devicesStateClassroomid');
+    let classid = window.localStorage.getItem('devicesStateschool');
+    let url = window.location.pathname;
+    if (school !== null && classid !== null) {
+      this.props.Update._list(school, '3', 1);
+      this.classid = classid;
+      this.school = school;
+    }
+    autorun(() => {
+      this.selectedRowKeys = toJS(this.props.Update.selid).map(Number);
+      this.count = toJS(this.props.Update.selid).length;
+    });
+  }
+  render() {
+    const { total, listData, current } = this.props.Update;
+    const { selectedRowKeys } = this;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
+    return (
+      <div className='UpdateTable'>
+        <Bar renderValue={this.onchang} />
+        <div className='UpdateTable-left'>
+          <Badge className='UpdateTable-left-number' count={this.count}>
+            <Button onClick={this._UpdateSeve} type="primary" className='UpdateTable-left-number-button'>保存</Button>
+          </Badge>
+          <Button onClick={this._UpdategoBanck} type="primary" className='UpdateTable-left-number-button rights'>返回升级页面</Button>
+
+          <Table
+
+            rowSelection={rowSelection}
+            className="device-tables-table"
+            rowClassName="device-tables-tableRow"
+            columns={this.columns}
+            dataSource={listData}
+            bordered
+            pagination={false}
+          />
+          <Pagination
+            current={current}
+            total={total}
+            paging={e => {
+              this.props.Update.current = e;
+              this.props.Update._list(this.school, '3', e);
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+  _UpdategoBanck = () => {
+    this.props.history.replace({
+      pathname: '/aiUpdate'
+    });
+  }
+  //保存
+  _UpdateSeve = async () => {
+    if (this.selectedRowKeys.length > 0) {
+      try {
+        let res = await Api.Device.upgrade_room(this.selectedRowKeys, 3);
+        if (res.code === 200) {
+          window._guider.Utils.alert({
+            message: res.msg,
+            type: 'success'
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      window._guider.Utils.alert({
+        message: '请选择升级的区域',
+        type: 'warning'
+      });
+    }
+  }
+
+  onSelectChange = (key) => {
+
+    this.selectedRowKeys = key;
+    this.count = key.length;
+  }
+  //选择
+  onchang = (id: Number) => {
+    // console.log(id);
+    this.school = id;
+    if (typeof (id) !== 'undefined') {
+      this.props.Update._list(id, '3', 1);
+      this.count = null;
+      this.selectedRowKeys = [];
+      this.props.Update.current = 1;
+    } else {
+      this.props.Update.listData = [];
+      this.props.Update.total = null;
+    }
+  }
+}
+
+export default DeviceSele;
