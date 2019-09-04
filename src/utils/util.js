@@ -1,8 +1,5 @@
 // @flow
 
-import Noty from "noty"; // https://ned.im/noty/#/options
-import "noty/lib/noty.css";
-import "noty/lib/themes/nest.css";
 import { notification } from "antd";
 import NProgress from "nprogress"; // https://github.com/rstacruz/nprogress
 import "nprogress/nprogress.css";
@@ -22,18 +19,6 @@ export const loading: Object = {
     NProgress.done();
   }
 };
-// window.addEventListenerwindow.addEventListener('popstate', function(e) {
-// });
-// console.log(window);
-
-// Show alert
-// const noty = new Noty({
-// 	theme: 'nest',
-// 	timeout: 5000,
-// 	progressBar: false,
-// 	type: 'alert',
-// 	text: '警告'
-// });
 
 export const alert: Function = (data: {
   message: string,
@@ -47,31 +32,4 @@ export const alert: Function = (data: {
     duration: data.type === "warning" || data.type === "error" ? 3.5 : 2,
     key: data.key ? data.key : null
   });
-
-  // if(data.datas){
-  // 	if(data.number >= 1){
-  // 		Noty.closeAll();
-  // 		Noty.setMaxVisible(1);
-  // 		new Noty({
-  // 			text: data.message,
-  // 			type: data.type,
-  // 			theme: 'nest',
-  // 			timeout: 2000,
-  // 			progressBar: false,
-  // 		}).show();
-  // 	}
-  // }else{
-  // 	Noty.closeAll();
-  // 	Noty.setMaxVisible(1);
-  // 	new Noty({
-  // 		text: data.message,
-  // 		type: data.type,
-  // 		theme: 'nest',
-  // 		timeout: 2000,
-  // 		progressBar: false,
-  // 	}).show();
-  // }
-  // console.log(data);
-  // Noty.clearQueue(mes);
-  // noty.setText(data.message, true).setType(data.type, true).show();
 };
