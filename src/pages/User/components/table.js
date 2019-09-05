@@ -7,6 +7,7 @@ import SparkMD5 from 'spark-md5';
 import { observable, } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { RouterPmi } from '../../component/function/routerPmi';
+import {mobileValidator} from "../../../utils/handleNumbers";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -307,7 +308,11 @@ const Info = Form.create()(
 
 							<FormItem className="tiems" {...formItemLayout} label="联系电话">
 								{getFieldDecorator('phone', {
-									rules: [{ required: true, message: '请填写联系电话', pattern: new RegExp(/^[1-9]\d*$/, 'g'), }],
+									rules: [{ required: true, message: '请填写联系电话', pattern: new RegExp(/^[1-9]\d*$/, 'g')},
+										{
+											validator:mobileValidator
+										}
+									],
 									getValueFromEvent: (event) => {
 										return event.target.value.replace(/\D/g, '');
 									},

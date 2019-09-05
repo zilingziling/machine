@@ -554,7 +554,7 @@ class extends Component {
 							label="用户名"
 						>
 							{getFieldDecorator('username', {
-								initialValue: data.username
+								initialValue: data.username?data.username:""
 							})(<Input />)}
 						</FormItem>
 						<FormItem

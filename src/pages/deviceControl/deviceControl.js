@@ -3,7 +3,7 @@
 //@flow
 import React, { Component, useState } from "react";
 import Bar from "../component/Bar/bar";
-import { Switch, Checkbox, Button, Row, Modal, Badge, Spin,Alert } from "antd";
+import { Switch, Checkbox, Button, Row, Modal, Badge, Spin, Alert } from "antd";
 import Video from "./components/DeviceViode";
 import Btn from "./components/DeviceBtn";
 import Api from "./../../api";
@@ -12,34 +12,28 @@ import {
   handleProjector,
   stateCtrLight
 } from "../component/function/formatDateReturn";
-import {observable, toJS, autorun, action} from "mobx";
+import { observable, toJS, autorun, action } from "mobx";
 import { observer, inject } from "mobx-react";
 import { RouterPmi } from "../component/function/routerPmi";
 import "./deviceControl.scss";
 const confirm = Modal.confirm;
-type Props = {
-  match: Object,
-  history: Object,
-  location: Object
-};
 const top = {
   display: "flex"
 };
-const alertStyle={
+const alertStyle = {
   height: "36px",
   marginTop: "2.36rem",
   marginLeft: "1rem",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  color:'red',
-  fontSize:"18px"
-}
+  color: "red",
+  fontSize: "18px"
+};
 let Istrue = true;
 @inject("Police", "Socke", "DeviceDetection", "userInfo")
 @observer
-class DeviceControl extends Component<Props, State> {
-  @observable  isRestart=false
+class DeviceControl extends Component {
   constructor(props: any) {
     super(props);
     //OPS or  pc 都是电脑
@@ -63,9 +57,8 @@ class DeviceControl extends Component<Props, State> {
       PM: "", //pm
       InteractiveTablet: [], //交互屏蔽
       _info: RouterPmi(), //[], //权限
-      spin: false,
-      eroomid:"",
-      mcstatus:""
+      eroomid: "",
+      mcstatus: ""
     };
   }
   componentDidMount() {
@@ -84,11 +77,6 @@ class DeviceControl extends Component<Props, State> {
   _infomsg = () => {
     window.ws.onmessage = evt => {
       try {
-        if (Object.keys(evt).length > 0) {
-          this.setState({
-            spin: false
-          });
-        }
         let msg_id =
           this.state.sele !== null
             ? this.state.sele
@@ -213,7 +201,6 @@ class DeviceControl extends Component<Props, State> {
                       //ops
                       this.setState({
                         OPS: stateCtrLight(this.state.OPS, res[0])
-
                       });
                       break;
                     }
@@ -268,15 +255,9 @@ class DeviceControl extends Component<Props, State> {
       }
     };
   };
-  handleSpin = () => {
-    this.setState({
-      spin: true
-    });
-  };
 
   render() {
     const {
-      spin,
       lights,
       curtains,
       pc,
@@ -293,14 +274,13 @@ class DeviceControl extends Component<Props, State> {
       equip_code,
       sele,
       InteractiveTablet,
-      eroomid,
+      eroomid
     } = this.state;
     return (
       <div className="devCtl" style={top}>
         <Bar Seleshcool={this.Bars} />
         <div className="devCtl-row">
           <Row type="flex">
-            <Spin spinning={spin} size="default" className="spin" />、{" "}
             <div className="devCtl-row-switch">
               <div>
                 <span className="devCtl-row-switch-span">下课</span>
@@ -329,10 +309,13 @@ class DeviceControl extends Component<Props, State> {
             >
               返回配置页面
             </Button>
-
             {/* <Button className="devCtl-row-switch-btn" type="primary" onClick={this.computer} >远程电脑</Button> */}
-
-            <div  style={alertStyle}><span className='alertSpan'>{this.state.mcstatus?"*":null}</span><p className='alertP'>{this.state.mcstatus}</p></div>
+            <div style={alertStyle}>
+              <span className="alertSpan">
+                {this.state.mcstatus ? "*" : null}
+              </span>
+              <p className="alertP">{this.state.mcstatus}</p>
+            </div>
           </Row>
           {/*视频、右边按钮*/}
           <Video
@@ -468,7 +451,7 @@ class DeviceControl extends Component<Props, State> {
   //返回上级页面
   _returnPage = () => {
     window._guider.History.history.push({
-      pathname: "/deviceAdd",
+      pathname: "/deviceAdd"
     });
   };
   //上下课
@@ -641,13 +624,16 @@ class DeviceControl extends Component<Props, State> {
                   res.data[2].aircode.length > 0
                     ? res.data[2].aircode[0].equipcode
                     : null,
-                eroomid:res.data[2].airstatus.length > 0 ? res.data[2].airstatus[0].eroomid : ""
+                eroomid:
+                  res.data[2].airstatus.length > 0
+                    ? res.data[2].airstatus[0].eroomid
+                    : ""
               });
             } else {
               this.setState({
                 conditioning: [],
                 equip_code: null,
-                eroomid:""
+                eroomid: ""
               });
             }
 
@@ -689,7 +675,6 @@ class DeviceControl extends Component<Props, State> {
               typeof res.data[14] !== "undefined" && res.data[14].length > 0
                 ? res.data[14][0]
                 : []; //音量
-            console.log("音量",res.data[14][0])
             let hot =
               typeof res.data[8] !== "undefined" && res.data[8].length > 0
                 ? res.data[8][0].statusdata
@@ -726,7 +711,7 @@ class DeviceControl extends Component<Props, State> {
               screen2,
               voice,
               InteractiveTablet,
-              mcstatus:res.data.mcstatus.mcstatus
+              mcstatus: res.data.mcstatus.mcstatus
             });
           } else {
             this.clearData(); //数据不在清楚状态
@@ -758,8 +743,7 @@ class DeviceControl extends Component<Props, State> {
       projector: [],
       curtainControl: [],
       screen: [],
-      screen2: [],
-
+      screen2: []
     });
   };
 }
