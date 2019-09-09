@@ -434,6 +434,7 @@ class extends Component {
 		const { getFieldDecorator } = this.props.form;
 		const { datalist, name } = this.state;
 		const { Itme } = this.props;
+		console.log(Itme)
 		return (
 			<Form className="row" onSubmit={this.handleSubmit}>
 				<FormItem {...formItemLayouts} className="links">
@@ -540,7 +541,7 @@ class extends Component {
 					<FormItem {...formItemLayout} label="用户名字" className="links rows">
 						{getFieldDecorator('username', {
 							// rules: [{ required: true, message: '请输入用户名字' }],
-							initialValue: Itme.user_name
+							initialValue: Itme.user_name?Itme.user_name:''
 						})(
 							<Input maxLength={20} className="rows-inputs" placeholder="请输用户名字" />
 						)}

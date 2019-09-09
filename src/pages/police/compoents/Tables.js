@@ -71,7 +71,7 @@ class Tables extends Component<Props, State> {
 					className="device-tables-table"
 					rowClassName="device-tables-tableRow"
 					bordered
-					rowSelection={{
+					rowSelection={this.props.disabled?null:{
 						onChange: this.onSelectChange,
 						selectedRowKeys,
 					}}

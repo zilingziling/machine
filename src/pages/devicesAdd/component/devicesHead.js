@@ -355,7 +355,6 @@ class extends Component<State> {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { itmeDAta, connname } = this.state;
-		console.log(itmeDAta)
 		return (
 			<Form className="row" onSubmit={this.handleSubmit}>
 				<div>
@@ -447,7 +446,7 @@ class extends Component<State> {
 					: null}
 				{/* 连接端口 */}
 
-				{itmeDAta.brandcnname !== "易简" && (itmeDAta.connname == 'RS232' || itmeDAta.connname == 'RS485' || connname == 'DO' )?
+				{itmeDAta.connname !== "私有协议" && (itmeDAta.connname == 'RS232' || itmeDAta.connname == 'RS485' || connname == 'DO' )?
 					< FormItem {...formItemstyles} label="连接口" className="row">
 						{getFieldDecorator('mcPortNo', {
 							rules: [{ required: true, message: '请选择连接口' }],
@@ -472,7 +471,7 @@ class extends Component<State> {
 					</FormItem>:null
 				}
 				{/* 波特率、 数据位、停止位、校验*/}
-				{itmeDAta.brandcnname !== '易简' && itmeDAta.connname === 'RS232' || itmeDAta.connname === 'RS485' ?
+				{itmeDAta.connname !== '私有协议' && itmeDAta.connname === 'RS232' || itmeDAta.connname === 'RS485' ?
 					<div>
 						<FormItem {...formItemstyles} label="波特率" className="row">
 							{getFieldDecorator('baudRate', {

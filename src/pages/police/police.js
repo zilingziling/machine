@@ -30,6 +30,7 @@ export default class Police extends Component<Props, State> {
 		deal: [],
 		delete: [],
 		_info: RouterPmi(),
+		disabled:false
 	};
 	@observable
 	componentDidMount() {
@@ -45,7 +46,7 @@ export default class Police extends Component<Props, State> {
 		const { untreatedData, current, total, mark } = this.props.Police;
 		return (
 			<div className="police" style={{ marginLeft: '12rem', marginTop: '1rem' }}>
-				<Button disabled={!this.state._info.includes('all_deal')} type='primary' className="police-btn" onClick={this.AllProcessing}>批量处理</Button>
+				<Button disabled={this.state.disabled} type='primary' className="police-btn" onClick={this.AllProcessing}>批量处理</Button>
 				<div className="police-header">
 					<div className="police-header-btn">
 						<Button onClick={this.switch.bind(this, true)} style={mark ? null : { background: '#0983cd', color: '#fff' }} type={mark ? 'primary' : ''}>未处理</Button>
@@ -60,6 +61,7 @@ export default class Police extends Component<Props, State> {
 					refresh={this.refresh}
 					refreshDelete={this.refreshDelete}
 					_info={this.state._info}
+					disabled={this.state.disabled}
 				/>
 				<Paginations
 					current={current}
@@ -72,11 +74,18 @@ export default class Police extends Component<Props, State> {
 	}
 	//切换选向
 	switch = (state: Boolean) => {
+
 		this.props.Police.markfu(state);
 		this.props.Police.pageNumber(1);
 		if (state) {
 			this.props.Police.list(0, 1);
+			this.setState({
+				disabled:false
+			})
 		} else {
+			this.setState({
+				disabled:true
+			})
 			this.props.Police.list(1, 1);
 		}
 	}
@@ -106,7 +115,7 @@ export default class Police extends Component<Props, State> {
 		if (this.props.Police.mark) {
 			if (this.state.deal.length > 0) {
 				confirm({
-					title: '确定删除所选中的数据吗',
+					title: '确定批量处理所选数据？',
 					centered: true,
 					onOk: async () => {
 						if (this.state.deal !== null) {
@@ -142,7 +151,6 @@ export default class Police extends Component<Props, State> {
 					onOk: async () => {
 						if (this.state.deal !== null) {
 							let res = await Api.Police.del_handle(deletes);
-							console.log(res);
 							if (res.code === 200) {
 								window._guider.Utils.alert({
 									message: res.msg,
