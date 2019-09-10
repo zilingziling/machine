@@ -185,6 +185,8 @@
             margin-bottom: 1rem;
             justify-content: center;
             margin-right: 0.6rem;
+            cursor: pointer;
+
             span {
               font-size: 0.8rem;
             }
@@ -192,7 +194,6 @@
               margin-left: 0.5rem;
               width: 1rem;
               height: 1rem;
-              cursor: pointer;
             }
           }
           &-div:hover {

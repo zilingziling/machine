@@ -68,7 +68,6 @@ export default class Police extends Component<Props, State> {
 					total={total}
 					paging={this.change}
 				/>
-
 			</div>
 		);
 	}

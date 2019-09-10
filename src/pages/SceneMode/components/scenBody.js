@@ -117,9 +117,10 @@ class ScenBody extends Component<Props, State> {
 				style={this.state.btnStyle === index ? { background: '#394188' } : null}
 				key={index}
 				className="Scene-body-centen-key-btn-div"
+				onClick={this.btnItem.bind(this, data, index)}
 			>
 				<span>{data.key_name}</span>
-				<img onClick={this.btnItem.bind(this, data, index)} src={require('./../../../assets/img/jias.png')} />
+				<img  src={require('./../../../assets/img/jias.png')} />
 			</div>
 		);
 	};

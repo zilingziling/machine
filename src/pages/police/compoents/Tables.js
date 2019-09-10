@@ -82,7 +82,7 @@ class Tables extends Component<Props, State> {
 	//处理报警
 	deals = async (data: Object) => {
 		confirm({
-			title: '已处理发生的异常！',
+			title: '异常已解决并标记为已处理？',
 			centered: true,
 			onOk: async () => {
 				let res = await Api.Police.handle_alartm([data.key]);
