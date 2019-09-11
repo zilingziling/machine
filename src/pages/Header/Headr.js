@@ -178,10 +178,8 @@ class Home extends Component<Props, State> {
 								 activeStyle={ActiveLink}
 								 onClick={this._pushPage.bind(this, '/operating', '运营管理')}>
 						<div className="header-second-second">
-
 								<img src={More} />
 								<span>运营管理</span>
-
 						</div>
 						</NavLink>
 
@@ -191,7 +189,7 @@ class Home extends Component<Props, State> {
 		);
 	}
 	openNewWindow = () => {
-		window.open('http://www.aiyijan.com/col.jsp?id=119');
+		window.open(window.localStorage.getItem("helpdoc"));
 	}
 	//处理title在右边显示
 	_click = (e: Object<string>) => {

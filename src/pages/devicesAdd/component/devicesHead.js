@@ -373,7 +373,9 @@ export default class DeviceHeade extends Component<Props, State> {
     });
   };
 }
-
+const maskStyle={
+	backgroundColor:'#000000'
+}
 const AddInfo = Form.create()(
   @inject("DeviceState")
   @observer
@@ -410,11 +412,11 @@ const AddInfo = Form.create()(
     render() {
       const { getFieldDecorator } = this.props.form;
       const { itmeDAta, connname } = this.state;
-      console.log(this.props)
       return (
         <Form className="row" onSubmit={this.handleSubmit}>
           <div>
             <BaseModel
+				maskStyle={maskStyle}
               style={{ top: 20 }}
               width={1000}
               title="选择设备"

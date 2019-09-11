@@ -16,6 +16,8 @@ import {observable, toJS, autorun, action} from "mobx";
 import { observer, inject } from "mobx-react";
 import { RouterPmi } from "../component/function/routerPmi";
 import "./deviceControl.scss";
+import {makeRequest} from "../../api/config";
+import {handleAutom} from "../../api/ctrl";
 const confirm = Modal.confirm;
 type Props = {
   match: Object,
@@ -273,7 +275,18 @@ class DeviceControl extends Component<Props, State> {
       spin: true
     });
   };
-
+  handleAutom=async e=>{
+    let res=await handleAutom(this.state.sele,e.target.checked?1:0)
+    if (res.code === 200) {
+      window._guider.Utils.alert({
+        message: res.msg,
+        type: "success"
+      });
+    }else  window._guider.Utils.alert({
+      message: res.msg,
+      type: "error"
+    });
+  }
   render() {
     const {
       spin,
@@ -315,6 +328,7 @@ class DeviceControl extends Component<Props, State> {
                 className="devCtl-row-switch-box"
                 value="1"
                 disabled={!this.state._info.includes("Automatically_equipment")}
+                onChange={this.handleAutom}
               >
                 <span className="devCtl-row-switch-box-span">
                   按课表自动开启设备

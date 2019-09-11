@@ -437,7 +437,7 @@ class extends Component {
 								label="RTSP地址"
 							>
 								{getFieldDecorator('rtspAddr', {
-									initialValue: data.rtsp_addr
+									initialValue: data.rtsp_addr?data.rtsp_addr:''
 								})(<TextArea rows={4} className="" />)}
 							</FormItem>
 						) : null}

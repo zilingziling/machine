@@ -17,6 +17,7 @@ export class BaseModel extends Component<Props> {
 	render() {
 		return (
 			<Modal
+				maskStyle={this.props.maskStyle&&this.props.maskStyle}
 				className={this.props.className}
 				style={this.props.style}
 				width={this.props.width}

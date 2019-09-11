@@ -100,6 +100,7 @@ class Login extends Component<Props, State> {
 					let res = await Api.Login.UpLogin(this.user, SparkMD5.hash(this.pass), this.validation);
 					if (res.code === 200) {
 						this.props.userInfo.updateStatus(true, 'police', res.data, this.user, SparkMD5.hash(this.pass), res.data.name);
+						window.localStorage.setItem("helpdoc", res.data.helpdoc);
 						window._guider.Utils.alert({
 							message: res.msg,
 							type: 'success'

@@ -53,3 +53,10 @@ export const get_camera = (id: String) => {
   params.append("classroomid", id);
   return makeRequest(Ctrl.get_camera, params);
 };
+// 按课表自动开启设备
+export const handleAutom = (id: String, isAutoOpen) => {
+  const params = new URLSearchParams();
+  params.append("classroomid", id);
+  params.append("isAutoOpen", isAutoOpen);
+  return makeRequest(Ctrl.handleAutom, params);
+};
