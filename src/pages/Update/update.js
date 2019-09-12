@@ -15,10 +15,9 @@ type Props = {
 	DeviceState: Object,
 };
 type State = {}
-const styles = {
-	display: 'flex',
-	justifyContent: 'flex-end',
-	marginRight: '1rem',
+const versionStyle = {
+	color:"#ffffff",
+	marginLeft:"1rem"
 };
 @inject('DeviceState')
 @observer
@@ -49,7 +48,7 @@ class Updates extends Component {
 						<p className="update-fu-div-p1">最新的升级固件，请到易简官网下载，或联系小弈的运维工程师获取，得到新的升级固件后，点击网站上的本页的“上传文件”，上传成功后，中控在下一次重启时自动升级</p>
 					</div>
 					<div className="update-fu-up">
-						<span className="update-fu-up-version">当前固件版本为{this.props.DeviceState._Version}</span>
+						<span className="update-fu-up-version">当前固件版本为<span style={versionStyle}>{this.props.DeviceState._Version?this.props.DeviceState._Version:"暂无版本信息"}</span></span>
 						<Button onClick={this._goBack} type='primary' className="update-fu-up-btns">升级区域</Button>
 					</div>
 					<div className="update-fu-up update-fu-margin">

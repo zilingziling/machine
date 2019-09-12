@@ -168,7 +168,7 @@ class Region extends Component {
             } else {
               window._guider.Utils.alert({
                 message: res.msg,
-                type: "errpr"
+                type: "error"
               });
             }
           }

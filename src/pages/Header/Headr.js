@@ -189,7 +189,7 @@ class Home extends Component<Props, State> {
 		);
 	}
 	openNewWindow = () => {
-		window.open(window.localStorage.getItem("helpdoc"));
+		window.open('http://www.aiyijan.com/col.jsp?id=119');
 	}
 	//处理title在右边显示
 	_click = (e: Object<string>) => {
