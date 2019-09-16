@@ -17,6 +17,9 @@ import { observable, autorun } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import Api from '../../api';
 import './header.scss';
+import info from "../../assets/img/info.png";
+import google from "../../assets/img/google.png";
+import close from "../../assets/img/close.png";
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const confirm = Modal.confirm;
@@ -50,6 +53,23 @@ const Icon_ = {
 	marginRight: '1rem',
 	cursor: 'pointer'
 };
+const Notice = () => {
+	return (
+		<div className='infoWrapper'>
+			<div className='text'>
+				<img src={info} />
+				<p>当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。</p>
+			</div>
+			<div className='download'>
+				<a href="https://www.google.cn/chrome/index.html" target='_blank'>
+					<span>下载</span>
+					<img src={google} alt='google'/>
+				</a>
+				<img src={close} alt='close'/>
+			</div>
+		</div>
+	);
+};
 @inject('Socke', 'DeviceState', 'userInfo', 'Police', 'Devices', 'DeviceDetection')
 @observer
 class Home extends Component<Props, State> {
@@ -57,7 +77,8 @@ class Home extends Component<Props, State> {
 		styles: null,
 		dx: false,
 		title: '功能菜单',
-		_info: []
+		_info: [],
+		engine:null
 	};
 	async componentDidMount() {
 		this.props.Devices.validation(); //设备类型
@@ -65,6 +86,13 @@ class Home extends Component<Props, State> {
 		this.props.Police.list(0, 1); //报警查看数据，放在这里可以在别的页面超看报警数据
 		if (window.localStorage.getItem('routerName') !== null) {
 			this.setState({ title: window.localStorage.getItem('routerName') });
+		}
+		const userAgent  = navigator.userAgent;
+		if ( userAgent.indexOf("Chrome") > -1
+			&& userAgent.indexOf("Safari") > -1) {
+			this.setState({
+				engine : "chrome"  // webkit内核
+			})
 		}
 		/**
 				// if (this.props.DeviceState.dictionaryList === null) {
@@ -96,7 +124,12 @@ class Home extends Component<Props, State> {
 
 	render() {
 		return (
+			<>
+				{
+					this.state.engine==='chrome'?null:<Notice />
+				}
 			<div className="header">
+
 				<div className="header-top">
 					<div className="header-top-left">
 						<img  src={Hz} />
@@ -186,6 +219,7 @@ class Home extends Component<Props, State> {
 					</div>
 				</div>
 			</div>
+				</>
 		);
 	}
 	openNewWindow = () => {

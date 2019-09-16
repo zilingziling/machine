@@ -14,6 +14,7 @@ import UserStore from '../stores/userinfo.js';
 class Routes extends Component {
 	@observable Index = []
 	componentDidMount() { //处理登录过后返回过来的Router
+
 		autorun(() => {
 			if (Userinfo.data.length === 0) {
 				let res = JSON.parse(window.localStorage.getItem('data'));

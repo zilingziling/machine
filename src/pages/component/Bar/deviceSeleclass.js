@@ -1,21 +1,22 @@
 //@flow
 /* eslint-disable indent */
 import React, { Component } from "react";
-import { Tree, Icon } from "antd";
+import { Icon, Tree } from "antd";
 import "./deviceSelePage.scss";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "mobx-react";
+// import { Tree } from "@alifd/next";
+import "@alifd/next/lib/tree/style";
 const TreeNode = Tree.TreeNode;
 const DirectoryTree = Tree.DirectoryTree;
-
 const styles = {
   width: "12rem",
   display: "flex",
   color: " #fff",
-  alignItems: "center",
+  alignItems: "top",
   marginTop: "30px",
   height: "70vh",
-  overflow: "hidden",
+  overflow: "auto",
   overflowY: "scroll"
 };
 @inject("DeviceState")
@@ -34,24 +35,23 @@ class DeviceSeleclass extends Component {
   }
   render() {
     return (
-      <div className="devicesele-selects" style={styles}>
-        {/*deviceState tree */}
-        <DirectoryTree
+      <div style={styles}>
+        {/*deviceState tree*/}
+        <Tree
           // multiple
           showLine
-          showIcon={false}
           onSelect={this.seleKey}
           onExpand={this.onExpand}
           selectedKeys={this.selected}
           expandedKeys={this.expanded}
         >
           {renderTreeNodes(toJS(this.props.DeviceState.list))}
-        </DirectoryTree>
+        </Tree>
       </div>
     );
   }
   onExpand = (e: any, r) => {
-    let select = r.node.props.dataRef.row;
+    let select = r.node.props.dataref.row;
     this.expanded = e;
     let array = this.CtrTree;
     array.push(`${select.id}:${select.code}`);
@@ -67,7 +67,7 @@ class DeviceSeleclass extends Component {
     window.localStorage.setItem("deviceSelected", key);
     let array = this.CtrTree;
     if (e.selectedNodes.length > 0) {
-      let obj = e.selectedNodes[0].props.dataRef.row;
+      let obj = e.selectedNodes[0].props.dataref.row;
       this.props.renderValue(obj.id, e);
       window.localStorage.setItem("devicesStateschool", obj.parent);
       window.localStorage.setItem("devicesStateClassroomid", obj.id);
@@ -78,15 +78,14 @@ class DeviceSeleclass extends Component {
 export default DeviceSeleclass;
 
 const renderTreeNodes = data => {
-  // console.table(data)
   return data.map(item => {
     if (item.children) {
       return (
-        <TreeNode title={item.title} key={item.key} dataRef={item}>
+        <TreeNode title={item.title} key={item.key} dataref={item}>
           {renderTreeNodes(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode {...item} dataRef={item} />;
+    return <TreeNode {...item} dataref={item} />;
   });
 };
