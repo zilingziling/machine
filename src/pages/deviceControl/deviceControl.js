@@ -692,12 +692,12 @@ class DeviceControl extends Component<Props, State> {
                 ? res.data[12]
                 : []; //all 屏幕
             let screen =
-              typeof VideoMatrix.slice(0, 3) !== "undefined"
-                ? VideoMatrix.slice(0, 3)
+              typeof VideoMatrix.slice(0, 4) !== "undefined"
+                ? VideoMatrix.slice(0, 4)
                 : [];
             let screen2 =
-              typeof VideoMatrix.slice(3, 6) !== "undefined"
-                ? VideoMatrix.slice(3, 6)
+              typeof VideoMatrix.slice(4, 8) !== "undefined"
+                ? VideoMatrix.slice(4, 8)
                 : [];
             let voice =
               typeof res.data[14] !== "undefined" && res.data[14].length > 0

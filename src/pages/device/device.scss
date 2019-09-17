@@ -176,7 +176,7 @@
         margin-right: 3rem;
         display: flex;
         align-items: center;
-
+        flex-wrap: nowrap;
         &-select {
           width: 8rem;
           border-radius: 0.1rem;
@@ -205,6 +205,8 @@
           // border-radius: 2px;
           // color: rgba(102, 226, 245, 1);
           // font-size: 0.7rem;
+
+          box-shadow: 0 0 10px #1485c7;
           margin-left: 0.5rem;
           @extend .btns
         }

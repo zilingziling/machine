@@ -5,6 +5,7 @@ import Api from './../../api';
 import { observable, toJS, } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import './update.scss';
+import {RouterPmi} from "../component/function/routerPmi";
 /**
  * 这个页面包含了， Ai升级、触摸屏升级、中控升级
  */
@@ -30,6 +31,7 @@ class Updates extends Component {
 		spinning: false,
 		calssRoomId: [],
 		successRouter: null,
+		authority:RouterPmi()
 	}
 	componentDidMount() {
 		this.props.DeviceState._updatelists(this.siwtchRouter());
@@ -60,7 +62,7 @@ class Updates extends Component {
 								beforeUpload={this.info}
 								action={null}
 							>
-								<Button className="update-fu-up-btn"><span>浏览</span></Button>
+								<Button className="update-fu-up-btn" disabled={!this.state.authority.includes("browse")}><span>浏览</span></Button>
 							</Upload>
 							<span className="update-fu-up-fontss">{text.length > 15 ? text.substring(0, 15) + '...' : text}</span>
 						</div>

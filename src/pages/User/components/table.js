@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from 'react';
-import { Table, Divider, Button, Form, Input, Radio, Select, Row, Checkbox, Col, Popconfirm, Modal, TreeSelect, Icon } from 'antd';
+import { Table, Divider, Button, Form, Input, Radio, Select, message, Checkbox, Col, Popconfirm, Modal, TreeSelect, Icon } from 'antd';
 import { Models } from '../../component/Model/model';
 import Api from './../../../api';
 import SparkMD5 from 'spark-md5';
@@ -215,6 +215,7 @@ class Tables extends Component<Props, State> {
 			if (!err) {
 				try {
 					if (this.state.mark === 1) {
+						message.info('修改用户角色后，需该用户重新登录后才会生效！')
 						let param = JSON.parse(JSON.stringify(val).replace(/roles/g, 'role[0].id'));
 						let ant = JSON.parse(JSON.stringify(param).replace(/school/g, 'school.id'));
 						let data = await Api.setUp.save_user(ant, this.state.id);

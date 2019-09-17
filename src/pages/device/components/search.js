@@ -6,6 +6,9 @@ import Api from './../../../api';
 import { observable, toJS } from 'mobx';
 import { observer, inject, } from 'mobx-react';
 const Option = Select.Option;
+const btn={
+    boxShadow:"0px 0px 10px #1485c7"
+}
 type Props = {
   style: Object<string>
 }
@@ -82,6 +85,7 @@ class Search extends Component<Props, State> {
           <Button
             onClick={this.callbackInfo}
             className="device-header-search-type-btn"
+            style={btn}
             ghost
           > 搜索 </Button>
         </div>

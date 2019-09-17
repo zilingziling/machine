@@ -2,12 +2,13 @@
 import { makeRequest } from "./config";
 import { Police } from "./url";
 
-export const get_alarm_view = (state: number, pageNo: number) => {
+export const get_alarm_view = (state, pageNo) => {
   // console.log(seqList);
   const params = new URLSearchParams();
   params.append("handlestatus", state);
-  params.append("pageNo", pageNo);
+  params.append("pageNo", pageNo.page);
   params.append("pageSize", 10);
+  params.append("schoolid", pageNo.schoolid);
   return makeRequest(Police.get_alarm_view, params);
 };
 

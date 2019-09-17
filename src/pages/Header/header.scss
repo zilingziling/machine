@@ -282,9 +282,9 @@
       align-items: center;
     }
     img[alt='google']{
-      width: 111px;
-      height: 30px;
-      margin: 0 2rem 0 .4rem;
+      width: 29px;
+      height: 29px;
+      margin: 0 .5rem 0 .4rem;
     }
     img[alt='close']{
       width: 18px;
@@ -296,6 +296,7 @@
       font-size:18px;
       font-family:Microsoft YaHei;
       font-weight:400;
+      margin-right: 2rem;
     }
   }
 }

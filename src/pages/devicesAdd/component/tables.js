@@ -516,7 +516,7 @@ class extends Component {
 
 				{/* ip地址 */}
 				{data.addr_format === '通用' ||
-					data.equiptypename === 'OPS模块' || data.equiptypename === '电脑' ? (
+					data.equiptypename === 'OPS模块' || data.equiptypename === '电脑'||data.equiptypename === '摄像头' ? (
 						<div>
 							<FormItem className="tiemsAdd" {...formItemLayouts} label="IP">
 								{getFieldDecorator('hostIp', {

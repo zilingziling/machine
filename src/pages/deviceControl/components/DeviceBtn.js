@@ -261,7 +261,11 @@ class DeviceBtn extends Component {
       let ofo = data.highlight;
       return (
         <a
-          className="devCtl-row-div-pc-a"
+          className={
+            data.key_name.includes("屏")
+              ? ["devCtl-row-div-pc-a", "margin0"].join(" ")
+              : "devCtl-row-div-pc-a"
+          }
           href={null}
           onClick={this.btnSwitch.bind(this, data)}
           key={index}

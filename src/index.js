@@ -24,15 +24,13 @@ window._guider = {
 //热更新页面代码
 const render = Component => {
   ReactDOM.render(
-    <>
-      <AppContainer>
-        <Provider {...Store}>
-          <LocaleProvider locale={zhCN}>
-            <App />
-          </LocaleProvider>
-        </Provider>
-      </AppContainer>
-    </>,
+    <AppContainer>
+      <Provider {...Store}>
+        <LocaleProvider locale={zhCN}>
+          <App />
+        </LocaleProvider>
+      </Provider>
+    </AppContainer>,
     document.getElementById("root")
   );
 };
