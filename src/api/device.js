@@ -6,7 +6,13 @@ import { Device } from "./url";
 export const validation = () => {
   return makeRequest(Device.type);
 };
-
+export const skip = p => {
+  const params = new URLSearchParams();
+  params.append("buildingid", p.buildingid);
+  params.append("schoolid", p.schoolid);
+  params.append("account", p.account);
+  return makeRequest(Device.skip, params);
+};
 //根据设备类型查询品牌
 export const Devicebrand = () => {
   const params = new URLSearchParams();

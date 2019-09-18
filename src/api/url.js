@@ -32,6 +32,11 @@ export const LOGIN = {
 
 //设备
 export const Device = {
+  skip: {
+    url: "/equip_status/is_jumpto_classroom", //是否弹出教室跳转框
+    method: "post",
+    headers: headerFrom
+  },
   type: {
     url: "/equip_type/get_equip_types", //查询设备类型
     method: "get"

@@ -10,6 +10,7 @@ import {
 import DeviceDetection from "./deviceDetection";
 import _userinfo from "./userinfo";
 import Police from "./police";
+import { skip } from "../api/device";
 const dst = "ytj_logic"; //后端
 const { confirm } = Modal;
 
@@ -245,14 +246,13 @@ class Socke {
   };
 
   //跳转到设备控制
-  @action jumpCtr = (detailList, mark) => {
+  @action jumpCtr = async (detailList, mark) => {
     let timer_ = 30;
     let last = detailList[detailList.length - 1];
     let array = [];
     detailList.forEach(element => {
       array.push(element.id + ":" + element.code);
     });
-    console.log("教室信息", last);
     let Conf = confirm({
       centered: true,
       title: `是否需要跳转到${last.name}教室吗?`,
@@ -274,18 +274,29 @@ class Socke {
       },
       onCancel() {}
     });
-
-    let Time = setInterval(() => {
-      timer_--;
-      Conf.update({
-        cancelText: `取消(${timer_})`
-      });
-      if (timer_ <= 0) {
-        Conf.destroy();
-        timer_ = 30;
-        clearInterval(Time);
-      }
-    }, 1000);
+    let schoolInfo =
+      detailList.length > 0
+        ? detailList.find(i => i.code === "school_academic_building")
+        : null;
+    let p = {
+      buildingid: schoolInfo && schoolInfo.id,
+      schoolid: window.localStorage.getItem("schoolid"),
+      account: window.localStorage.getItem("userName")
+    };
+    let res = await skip(p);
+    if (res.code === 200 && res.data === 1) {
+      let Time = setInterval(() => {
+        timer_--;
+        Conf.update({
+          cancelText: `取消(${timer_})`
+        });
+        if (timer_ <= 0) {
+          Conf.destroy();
+          timer_ = 30;
+          clearInterval(Time);
+        }
+      }, 1000);
+    }
   };
 }
 

@@ -2,10 +2,10 @@
 /* eslint-disable indent */
 import React, { Component } from "react";
 import { Icon, Tree } from "antd";
+// import { Tree } from "element-react";
 import "./deviceSelePage.scss";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "mobx-react";
-// import { Tree } from "@alifd/next";
 import "@alifd/next/lib/tree/style";
 const TreeNode = Tree.TreeNode;
 const DirectoryTree = Tree.DirectoryTree;
@@ -44,6 +44,7 @@ class DeviceSeleclass extends Component {
           onExpand={this.onExpand}
           selectedKeys={this.selected}
           expandedKeys={this.expanded}
+          // data={formatterTreeData(toJS(this.props.DeviceState.list))}
         >
           {renderTreeNodes(toJS(this.props.DeviceState.list))}
         </Tree>
@@ -76,6 +77,16 @@ class DeviceSeleclass extends Component {
 }
 
 export default DeviceSeleclass;
+const formatterTreeData = data => {
+  console.table(data);
+  data.forEach(item => {
+    item.label = item.title;
+    item.id = item.key;
+    if (item.children) {
+      formatterTreeData(item.children);
+    }
+  });
+};
 
 const renderTreeNodes = data => {
   return data.map(item => {

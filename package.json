@@ -13,6 +13,8 @@
     "core-js": "^3.1.4",
     "customize-cra": "^0.2.12",
     "echarts": "^4.2.0-rc.2",
+    "element-react": "^1.4.34",
+    "element-theme-default": "^1.4.13",
     "history": "^4.9.0",
     "http-proxy-middleware": "^0.19.1",
     "less": "^3.9.0",
@@ -47,7 +49,8 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "not ie <=8"
     ],
     "development": [
       "last 1 chrome version",
