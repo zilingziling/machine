@@ -397,8 +397,8 @@ class extends Component {
 						initialValue: data.equipname
 					})(<Input className="" />)}
 				</FormItem>
-
-				{data.equip_type_id === '1' ?
+				{/* 可选输入框 */}
+				{data.connname === "私有协议" && data.equip_type_id === "1" ?
 					<div>
 						<FormItem className="tiemsAdd" {...formItemLayouts} label="设备ID">
 							{getFieldDecorator('imeiNo', {
@@ -444,7 +444,10 @@ class extends Component {
 					</div>
 				) : null}
 				{/* 连接口 */}
-				{data.brandcnname !== '易简' && data.connname == 'RS232' || data.connname == 'RS485' || data.connname == 'DO' ?
+				{data.connname !=="私有协议" &&
+				(data.connname === "RS232" ||
+					data.connname === "RS485" ||
+					data.connname === "DO") ?
 					<FormItem {...formItemLayouts} label="连接口" className="tiemsAdd">
 						{getFieldDecorator('mcPortNo', {
 							rules: [{ required: true, message: '请选择连接口' }],
@@ -457,7 +460,7 @@ class extends Component {
 					</FormItem>
 					: null}
 				{/* hdmi连接口 */}
-				{data.connname == 'DO' &&
+				{data.connname === "DO" && data.equip_type_id === "4" &&
 					< FormItem {...formItemLayouts} label="hdmi连接口" className="row">
 						{getFieldDecorator('hdmiConn', {
 							rules: [{ required: true, message: '请选择hdmi连接口' }],
@@ -470,7 +473,8 @@ class extends Component {
 					</FormItem>
 				}
 				{/* 波特率、 数据位、停止位、校验*/}
-				{data.brandcnname !== '易简' && data.connname === 'RS232' || data.connname === 'RS485' ? (
+				{  data.connname === "RS232" ||
+				data.connname === "RS485"? (
 					<div>
 						<FormItem {...formItemLayouts} label="波特率" className="tiemsAdd">
 							{getFieldDecorator('baudRate', {
@@ -514,9 +518,12 @@ class extends Component {
 						</FormItem>
 					</div>) : null}
 
-				{/* ip地址 */}
-				{data.addr_format === '通用' ||
-					data.equiptypename === 'OPS模块' || data.equiptypename === '电脑'||data.equiptypename === '摄像头' ? (
+				{/* ip地址  端口*/}
+				{(data.connname === "私有协议" && data.equip_type_id === "1") ||
+				(data.connname === "私有协议" && data.equip_type_id === "16") ||
+				(data.connname === "DO" && data.equip_type_id === "4") ||
+				data.connname === "TCP" ||
+				data.connname === "UDP" ? (
 						<div>
 							<FormItem className="tiemsAdd" {...formItemLayouts} label="IP">
 								{getFieldDecorator('hostIp', {
@@ -546,7 +553,9 @@ class extends Component {
 						</div>
 					) : null}
 				{/*用户名密码  */}
-				{data.equiptypename === 'OPS模块' || data.equiptypename === '电脑' || data.equiptypename === '摄像头' ? (
+				{(data.connname === "私有协议" && data.equip_type_id === "16") ||
+				(data.connname === "DO" && data.equip_type_id === "4") ||
+				data.connname === "TCP" ? (
 					<div>
 						<FormItem
 							className="tiemsAdd"
@@ -568,7 +577,7 @@ class extends Component {
 						</FormItem>
 					</div>
 				) : null}
-				{data.equiptypename === '摄像头' ?
+				{data.equip_type_id === "15" ?
 					<FormItem {...formItemLayouts} label="摄像头位置" className="tiemsAdd">
 						{getFieldDecorator('cameraType', {
 							rules: [{ required: true, message: '请选择摄像头位置' }],

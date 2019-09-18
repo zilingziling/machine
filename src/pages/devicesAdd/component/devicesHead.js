@@ -167,63 +167,65 @@ export default class DeviceHeade extends Component<Props, State> {
           </Button>
           {/*<span className='deviceadd-body-headers-add-span'>{title}</span>*/}
         </div>
-		  {
-			  mark === 1 ?
-				  <BaseModel
-					  width={1000}
-					  title="新增设备"
-					  visible={visible}
-					  onCancel={this.onCancel}
-				  >
-				  <div>
-					  <AddInfo
-						  visible={this.state.chooseVisible}
-						  mapData={toJS(this.props.DeviceState.dictionaryList)}
-						  ref="inofs"
-						  itmeid={(v, data) => {
-							  this.setState({ classinfo: v, Submit: data });
-						  }}
-						  setVisible={(visible)=>this.setState({chooseVisible:visible})}
-						  setOuterVisible={()=>this.setState({visible:false})}
-					  />
-					  <div style={{ textAlign: "center" }}>
-						  <Button type="primary" className="btns" onClick={this.handleOk}>
-							  保存设备
-						  </Button>
-					  </div>
-				  </div>
-				  </BaseModel>  :
-				  <BaseModel
-					  width={1000}
-					  title="拷贝数据"
-					  visible={visible}
-					  onCancel={this.onCancel}
-				  >
-				  <div className="select_cy">
-					  <div className="select_cy-row">
-						  <span className="select_cy-row-span">选择教室：</span>
-						  <TreeSelect
-							  onChange={e => {
-								  this.setState({ cpData: e });
-							  }}
-							  className="select_cy-row-select"
-							  treeData={toJS(this.props.DeviceState.classRoomListSelect)}
-							  placeholder="请选择你要复制配置数据的教室"
-						  />
-					  </div>
+        {mark === 1 ? (
+          <BaseModel
+            width={1000}
+            title="新增设备"
+            visible={visible}
+            onCancel={this.onCancel}
+          >
+            <div>
+              <AddInfo
+                visible={this.state.chooseVisible}
+                mapData={toJS(this.props.DeviceState.dictionaryList)}
+                ref="inofs"
+                itmeid={(v, data) => {
+                  this.setState({ classinfo: v, Submit: data });
+                }}
+                setVisible={visible =>
+                  this.setState({ chooseVisible: visible })
+                }
+                setOuterVisible={() => this.setState({ visible: false })}
+              />
+              <div style={{ textAlign: "center" }}>
+                <Button type="primary" className="btns" onClick={this.handleOk}>
+                  保存设备
+                </Button>
+              </div>
+            </div>
+          </BaseModel>
+        ) : (
+          <BaseModel
+            width={1000}
+            title="拷贝数据"
+            visible={visible}
+            onCancel={this.onCancel}
+          >
+            <div className="select_cy">
+              <div className="select_cy-row">
+                <span className="select_cy-row-span">选择教室：</span>
+                <TreeSelect
+                  onChange={e => {
+                    this.setState({ cpData: e });
+                  }}
+                  className="select_cy-row-select"
+                  treeData={toJS(this.props.DeviceState.classRoomListSelect)}
+                  placeholder="请选择你要复制配置数据的教室"
+                />
+              </div>
 
-					  <div className="select_cy-toRow">
-						  <Button
-							  type="primary"
-							  className="btns"
-							  onClick={this.cpDataSeve}
-						  >
-							  保存
-						  </Button>
-					  </div>
-				  </div>
-				  </BaseModel>
-		  }
+              <div className="select_cy-toRow">
+                <Button
+                  type="primary"
+                  className="btns"
+                  onClick={this.cpDataSeve}
+                >
+                  保存
+                </Button>
+              </div>
+            </div>
+          </BaseModel>
+        )}
       </div>
     );
   }
@@ -276,7 +278,7 @@ export default class DeviceHeade extends Component<Props, State> {
 
   ofs = () => {
     if (typeof this.props.classroomId !== "undefined") {
-      this.setState({ chooseVisible: true, mark: 1 ,visible:true});
+      this.setState({ chooseVisible: true, mark: 1, visible: true });
     } else {
       window._guider.Utils.alert({
         message: "请选择教室在添加设备",
@@ -373,9 +375,9 @@ export default class DeviceHeade extends Component<Props, State> {
     });
   };
 }
-const maskStyle={
-	backgroundColor:'#000000'
-}
+const maskStyle = {
+  backgroundColor: "#000000"
+};
 const AddInfo = Form.create()(
   @inject("DeviceState")
   @observer
@@ -416,15 +418,15 @@ const AddInfo = Form.create()(
         <Form className="row" onSubmit={this.handleSubmit}>
           <div>
             <BaseModel
-				maskStyle={maskStyle}
+              maskStyle={maskStyle}
               style={{ top: 20 }}
               width={1000}
               title="选择设备"
               visible={this.props.visible}
               handleOk={this.handleOk}
               onCancel={() => {
-                this.props.setVisible(false)
-			  	this.props.setOuterVisible()
+                this.props.setVisible(false);
+                this.props.setOuterVisible();
               }}
             >
               {this.Device()}
@@ -444,7 +446,7 @@ const AddInfo = Form.create()(
               className="row-btn"
               onClick={() => {
                 this.setState({ visible: true });
-                this.props.setVisible(true)
+                this.props.setVisible(true);
               }}
             >
               选择设备
@@ -471,7 +473,8 @@ const AddInfo = Form.create()(
             })(<Input className="add-inputs" style={inputWidth} />)}
           </FormItem>
 
-          {itmeDAta.equiptype === "1" ? (
+          {/* 可选输入框 */}
+          {itmeDAta.connname === "私有协议" && itmeDAta.equiptype === "1" ? (
             <div>
               <FormItem className="row" {...formItemstyles} label="ID">
                 {getFieldDecorator("imeiNo", {
@@ -526,12 +529,13 @@ const AddInfo = Form.create()(
               ) : null}
             </div>
           ) : null}
+
           {/* 连接端口 */}
 
-          {itmeDAta.connname !== "私有协议" &&
-          (itmeDAta.connname == "RS232" ||
-            itmeDAta.connname == "RS485" ||
-            connname == "DO") ? (
+          {itmeDAta.connname !=="私有协议" &&
+          (itmeDAta.connname === "RS232" ||
+            itmeDAta.connname === "RS485" ||
+              itmeDAta.connname === "DO") ? (
             <FormItem {...formItemstyles} label="连接口" className="row">
               {getFieldDecorator("mcPortNo", {
                 rules: [{ required: true, message: "请选择连接口" }],
@@ -544,7 +548,7 @@ const AddInfo = Form.create()(
             </FormItem>
           ) : null}
           {/* hdmi连接口 */}
-          {connname === "DO" && itmeDAta.equiptype === "4" ? (
+          {itmeDAta.connname === "DO" && itmeDAta.equiptype === "4" ? (
             <FormItem {...formItemstyles} label="hdmi连接口" className="row">
               {getFieldDecorator("hdmiConn", {
                 rules: [{ required: true, message: "请选择hdmi连接口" }],
@@ -557,8 +561,8 @@ const AddInfo = Form.create()(
             </FormItem>
           ) : null}
           {/* 波特率、 数据位、停止位、校验*/}
-          {(itmeDAta.connname !== "私有协议" &&
-            itmeDAta.connname === "RS232") ||
+          {
+            itmeDAta.connname === "RS232" ||
           itmeDAta.connname === "RS485" ? (
             <div>
               <FormItem {...formItemstyles} label="波特率" className="row">
@@ -604,8 +608,12 @@ const AddInfo = Form.create()(
             </div>
           ) : null}
 
-          {/* IP地址 */}
-          {this.state.Address === "通用" ? (
+          {/* IP地址  端口*/}
+          {(itmeDAta.connname === "私有协议" && itmeDAta.equiptype === "1") ||
+          (itmeDAta.connname === "私有协议" && itmeDAta.equiptype === "16") ||
+          (itmeDAta.connname === "DO" && itmeDAta.equiptype === "4") ||
+          itmeDAta.connname === "TCP" ||
+          itmeDAta.connname === "UDP" ? (
             <div>
               <FormItem className="row" {...formItemstyles} label="IP">
                 {getFieldDecorator("hostIp", {
@@ -649,7 +657,9 @@ const AddInfo = Form.create()(
             </div>
           ) : null}
           {/*用户名密码  */}
-          {this.state.Address === "通用" ? (
+          {(itmeDAta.connname === "私有协议" && itmeDAta.equiptype === "16") ||
+          (itmeDAta.connname === "DO" && itmeDAta.equiptype === "4") ||
+          itmeDAta.connname === "TCP" ? (
             <div>
               <FormItem className="row" {...formItemstyles} label="用户名">
                 {getFieldDecorator("username", {
@@ -676,7 +686,7 @@ const AddInfo = Form.create()(
               </FormItem>
             </div>
           ) : null}
-          {itmeDAta.equiptypename === "摄像头" ? (
+          {itmeDAta.equiptype === "15" ? (
             <FormItem className="row" {...formItemstyles} label="摄像头位置">
               {getFieldDecorator("cameraType", {
                 rules: [{ required: true, message: "请填摄像头位置" }]
@@ -800,7 +810,7 @@ const AddInfo = Form.create()(
                 connname: this.state.item.connname
               });
               this.props.itmeid(this.state.item, data.data);
-              this.props.setVisible(false)
+              this.props.setVisible(false);
             }
           } catch (error) {
             console.log(error);
@@ -818,7 +828,7 @@ const AddInfo = Form.create()(
               CommProt: ComProt.data
             });
             this.props.itmeid(this.state.item, data.data);
-            this.props.setVisible(false)
+            this.props.setVisible(false);
           }
         }
       }

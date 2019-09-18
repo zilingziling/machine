@@ -508,4 +508,10 @@ input:-webkit-autofill:focus {
 
 body{
     user-select: none;
+    .pointer{
+      cursor: pointer;
+    }
+    .notAllowed{
+      cursor: not-allowed;
+    }
 }
