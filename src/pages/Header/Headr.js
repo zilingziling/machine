@@ -53,43 +53,40 @@ const Icon_ = {
   marginRight: "1rem",
   cursor: "pointer"
 };
-const Notice = () => {
+const Notice = props => {
   return (
-    <div className="infoWrapper">
-      <div className="text">
-        <img src={info} />
-        <p>当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。</p>
-      </div>
-      <div className="download">
-        <a href="https://www.google.cn/chrome/index.html" target="_blank">
-          <img src={google} alt="google" />
-          <span>下载Chrome</span>
+      <div className="infoWrapper">
+        <div className="text">
+          <img src={info} />
+          <p>{props.text}</p>
+        </div>
+        <div className="download">
+          <a href="https://www.google.cn/chrome/index.html" target="_blank">
+            <img src={google} alt="google" />
+            <span>下载Chrome</span>
 
-        </a>
-        <img src={close} alt="close" />
+          </a>
+          <img src={close} alt="close" />
+        </div>
       </div>
-    </div>
   );
 };
 @inject(
-  "Socke",
-  "DeviceState",
-  "userInfo",
-  "Police",
-  "Devices",
-  "DeviceDetection"
+    "Socke",
+    "DeviceState",
+    "userInfo",
+    "Police",
+    "Devices",
+    "DeviceDetection"
 )
 @observer
 class Home extends Component<Props, State> {
-  constructor(props){
-    super(props);
-    this.state = {
-      engine: null,
-      styles: null,
-      dx: false,
-      title: "功能菜单",
-      _info: [],
-    };
+  state = {
+    engine: null,
+    styles: null,
+    dx: false,
+    title: "功能菜单",
+    _info: [],
   }
   async componentDidMount() {
     this.props.Devices.validation(); //设备类型
@@ -102,7 +99,34 @@ class Home extends Component<Props, State> {
     if (userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1) {
       this.setState({
         engine: "chrome" //
-      });
+      })
+    }else {
+      this.setState({
+        text:'当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。'
+      })
+    }
+    function getChromeVersion() {
+      let arr = navigator.userAgent.split(' ');
+      let chromeVersion = '';
+      for(let i=0;i < arr.length;i++){
+        if(/chrome/i.test(arr[i]))
+          chromeVersion = arr[i]
+      }
+      if(chromeVersion){
+        return Number(chromeVersion.split('/')[1].split('.')[0]);
+      } else {
+        return false;
+      }
+    }
+    if(getChromeVersion()) {
+      let version = getChromeVersion();
+      console.log(version)
+      if(version < 70) {
+        this.setState({
+          text:'当前浏览器版本过低，请下载新版chrome。',
+          engine:"chromeLow"
+        })
+      }
     }
   }
 
@@ -118,124 +142,125 @@ class Home extends Component<Props, State> {
     }
   }
 
-  render() {
+  render(){
+    const {text}=this.state
     return (
-      <div>
+        <div>
 
-        {this.state.engine === "chrome" ? null : <Notice />}
-        <div className="header">
-          <div className="header-top">
-            <div className="header-top-left">
-              <img src={Hz} />
-              <span>{window.title}</span>
-            </div>
-            <div className="header-top-right">
-              <img
-                src={Fd}
-                onClick={this.siezof.bind(this, document.documentElement)}
-                style={Icon_}
-              />
-              <Divider className="header-top-right-shu" type="vertical" />
-
-              <div className="av" onClick={this.outLog}>
-                <Avatar
-                  className="avTou"
-                  size="large"
-                  src={require("../../assets/img/userImg.png")}
+          {this.state.engine === "chrome" ? null : <Notice text={text}/>}
+          <div className="header">
+            <div className="header-top">
+              <div className="header-top-left">
+                <img src={Hz} />
+                <span>{window.title}</span>
+              </div>
+              <div className="header-top-right">
+                <img
+                    src={Fd}
+                    onClick={this.siezof.bind(this, document.documentElement)}
+                    style={Icon_}
                 />
-                <span className="header-top-right-span">
+                <Divider className="header-top-right-shu" type="vertical" />
+
+                <div className="av" onClick={this.outLog}>
+                  <Avatar
+                      className="avTou"
+                      size="large"
+                      src={require("../../assets/img/userImg.png")}
+                  />
+                  <span className="header-top-right-span">
                   {window.localStorage.getItem("name")}
                 </span>
-              </div>
+                </div>
 
-              <div className="help" onClick={this.openNewWindow}>
-                帮助
+                <div className="help" onClick={this.openNewWindow}>
+                  帮助
+                </div>
               </div>
             </div>
-          </div>
-          <div className="header-second">
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Dropdown
-                trigger={["click"]}
-                onVisibleChange={this._Change}
-                overlay={this.Menus()}
+            <div className="header-second">
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Dropdown
+                    trigger={["click"]}
+                    onVisibleChange={this._Change}
+                    overlay={this.Menus()}
+                >
+                  <div style={this.state.styles} className="header-second-nav">
+                    <img src={Pack} />
+                    <span>{this.state.title}</span>
+                  </div>
+                </Dropdown>
+                <Divider className="header-second-nav-shu" type="vertical" />
+              </div>
+              <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "50px",
+                    lineHeight: "50px",
+                    justifyContent: "space-around"
+                  }}
               >
-                <div style={this.state.styles} className="header-second-nav">
-                  <img src={Pack} />
-                  <span>{this.state.title}</span>
-                </div>
-              </Dropdown>
-              <Divider className="header-second-nav-shu" type="vertical" />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                width: "100%",
-                height: "50px",
-                lineHeight: "50px",
-                justifyContent: "space-around"
-              }}
-            >
-              <NavLink
-                to="/police"
-                exact
-                strict
-                activeStyle={ActiveLink}
-                onClick={this._pushPage.bind(this, "/police", "报警查看")}
-              >
-                <div className="header-second-second">
-                  <Badge
-                    className="current"
-                    count={this.props.Police.untreated}
-                    offset={[15]}
-                    showZero
-                    className="AAAAAAAAAAAA"
-                  >
-                    <img src={Police} />
-                    <span>报警查看</span>
-                  </Badge>
-                </div>
-              </NavLink>
-              <NavLink
-                to="/devicesate"
-                exact
-                strict
-                activeStyle={ActiveLink}
-                onClick={this._pushPage.bind(this, "/devicesate", "设备状态")}
-              >
-                <div className="header-second-second">
-                  <img src={Cp} />
-                  <span>设备状态</span>
-                </div>
-              </NavLink>
-              <NavLink
-                to="/devicectl"
-                exact
-                strict
-                activeStyle={ActiveLink}
-                onClick={this._pushPage.bind(this, "/devicectl", "设备控制")}
-              >
-                <div className="header-second-second">
-                  <img src={Device} />
-                  <span>设备控制</span>
-                </div>
-              </NavLink>
-              <NavLink
-                to="/operating"
-                exact
-                strict
-                activeStyle={ActiveLink}
-                onClick={this._pushPage.bind(this, "/operating", "运营管理")}
-              >
-                <div className="header-second-second">
-                  <img src={More} />
-                  <span>运营管理</span>
-                </div>
-              </NavLink>
+                <NavLink
+                    to="/police"
+                    exact
+                    strict
+                    activeStyle={ActiveLink}
+                    onClick={this._pushPage.bind(this, "/police", "报警查看")}
+                >
+                  <div className="header-second-second">
+                    <Badge
+                        className="current"
+                        count={this.props.Police.untreated}
+                        offset={[15]}
+                        showZero
+                        className="AAAAAAAAAAAA"
+                    >
+                      <img src={Police} />
+                      <span>报警查看</span>
+                    </Badge>
+                  </div>
+                </NavLink>
+                <NavLink
+                    to="/devicesate"
+                    exact
+                    strict
+                    activeStyle={ActiveLink}
+                    onClick={this._pushPage.bind(this, "/devicesate", "设备状态")}
+                >
+                  <div className="header-second-second">
+                    <img src={Cp} />
+                    <span>设备状态</span>
+                  </div>
+                </NavLink>
+                <NavLink
+                    to="/devicectl"
+                    exact
+                    strict
+                    activeStyle={ActiveLink}
+                    onClick={this._pushPage.bind(this, "/devicectl", "设备控制")}
+                >
+                  <div className="header-second-second">
+                    <img src={Device} />
+                    <span>设备控制</span>
+                  </div>
+                </NavLink>
+                <NavLink
+                    to="/operating"
+                    exact
+                    strict
+                    activeStyle={ActiveLink}
+                    onClick={this._pushPage.bind(this, "/operating", "运营管理")}
+                >
+                  <div className="header-second-second">
+                    <img src={More} />
+                    <span>运营管理</span>
+                  </div>
+                </NavLink>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     );
   }
   openNewWindow = () => {
@@ -313,156 +338,156 @@ class Home extends Component<Props, State> {
   Menus = () => {
     const { _info } = this.state;
     return (
-      <Menu onClick={this._click} className="menu-bodys">
-        <Menu.Item disabled className="menu-bodys-item itmes" key="常用功能">
-          <img
-            className="menu-bodys-item-img"
-            src={require("./../../assets/img/devices.png")}
-          />
-          常用功能
-          <img
-            style={HeadetStyle}
-            src={require("./../../assets/img/jiantou.png")}
-          />
-        </Menu.Item>
-        <Menu.Item className="menu-bodys-item" key="报警查看">
-          <Link to="/police" style={fonts}>
-            报警查看
-          </Link>
-        </Menu.Item>
-        <Menu.Item className="menu-bodys-item" key="设备状态">
-          <Link to="/devicesate" style={fonts}>
-            设备状态
-          </Link>
-        </Menu.Item>
-        <Menu.Item className="menu-bodys-item" key="设备控制">
-          <Link to="/devicectl" style={fonts}>
-            设备控制
-          </Link>
-        </Menu.Item>
-        <Menu.Item className="menu-bodys-item" key="运营管理">
-          <Link to="/operating" style={fonts}>
-            运营管理
-          </Link>
-        </Menu.Item>
-        {/* 设备管理 */}
+        <Menu onClick={this._click} className="menu-bodys">
+          <Menu.Item disabled className="menu-bodys-item itmes" key="常用功能">
+            <img
+                className="menu-bodys-item-img"
+                src={require("./../../assets/img/devices.png")}
+            />
+            常用功能
+            <img
+                style={HeadetStyle}
+                src={require("./../../assets/img/jiantou.png")}
+            />
+          </Menu.Item>
+          <Menu.Item className="menu-bodys-item" key="报警查看">
+            <Link to="/police" style={fonts}>
+              报警查看
+            </Link>
+          </Menu.Item>
+          <Menu.Item className="menu-bodys-item" key="设备状态">
+            <Link to="/devicesate" style={fonts}>
+              设备状态
+            </Link>
+          </Menu.Item>
+          <Menu.Item className="menu-bodys-item" key="设备控制">
+            <Link to="/devicectl" style={fonts}>
+              设备控制
+            </Link>
+          </Menu.Item>
+          <Menu.Item className="menu-bodys-item" key="运营管理">
+            <Link to="/operating" style={fonts}>
+              运营管理
+            </Link>
+          </Menu.Item>
+          {/* 设备管理 */}
 
-        {shoHid(_info, ["devicesele", "device"]) ? ( //这些是你router地址
-          <Menu.Item disabled className="menu-bodys-item itmes" key="设备管理">
-            <img
-              className="menu-bodys-item-img"
-              src={require("./../../assets/img/configs.png")}
-            />
-            设备管理
-            <img
-              style={{ marginLeft: "20px" }}
-              src={require("./../../assets/img/jiantou.png")}
-            />
-          </Menu.Item>
-        ) : null}
-        {_info.includes("devicesele") ? (
-          <Menu.Item className="menu-bodys-item" key="设备配置">
-            <Link to="/devicesele" style={fonts}>
-              设备配置
-            </Link>
-          </Menu.Item>
-        ) : null}
+          {shoHid(_info, ["devicesele", "device"]) ? ( //这些是你router地址
+              <Menu.Item disabled className="menu-bodys-item itmes" key="设备管理">
+                <img
+                    className="menu-bodys-item-img"
+                    src={require("./../../assets/img/configs.png")}
+                />
+                设备管理
+                <img
+                    style={{ marginLeft: "20px" }}
+                    src={require("./../../assets/img/jiantou.png")}
+                />
+              </Menu.Item>
+          ) : null}
+          {_info.includes("devicesele") ? (
+              <Menu.Item className="menu-bodys-item" key="设备配置">
+                <Link to="/devicesele" style={fonts}>
+                  设备配置
+                </Link>
+              </Menu.Item>
+          ) : null}
 
-        {_info.includes("device") ? (
-          <Menu.Item className="menu-bodys-item" key="管理码库">
-            <Link to="/device" style={fonts}>
-              管理码库
-            </Link>
-          </Menu.Item>
-        ) : null}
+          {_info.includes("device") ? (
+              <Menu.Item className="menu-bodys-item" key="管理码库">
+                <Link to="/device" style={fonts}>
+                  管理码库
+                </Link>
+              </Menu.Item>
+          ) : null}
 
-        {/*高级设置*/}
-        {shoHid(_info, ["role", "user", "menu", "region"]) ? ( //这些是你router地址
-          <Menu.Item disabled className="menu-bodys-item itmes" key="高级设置">
-            <img
-              className="menu-bodys-item-img"
-              src={require("./../../assets/img/permissions.png")}
-            />
-            高级设置
-            <img
-              style={{ marginLeft: "20px" }}
-              src={require("./../../assets/img/jiantou.png")}
-            />
-          </Menu.Item>
-        ) : null}
-        {_info.includes("role") ? (
-          <Menu.Item className="menu-bodys-item" key="角色管理">
-            <Link to="/role" style={fonts}>
-              角色管理
-            </Link>
-          </Menu.Item>
-        ) : null}
-        {_info.includes("user") ? (
-          <Menu.Item className="menu-bodys-item" key="用户管理">
-            <Link to="/user" style={fonts}>
-              用户管理
-            </Link>
-          </Menu.Item>
-        ) : null}
+          {/*高级设置*/}
+          {shoHid(_info, ["role", "user", "menu", "region"]) ? ( //这些是你router地址
+              <Menu.Item disabled className="menu-bodys-item itmes" key="高级设置">
+                <img
+                    className="menu-bodys-item-img"
+                    src={require("./../../assets/img/permissions.png")}
+                />
+                高级设置
+                <img
+                    style={{ marginLeft: "20px" }}
+                    src={require("./../../assets/img/jiantou.png")}
+                />
+              </Menu.Item>
+          ) : null}
+          {_info.includes("role") ? (
+              <Menu.Item className="menu-bodys-item" key="角色管理">
+                <Link to="/role" style={fonts}>
+                  角色管理
+                </Link>
+              </Menu.Item>
+          ) : null}
+          {_info.includes("user") ? (
+              <Menu.Item className="menu-bodys-item" key="用户管理">
+                <Link to="/user" style={fonts}>
+                  用户管理
+                </Link>
+              </Menu.Item>
+          ) : null}
 
-        {_info.includes("region") ? (
-          <Menu.Item className="menu-bodys-item" key="区域管理">
-            <Link to="/region" style={fonts}>
-              区域管理
-            </Link>
-          </Menu.Item>
-        ) : null}
+          {_info.includes("region") ? (
+              <Menu.Item className="menu-bodys-item" key="区域管理">
+                <Link to="/region" style={fonts}>
+                  区域管理
+                </Link>
+              </Menu.Item>
+          ) : null}
 
-        {_info.includes("menu") ? (
-          <Menu.Item className="menu-bodys-item" key="菜单管理">
-            <Link to="/menu" style={fonts}>
-              菜单管理
-            </Link>
-          </Menu.Item>
-        ) : null}
-        {/*中控升级*/}
-        {shoHid(_info, ["update", "TouchUpdate", "aiUpdate"]) ? ( //这些是你router地址
-          <Menu.Item disabled className="menu-bodys-item itmes" key="中控模块">
-            <img
-              className="menu-bodys-item-img"
-              src={require("./../../assets/img/updates.png")}
-            />
-            中控模块
-            <img
-              style={{ marginLeft: "20px" }}
-              src={require("./../../assets/img/jiantou.png")}
-            />
-          </Menu.Item>
-        ) : null}
-        {_info.includes("update") ? (
-          <Menu.Item className="menu-bodys-item" key="中控升级">
-            <Link to="/update" style={fonts}>
-              中控升级
-            </Link>
-          </Menu.Item>
-        ) : null}
-        {_info.includes("TouchUpdate") ? (
-          <Menu.Item className="menu-bodys-item" key="触摸屏升级">
-            <Link to="/TouchUpdate" style={fonts}>
-              触摸屏升级
-            </Link>
-          </Menu.Item>
-        ) : null}
-        {_info.includes("aiUpdate") ? (
-          <Menu.Item className="menu-bodys-item" key="AI升级">
-            <Link to="/aiUpdate" style={fonts}>
-              AI升级
-            </Link>
-          </Menu.Item>
-        ) : null}
-        {_info.includes("ceshi") ? (
-          <Menu.Item className="menu-bodys-item" key="ceshi">
-            <Link to="/ceshi" style={fonts}>
-              ceshi
-            </Link>
-          </Menu.Item>
-        ) : null}
-      </Menu>
+          {_info.includes("menu") ? (
+              <Menu.Item className="menu-bodys-item" key="菜单管理">
+                <Link to="/menu" style={fonts}>
+                  菜单管理
+                </Link>
+              </Menu.Item>
+          ) : null}
+          {/*中控升级*/}
+          {shoHid(_info, ["update", "TouchUpdate", "aiUpdate"]) ? ( //这些是你router地址
+              <Menu.Item disabled className="menu-bodys-item itmes" key="中控模块">
+                <img
+                    className="menu-bodys-item-img"
+                    src={require("./../../assets/img/updates.png")}
+                />
+                中控模块
+                <img
+                    style={{ marginLeft: "20px" }}
+                    src={require("./../../assets/img/jiantou.png")}
+                />
+              </Menu.Item>
+          ) : null}
+          {_info.includes("update") ? (
+              <Menu.Item className="menu-bodys-item" key="中控升级">
+                <Link to="/update" style={fonts}>
+                  中控升级
+                </Link>
+              </Menu.Item>
+          ) : null}
+          {_info.includes("TouchUpdate") ? (
+              <Menu.Item className="menu-bodys-item" key="触摸屏升级">
+                <Link to="/TouchUpdate" style={fonts}>
+                  触摸屏升级
+                </Link>
+              </Menu.Item>
+          ) : null}
+          {_info.includes("aiUpdate") ? (
+              <Menu.Item className="menu-bodys-item" key="AI升级">
+                <Link to="/aiUpdate" style={fonts}>
+                  AI升级
+                </Link>
+              </Menu.Item>
+          ) : null}
+          {_info.includes("ceshi") ? (
+              <Menu.Item className="menu-bodys-item" key="ceshi">
+                <Link to="/ceshi" style={fonts}>
+                  ceshi
+                </Link>
+              </Menu.Item>
+          ) : null}
+        </Menu>
     );
   };
   //退出登录

@@ -6,7 +6,7 @@ import { Icon, Tree } from "antd";
 import "./deviceSelePage.scss";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "mobx-react";
-import "@alifd/next/lib/tree/style";
+// import "element-theme-default";
 const TreeNode = Tree.TreeNode;
 const DirectoryTree = Tree.DirectoryTree;
 const styles = {
@@ -30,29 +30,33 @@ class DeviceSeleclass extends Component {
     let selected = window.localStorage.getItem("deviceSelected");
     if (expanded !== null && selected !== null) {
       this.selected = [selected];
-      this.expanded = JSON.parse(expanded);
+      this.expanded = [...JSON.parse(expanded)];
     }
   }
   render() {
+    console.log(this.expanded);
     return (
       <div style={styles}>
         {/*deviceState tree*/}
-        <Tree
+        <DirectoryTree
           // multiple
           showLine
+          showIcon={false}
           onSelect={this.seleKey}
           onExpand={this.onExpand}
           selectedKeys={this.selected}
           expandedKeys={this.expanded}
-          // data={formatterTreeData(toJS(this.props.DeviceState.list))}
+          // data={toJS(this.props.DeviceState.list)}
+          // nodeKey="key"
         >
           {renderTreeNodes(toJS(this.props.DeviceState.list))}
-        </Tree>
+        </DirectoryTree>
       </div>
     );
   }
   onExpand = (e: any, r) => {
     let select = r.node.props.dataref.row;
+    console.log(e);
     this.expanded = e;
     let array = this.CtrTree;
     array.push(`${select.id}:${select.code}`);
@@ -78,7 +82,6 @@ class DeviceSeleclass extends Component {
 
 export default DeviceSeleclass;
 const formatterTreeData = data => {
-  console.table(data);
   data.forEach(item => {
     item.label = item.title;
     item.id = item.key;

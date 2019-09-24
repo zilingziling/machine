@@ -20,32 +20,31 @@ type Props = {
 };
 const _width = { width: "15rem" };
 const width_ = { width: "10rem" };
-const Notice = () => {
+const Notice = props => {
+  console.log(props)
   return (
-    <div className="infoWrapper">
-      <div className="text">
-        <img src={info} />
-        <p>当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。</p>
+      <div className="infoWrapper">
+        <div className="text">
+          <img src={info} />
+          <p>{props.text}</p>
+        </div>
+        <div className="download">
+          <a href="https://www.google.cn/chrome/index.html" target="_blank">
+            <img src={google} alt="google" />
+            <span>下载Chrome</span>
+          </a>
+          <img src={close} alt="close" />
+        </div>
       </div>
-      <div className="download">
-        <a href="https://www.google.cn/chrome/index.html" target="_blank">
-          <img src={google} alt="google" />
-          <span>下载Chrome</span>
-        </a>
-        <img src={close} alt="close" />
-      </div>
-    </div>
   );
 };
 @inject("userInfo", "Socke")
 @observer
 class Login extends Component<Props, State> {
-	constructor(props){
-      super(props);
-       this.state = {
-          engine: null
-        };
-    }
+  state = {
+    engine: null,
+    text:""
+  };
 
   @observable user = "";
   @observable pass = "";
@@ -58,98 +57,125 @@ class Login extends Component<Props, State> {
     const userAgent = navigator.userAgent;
     if (userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1) {
       this.setState({
-        engine: "chrome"
-      });
+        engine: "chrome",
+      })
+    }else {
+      this.setState({
+        text:'当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。'
+      })
+    }
+    function getChromeVersion() {
+      let arr = navigator.userAgent.split(' ');
+      let chromeVersion = '';
+      for(let i=0;i < arr.length;i++){
+        if(/chrome/i.test(arr[i]))
+          chromeVersion = arr[i]
+      }
+      if(chromeVersion){
+        return Number(chromeVersion.split('/')[1].split('.')[0]);
+      } else {
+        return false;
+      }
+    }
+    if(getChromeVersion()) {
+      let version = getChromeVersion();
+      console.log(version)
+      if(version < 70) {
+        this.setState({
+          text:'当前浏览器版本过低，请下载新版chrome。',
+          engine:"chromeLow"
+        })
+      }
     }
   }
 
   render() {
-
-	  return (
-      <div>
-        {this.state.engine === "chrome" ? null : <Notice />}
-        <div className="login">
-          {/*<div className="login-img">*/}
-          {/*	<img src={require('../../assets/img/loginLog.png')} alt="" />*/}
-          {/*	<span className="login-img-span">{window.title}</span>*/}
-          {/*</div>*/}
-          <div className="login-title">{window.title}</div>
-          <Spin
-            tip="登录中。。。"
-            indicator={antIcon}
-            spinning={this.loading}
-            size="large"
-          >
-            <div className="login-background">
-              <span className="login-background-span">用户登录</span>
-              <div
-                className="login-background-up"
-                onKeyPress={this.handleEnterKey}
-              >
-                <Input
-                  style={_width}
-                  maxLength={20}
-                  placeholder="请输入账号"
-                  className="login-background-up-user"
-                  onChange={e => {
-                    this.user = e.target.value;
-                  }}
-                  prefix={<img src={require("./../../assets/img/users.png")} />}
-                />
-                <Input
-                  style={_width}
-                  maxLength={20}
-                  placeholder="请输入用户密码"
-                  type="password"
-                  onPaste={this.theForm}
-                  onCopy={this.theForm}
-                  onCut={this.theForm}
-                  className="login-background-up-pass"
-                  onChange={e => {
-                    this.pass = e.target.value;
-                  }}
-                  prefix={<img src={require("./../../assets/img/pass.png")} />}
-                />
-
-                <div className="login-background-up-row">
-                  <Input
-                    style={width_}
-                    maxLength={4}
-                    placeholder="请输入验证码"
-                    className="login-background-up-row-validation"
-                    onChange={e => {
-                      this.validation = e.target.value;
-                    }}
-                    prefix={
-                      <img src={require("./../../assets/img/vertify.png")} />
-                    }
-                  />
-                  <img
-                    className="login-background-up-row-img"
-                    onClick={this._checkout}
-                    src={this.url}
-                  />
-                </div>
-
-                <div className="login-background-up-login">
-                  <Button
-                    onClick={this.UpUser}
-                    className="login-background-up-login-btn"
-                    type="primary"
-                  >
-                    登录
-                  </Button>
-                </div>
-                <span
-                  style={{ color: "red", marginTop: "10px", fontSize: "14px" }}
+    const {text}=this.state
+    return (
+        <div>
+          {this.state.engine === "chrome" ? null : <Notice text={text}/>}
+          <div className="login">
+            {/*<div className="login-img">*/}
+            {/*	<img src={require('../../assets/img/loginLog.png')} alt="" />*/}
+            {/*	<span className="login-img-span">{window.title}</span>*/}
+            {/*</div>*/}
+            <div className="login-title">{window.title}</div>
+            <Spin
+                tip="登录中。。。"
+                indicator={antIcon}
+                spinning={this.loading}
+                size="large"
+            >
+              <div className="login-background">
+                <span className="login-background-span">用户登录</span>
+                <div
+                    className="login-background-up"
+                    onKeyPress={this.handleEnterKey}
                 >
+                  <Input
+                      style={_width}
+                      maxLength={20}
+                      placeholder="请输入账号"
+                      className="login-background-up-user"
+                      onChange={e => {
+                        this.user = e.target.value;
+                      }}
+                      prefix={<img src={require("./../../assets/img/users.png")} />}
+                  />
+                  <Input
+                      style={_width}
+                      maxLength={20}
+                      placeholder="请输入用户密码"
+                      type="password"
+                      onPaste={this.theForm}
+                      onCopy={this.theForm}
+                      onCut={this.theForm}
+                      className="login-background-up-pass"
+                      onChange={e => {
+                        this.pass = e.target.value;
+                      }}
+                      prefix={<img src={require("./../../assets/img/pass.png")} />}
+                  />
+
+                  <div className="login-background-up-row">
+                    <Input
+                        style={width_}
+                        maxLength={4}
+                        placeholder="请输入验证码"
+                        className="login-background-up-row-validation"
+                        onChange={e => {
+                          this.validation = e.target.value;
+                        }}
+                        prefix={
+                          <img src={require("./../../assets/img/vertify.png")} />
+                        }
+                    />
+                    <img
+                        className="login-background-up-row-img"
+                        onClick={this._checkout}
+                        src={this.url}
+                    />
+                  </div>
+
+                  <div className="login-background-up-login">
+                    <Button
+                        onClick={this.UpUser}
+                        className="login-background-up-login-btn"
+                        type="primary"
+                    >
+                      登录
+                    </Button>
+                  </div>
+                  <span
+                      style={{ color: "red", marginTop: "10px", fontSize: "14px" }}
+                  >
                   {this.text}
                 </span>
+                </div>
               </div>
-            </div>
-          </Spin>
+            </Spin>
+          </div>
         </div>
-      </div>
     );
   }
   // 切换验证码
@@ -165,25 +191,33 @@ class Login extends Component<Props, State> {
         try {
           this.loading = true;
           let res = await Api.Login.UpLogin(
-            this.user,
-            SparkMD5.hash(this.pass),
-            this.validation
-          );
-          if (res.code === 200) {
-            window.localStorage.setItem("schoolid", res.data.schoolid);
-            this.props.userInfo.updateStatus(
-              true,
-              "police",
-              res.data,
               this.user,
               SparkMD5.hash(this.pass),
-              res.data.name
-            );
-            window.localStorage.setItem("helpdoc", res.data.helpdoc);
-            window._guider.Utils.alert({
-              message: res.msg,
-              type: "success"
-            });
+              this.validation
+          );
+          if (res.code === 200) {
+            if(res.data.menu_operation_tree!==null){
+              window.localStorage.setItem("schoolid", res.data.schoolid);
+              this.props.userInfo.updateStatus(
+                  true,
+                  "police",
+                  res.data,
+                  this.user,
+                  SparkMD5.hash(this.pass),
+                  res.data.name
+              );
+              window.localStorage.setItem("helpdoc", res.data.helpdoc);
+              window._guider.Utils.alert({
+                message: res.msg,
+                type: "success"
+              });
+            }else {
+              this.text = "";
+              window._guider.Utils.alert({
+                message: "您的账户没有使用权限，请联系管理人员开通!",
+                type: "warning"
+              });
+            }
             this.loading = false;
           } else {
             if(res.code===2007){

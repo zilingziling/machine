@@ -10,8 +10,7 @@
     align-items: center;
     margin-top: 10px;
     height: 70vh !important;
-    overflow: hidden;
-    overflow-y: scroll;
+    overflow:auto scroll;
   }
   &-P {
     text-align: center;

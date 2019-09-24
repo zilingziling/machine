@@ -1,5 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+// import "@babel/polyfill";
+
+// 编译
+import "core-js/features/array/from"; // <- at the top of your entry point
+import "core-js/features/array/flat"; // <- at the top of your entry point
+import "core-js/features/set"; // <- at the top of your entry point
+import "core-js/features/promise"; // <- at the top of your entry point
+import "core-js/features/symbol"; // <- at the top of your entry point
+import "core-js/stable";
+import "core-js";
+import "regenerator-runtime/runtime";
+
 import * as Utils from "./utils/util";
 import * as serviceWorker from "./serviceWorker";
 
@@ -10,7 +22,7 @@ import { LocaleProvider } from "antd";
 import { Provider } from "mobx-react";
 import { AppContainer } from "react-hot-loader"; // 包裹根节点，想要渲染的内容，热更新需要的
 import Store from "./stores/allStore";
-import "@babel/polyfill";
+
 import "moment/locale/zh-cn";
 import "./utils/component";
 import "./scss/index.css";

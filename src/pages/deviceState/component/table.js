@@ -69,7 +69,6 @@ class Tables extends Component<Props, State> {
 			// routerName: '/devicesate',
 			classroomid: row.classroomid,
 		});
-
 	}
 }
 

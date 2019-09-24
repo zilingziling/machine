@@ -49,8 +49,8 @@ class Bar extends Component<Props, State> {
 					{/* deviceControl tree deviceEquip tree*/}
 					<DirectoryTree
 						// multiple
-						openAnimation={false}
 						showLine
+						openAnimation={false}
 						showIcon={false}
 						onSelect={this.seleKey}
 						onExpand={this.onExpand}
@@ -99,13 +99,3 @@ const renderTreeNodes = (data: Array) => {
 		return <TreeNode {...item} dataRef={item} />;
 	});
 };
-{/* <Tree
-showLine
-autoExpandParent={true}
-onSelect={this.seleKey}
-onExpand={this.onExpand}
-// selectedKeys={[this.state.classid]}
-// expandedKeys={[this.state.school]}
->
-{]renderTreeNodes(toJS(this.props.DeviceState.classRoomList))}
-</Tree> */}
