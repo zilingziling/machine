@@ -261,8 +261,13 @@ class DeviceControl extends Component<Props, State> {
             dataMsg.getData()
           );
           let detailList = obj.toObject().detailList;
-          if (detailList[detailList.length - 1].id != msg_id) {
-            this.props.Socke.jumpCtr(detailList, 1);
+          console.log(window.location.href)
+          if(window.location.href.includes("devicectl")){
+            if (detailList[detailList.length - 1].id != msg_id) {
+              this.props.Socke.jumpCtr(detailList);
+            }
+          }else {
+            this.props.Socke.jumpCtr(detailList);
           }
         }
       } catch (error) {

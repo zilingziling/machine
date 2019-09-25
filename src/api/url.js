@@ -292,6 +292,11 @@ export const DeviceState = {
     url: "/equip_classroom/get_status_monitor",
     method: "post",
     headers: headerFrom
+  },
+  getExpand: {
+    url: "/equip_classroom/get_jumpdata_By_classroomid",
+    method: "post",
+    headers: headerFrom
   }
 };
 

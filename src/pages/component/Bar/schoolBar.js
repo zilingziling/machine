@@ -52,6 +52,7 @@ class SchoolBar extends Component<Props, State> {
 				<div className="schoolBar-bars">
 					<DirectoryTree
 						// multiple
+						motion={null}
 						showLine
 						showIcon={false}
 						onSelect={this.seleKey}

@@ -99,7 +99,7 @@ class Tables extends Component<Props, State> {
           className="device-tables-table"
           rowClassName="device-tables-tableRow"
           columns={this.state.columns}
-          dataSource={this.props.data}
+          dataSource={toJS(this.props.data)}
           // bordered
           pagination={false}
         />

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Table, Badge } from 'antd';
 import { Link } from 'react-router-dom';
 import './../../device/device.scss';
+import {getExpand} from "../../../api/deviceState";
 
 type Props = {
 	data: Array<string>,
@@ -57,9 +58,14 @@ class Tables extends Component<Props, State> {
 			/>
 		);
 	}
-	_clicke = (row: object) => {
+	_clicke =async (row: object) => {
+		let r=await getExpand(row.classroomid)
+		console.log(r.data)
+		if(r.code===200){
+			window.localStorage.setItem("stateE",JSON.stringify(r.data))
+		}
 		// console.log(row)
-			window.localStorage.setItem('expand',`${row.buildingid}:school_academic_building`);
+		window.localStorage.setItem('expand',`${row.buildingid}:school_academic_building`);
 		window.localStorage.setItem('stateClassID', row.classroomid);
 		window.localStorage.setItem('school', row.buildingid);
 		window.localStorage.setItem('classroomid', row.classroomid);

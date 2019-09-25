@@ -23,32 +23,28 @@ const TreeNode = Tree.TreeNode;
 class Bar extends Component<Props, State> {
 	state = {
 		selected: [''],
-		expandedKeys: [], //展开的key
+		expandedKeys: [],
 	}
 	componentDidMount() {
-		let expandedKeys =JSON.parse(window.localStorage.getItem('deviceExpanded'));
-		let deviceControlSelf=JSON.parse(window.localStorage.getItem('deviceControlSelf'));
-		let expandedClassroom = window.localStorage.getItem('expand');
+		let stateEKeys =JSON.parse(window.localStorage.getItem('stateE'))
 		let selected = window.localStorage.getItem('CtrClassrommid');
-		this.setState({
-			selected: [selected],
-			expandedKeys:deviceControlSelf? [...new Set(deviceControlSelf)]:[]
-		});
-		if (expandedKeys&&selected !== null) {
+		if (stateEKeys&&selected !== null) {
 			this.setState({
 				selected: [selected],
-				expandedKeys:expandedClassroom&&deviceControlSelf? [...new Set(expandedKeys),expandedClassroom,...deviceControlSelf]:[...new Set(expandedKeys)],
+				expandedKeys:[...new Set(stateEKeys)]
 			});
 		}
 	}
 	render() {
 		const { selected, expandedKeys } = this.state;
+		console.log(expandedKeys)
 		return (
 			<div className="bar">
 				<div className="devicesele-selects">
 					{/* deviceControl tree deviceEquip tree*/}
 					<DirectoryTree
 						// multiple
+						motion={null}
 						showLine
 						openAnimation={false}
 						showIcon={false}
@@ -65,22 +61,19 @@ class Bar extends Component<Props, State> {
 	}
 
 	onExpand = (e: any, obj: object) => {
+		console.log(e)
 		this.setState({ expandedKeys: e });
 		window.localStorage.setItem('CtrSchoole', JSON.stringify(e));
-		window.localStorage.setItem('deviceEquip', JSON.stringify(e));
-		window.localStorage.setItem('deviceControlSelf',JSON.stringify(e))
+		window.localStorage.setItem('stateE', JSON.stringify(e));
 	}
 	seleKey = (e: Array<number>, data: object) => {
 		this.setState({ selected: e });
-		 let selectKeys=[...JSON.parse(window.localStorage.getItem('deviceEquip')),...e]
 		if (data.selectedNodes.length > 0) {
 			this.props.Seleshcool(e[0], data.selectedNodes[0].props.dataRef.row);
 			let obj = data.selectedNodes[0].props.dataRef.row;
 			window.localStorage.setItem('classroomid', obj.id);
 			window.localStorage.setItem('school', obj.schoolId);
 			window.localStorage.setItem('CtrClassrommid', e);
-			window.localStorage.setItem('deviceEquip', JSON.stringify(selectKeys));
-
 		}
 	}
 

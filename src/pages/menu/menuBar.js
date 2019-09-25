@@ -60,6 +60,7 @@ class MenuBar extends Component<Props, State> {
 				<div className="devicesele-selects">
 					<DirectoryTree
 						// multiple
+						motion={null}
 						showLine
 						showIcon={false}
 						onSelect={this.seleKey}
@@ -144,7 +145,7 @@ class MenuBar extends Component<Props, State> {
 							beforeUpload={this.beforeUpload}
 						>
 							{
-								// mark === 1 ? uploadButton : 
+								// mark === 1 ? uploadButton :
 								imageUrl ?
 									<img src={imageUrl} alt="avatar" className="imgUpdate-imgsize" /> : uploadButton}
 						</Upload>

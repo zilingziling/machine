@@ -12,3 +12,8 @@ export const get_status_monitor = (id: number, pageNo: number) => {
 
   return makeRequest(DeviceState.get_status_monitor, params);
 };
+export const getExpand = id => {
+  const params = new URLSearchParams();
+  params.append("classroomId", id);
+  return makeRequest(DeviceState.getExpand, params);
+};

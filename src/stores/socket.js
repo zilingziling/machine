@@ -122,6 +122,7 @@ class Socke {
           let dataMsg = new window.proto.com.yj.itgm.protocol.BaseDataMsg.deserializeBinary(
             msg.getData()
           );
+          console.log(dataMsg.getCommand());
           if (dataMsg.getCommand() === 2001) {
             let obj = new window.proto.com.yj.itgm.protocol.EquipStatusReport.deserializeBinary(
               dataMsg.getData()
@@ -149,6 +150,7 @@ class Socke {
               dataMsg.getData()
             );
             let detailList = obj.toObject().detailList;
+            console.log("wsreturn");
             this.jumpCtr(detailList);
           }
         } catch (error) {
@@ -247,32 +249,13 @@ class Socke {
 
   //跳转到设备控制
   @action jumpCtr = async (detailList, mark) => {
+    console.log("tiaoyong");
     let timer_ = 30;
     let last = detailList[detailList.length - 1];
     let array = [];
     detailList.forEach(element => {
-      array.push(element.id + ":" + element.code);
-    });
-    let Conf = confirm({
-      centered: true,
-      title: `是否需要跳转到${last.name}教室吗?`,
-      onOk() {
-        window.localStorage.setItem("CtrSchoole", JSON.stringify(array));
-        window.localStorage.setItem(
-          "CtrClassrommid",
-          last.id + ":" + last.code
-        );
-        window.localStorage.setItem("classroomid", last.id);
-        if (mark === 1) {
-          window.location.reload();
-        } else {
-          window._guider.History.history.push({
-            //设备控制
-            pathname: "/devicectl"
-          });
-        }
-      },
-      onCancel() {}
+      // array.push(element.id + ":" + element.code);
+      array.push(element.idcode);
     });
     let schoolInfo =
       detailList.length > 0
@@ -285,6 +268,31 @@ class Socke {
     };
     let res = await skip(p);
     if (res.code === 200 && res.data === 1) {
+      let Conf = confirm({
+        centered: true,
+        title: `是否需要跳转到${last.name}教室吗?`,
+        onOk() {
+          array.pop();
+          window.localStorage.setItem("CtrSchoole", JSON.stringify(array));
+          window.localStorage.setItem("stateE", JSON.stringify(array));
+          console.log("keys", array);
+          window.localStorage.setItem(
+            "CtrClassrommid",
+            last.id + ":" + last.code
+          );
+          console.log(last.id + ":" + last.code);
+          window.localStorage.setItem("classroomid", last.id);
+          if (mark === 1) {
+            window.location.reload();
+          } else {
+            window._guider.History.history.push({
+              //设备控制
+              pathname: "/devicectl"
+            });
+          }
+        },
+        onCancel() {}
+      });
       let Time = setInterval(() => {
         timer_--;
         Conf.update({

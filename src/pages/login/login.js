@@ -80,9 +80,9 @@ class Login extends Component<Props, State> {
     if(getChromeVersion()) {
       let version = getChromeVersion();
       console.log(version)
-      if(version < 70) {
+      if(version < 66) {
         this.setState({
-          text:'当前浏览器版本过低，请下载新版chrome。',
+          text:'当前浏览器或浏览器内核版本过低，请下载新版chrome。',
           engine:"chromeLow"
         })
       }
@@ -186,6 +186,7 @@ class Login extends Component<Props, State> {
   };
   //登录
   UpUser = async () => {
+    console.log("登录")
     if (this.user !== "" && this.pass !== "") {
       if (this.validation !== "") {
         try {
@@ -246,6 +247,7 @@ class Login extends Component<Props, State> {
   };
   //回车键
   handleEnterKey = (e: Object) => {
+    console.log("enter")
     if (e.nativeEvent.charCode === 13) {
       if (!this.loading) {
         this.UpUser();

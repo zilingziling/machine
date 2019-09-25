@@ -4,7 +4,7 @@
 import './../index.scss';
 import React, { Component } from 'react';
 import { BaseModel } from '../../component/Model/model';
-import { Tabs, Form, Radio, Select, Button, Input, message, Col, TreeSelect, Modal } from 'antd';
+import { Tabs, Form, Radio, Select, Button, Input, message, Icon, TreeSelect, Modal } from 'antd';
 import { observable, toJS, autorun, action, } from 'mobx';
 import { observer, inject, } from 'mobx-react';
 import { idMarker, uint8Buff2Str } from '../../component/function/formatDateReturn';
@@ -254,7 +254,7 @@ class extends Component {
 			let dataSource = typeof (sliceArray) !== 'undefined' ? sliceArray : this.props.listData;
 			let qs = idMarker(dataSource);
 			let datamouseFocu = idMarker(dataSource);
-			let automatic = datamouseFocu.next();  //让它优先获取下一个ID 
+			let automatic = datamouseFocu.next();  //让它优先获取下一个ID
 
 			window.ws.onmessage = (evt) => {
 				try {
@@ -473,6 +473,8 @@ class extends Component {
 									treeData={toJS(this.props.DeviceState.classRoomListSelect)} //
 									placeholder="选择教室用于红外学习"
 									onChange={this.props.Devices.get_imei_by_room}
+									showIcon
+									switcherIcon={<Icon type="plus" />}
 								/>
 							)}
 						</FormItem>

@@ -50,7 +50,7 @@ class DeviceState extends Component<Props> {
 				<Bar renderValue={this.onchang} />
 				<div style={leftStyle}>
 					<Table
-						shcoolId={classroomId} data={arrayData} />
+						shcoolId={classroomId} data={toJS(arrayData)} />
 					<Paginations
 						current={pageNo}
 						total={total}

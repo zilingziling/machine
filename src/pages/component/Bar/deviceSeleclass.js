@@ -23,29 +23,29 @@ const styles = {
 @observer
 class DeviceSeleclass extends Component {
   @observable selected = [""];
-  @observable expanded = [""];
+  @observable expanded = [];
   @observable CtrTree = [];
   componentDidMount() {
     let expanded = window.localStorage.getItem("deviceExpanded");
     let selected = window.localStorage.getItem("deviceSelected");
-    if (expanded !== null && selected !== null) {
+    if (expanded !== null) {
       this.selected = [selected];
       this.expanded = [...JSON.parse(expanded)];
     }
   }
   render() {
-    console.log(this.expanded);
     return (
       <div style={styles}>
         {/*deviceState tree*/}
         <DirectoryTree
           // multiple
+          motion={null}
           showLine
           showIcon={false}
           onSelect={this.seleKey}
           onExpand={this.onExpand}
-          selectedKeys={this.selected}
-          expandedKeys={this.expanded}
+          selectedKeys={toJS(this.selected)}
+          expandedKeys={toJS(this.expanded)}
           // data={toJS(this.props.DeviceState.list)}
           // nodeKey="key"
         >
@@ -56,7 +56,6 @@ class DeviceSeleclass extends Component {
   }
   onExpand = (e: any, r) => {
     let select = r.node.props.dataref.row;
-    console.log(e);
     this.expanded = e;
     let array = this.CtrTree;
     array.push(`${select.id}:${select.code}`);

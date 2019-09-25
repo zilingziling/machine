@@ -121,9 +121,9 @@ class Home extends Component<Props, State> {
     if(getChromeVersion()) {
       let version = getChromeVersion();
       console.log(version)
-      if(version < 70) {
+      if(version < 66) {
         this.setState({
-          text:'当前浏览器版本过低，请下载新版chrome。',
+          text:'当前浏览器或浏览器内核版本过低，请下载新版chrome。',
           engine:"chromeLow"
         })
       }
