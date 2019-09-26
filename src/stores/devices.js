@@ -89,6 +89,7 @@ class Device {
 
   //	通过教室id获取串号
   @action get_imei_by_room = async v => {
+    console.log(v);
     try {
       let res = await Api.Device.get_imei_by_room(v);
       if (res.code === 200) {

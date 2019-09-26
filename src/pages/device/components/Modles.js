@@ -4,7 +4,7 @@
 import './../index.scss';
 import React, { Component } from 'react';
 import { BaseModel } from '../../component/Model/model';
-import { Tabs, Form, Radio, Select, Button, Input, message, Icon, TreeSelect, Modal } from 'antd';
+import { Tabs, Form, Radio, Select, Button, Input, message, Tree, TreeSelect, Modal } from 'antd';
 import { observable, toJS, autorun, action, } from 'mobx';
 import { observer, inject, } from 'mobx-react';
 import { idMarker, uint8Buff2Str } from '../../component/function/formatDateReturn';
@@ -131,7 +131,7 @@ export default class DeviceModle extends Component<Props, State> {
 								className="Modla-button-right"
 								onClick={this.shoView}
 								type="primary"
-								disabled={this.props.Devices._validationNet}
+								disabled={this.props.Devices._validationNet&&String(this.state.view)==="2"}
 							>
 								下一步
 						</Button>
@@ -424,11 +424,33 @@ const LinkRelease = Form.create()(
 class extends Component {
 	state = {
 		datalist: [],
-		name: ''
+		name: '',
+		expand:false,
+		inputValue:''
 	}
 	componentDidMount() {
 		this.listLink();
 		this.setState({ name: typeof (this.props.Itme.connecttype) === 'undefined' ? '2' : this.props.Itme.connecttype });
+	}
+	handleChooseClass=(value,node,extra)=>{
+		const {setFieldsValue}=this.props.form
+		if(value[0].includes("classroom")){
+			this.setState({
+				inputValue:node.selectedNodes[0].props.title,
+				expand:false
+			})
+			setFieldsValue({"classrommids":node.selectedNodes[0].props.title})
+			this.props.Devices.get_imei_by_room(node.selectedNodes[0].props.value)
+
+		}else {
+			setFieldsValue({"classrommids":""})
+
+		}
+	}
+	handleClickInput=()=>{
+		this.setState({
+			expand:!this.state.expand
+		})
 	}
 	render() {
 		const { getFieldDecorator } = this.props.form;
@@ -467,16 +489,18 @@ class extends Component {
 						<FormItem {...formItemLayout} label="选择教室" className="links">
 							{getFieldDecorator('classrommids', {
 								rules: [{ required: true, message: '选择教室用于红外学习' }],
+								initialValue:""
 								// initialValuee: '4016' //typeof (Itme.hwvalue) === 'undefined' ? '38k' : Itme.hwvalue
 							})(
-								<TreeSelect
-									treeData={toJS(this.props.DeviceState.classRoomListSelect)} //
-									placeholder="选择教室用于红外学习"
-									onChange={this.props.Devices.get_imei_by_room}
-									showIcon
-									switcherIcon={<Icon type="plus" />}
-								/>
+								// 红外
+								<Input  onClick={this.handleClickInput} placeholder="选择教室用于红外学习" readOnly className="chooseInput"/>
 							)}
+							<Tree.DirectoryTree
+								style={{display:this.state.expand?"block":'none'}}
+								treeData={toJS(this.props.DeviceState.classRoomListSelect)} //
+								className="chooseClass"
+								onSelect={this.handleChooseClass}
+							/>
 						</FormItem>
 						<br />
 						<span className="errorMsg">{this.props.Devices._msg}</span>

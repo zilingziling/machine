@@ -11,7 +11,7 @@ import More from "../../assets/img/more.png";
 import Fd from "../../assets/img/fangda.png";
 //icon
 import update from "./../../assets/img/update.png";
-import { Divider, Dropdown, Menu, Icon, Avatar, Badge, Modal } from "antd";
+import { Divider, Dropdown, Menu, Icon, Avatar, Badge, Modal,Select } from "antd";
 import { NavLink, Link } from "react-router-dom";
 import { observable, autorun } from "mobx";
 import { observer, inject } from "mobx-react";
@@ -23,7 +23,7 @@ import close from "../../assets/img/close.png";
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const confirm = Modal.confirm;
-
+const Option=Select.Option
 type Props = {
   match: Object,
   history: Object,
@@ -53,6 +53,12 @@ const Icon_ = {
   marginRight: "1rem",
   cursor: "pointer"
 };
+const modalStyle={
+  top:"12.5vh",
+  background:"#0C2E4C",
+  height:"80vh",
+  borderRadius:"5px",
+}
 const Notice = props => {
   return (
       <div className="infoWrapper">
@@ -87,6 +93,8 @@ class Home extends Component<Props, State> {
     dx: false,
     title: "功能菜单",
     _info: [],
+    v:false,
+    href:window.localStorage.getItem("helpdoc")
   }
   async componentDidMount() {
     this.props.Devices.validation(); //设备类型
@@ -143,10 +151,82 @@ class Home extends Component<Props, State> {
   }
 
   render(){
-    const {text}=this.state
+    const {text,v}=this.state
+    const menu=(
+        <Menu>
+          <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href={this.state.href}>
+              手册
+            </a>
+          </Menu.Item>
+          <Menu.Item onClick={()=>{
+            this.setState({
+              v:true
+            })
+          }}>
+            更新日志
+          </Menu.Item>
+        </Menu>
+    )
     return (
+        <>
+          <Modal
+              wrapClassName="helpModal"
+              maskClosable={false}
+              width={646}
+            footer={null}
+            style={modalStyle}
+            visible={this.state.v}
+            onCancel={()=>this.setState({
+              v:false
+            })}
+          >
+            <div className="modalContent">
+              <h1>当前版本:V1.9.0</h1>
+              <div className="version">
+                <span>历史更新日志</span>
+                <Select style={{width:"10rem"}}>
+                  <Option value="jack">Jack</Option>
+                  <Option value="lucy">Lucy</Option>
+                </Select>
+              </div>
+              <h3>历史主要更新内容：</h3>
+              <ul className="history">
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+              </ul>
+              <h3 style={{marginTop:"24px"}}>更新详情</h3>
+              <h4>完成的需求:</h4>
+              <ul className="add">
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+              </ul>
+              <h4>修复的bug:</h4>
+              <ul className="debug">
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+                <li>3505 产品和项目增加填写备注功能</li>
+              </ul>
+            </div>
+          </Modal>
         <div>
-
           {this.state.engine === "chrome" ? null : <Notice text={text}/>}
           <div className="header">
             <div className="header-top">
@@ -172,10 +252,12 @@ class Home extends Component<Props, State> {
                   {window.localStorage.getItem("name")}
                 </span>
                 </div>
+                <Dropdown className="help" overlay={menu}>
+                  <a  href="#">
+                    帮助 <Icon type="down" />
+                  </a>
+                </Dropdown>
 
-                <div className="help" onClick={this.openNewWindow}>
-                  帮助
-                </div>
               </div>
             </div>
             <div className="header-second">
@@ -261,6 +343,7 @@ class Home extends Component<Props, State> {
             </div>
           </div>
         </div>
+          </>
     );
   }
   openNewWindow = () => {
