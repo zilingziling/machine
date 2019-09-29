@@ -1,9 +1,14 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-"user strict";
+import { inject } from "mobx-react";
+
+("user strict");
 //@flow
 import { observable, action, autorun } from "mobx";
 import Api from "./../api";
 import { Modal } from "antd";
+import Police from "./police";
+import DeviceState from "./devicesState";
+import DeviceDetection from "./deviceDetection";
 const { confirm } = Modal;
 /**
  * 	dataList 数据列表或者下拉选择数据接口
@@ -146,6 +151,15 @@ class Regions {
               type: "success"
             });
             this.newDataSource(); //刷新数据
+            // 刷新其他页面的数据
+            await DeviceState.schoolList();
+            await Police.list(0, 1);
+            let classid = window.localStorage.getItem(
+              "devicesStateClassroomid"
+            );
+            if (classid !== null) {
+              await DeviceDetection.list(classid, 1);
+            }
           } else {
             window._guider.Utils.alert({
               message: res.msg,
@@ -155,6 +169,7 @@ class Regions {
         },
         onCancel() {}
       });
+      window.localStorage.setItem("operateRegion", true);
     }
   };
   //教室删除、编辑
@@ -178,6 +193,15 @@ class Regions {
               type: "success"
             });
             this.newClassRoomList(); //刷新数据
+            // 刷新其他页面的数据
+            await DeviceState.schoolList();
+            await Police.list(0, 1);
+            let classid = window.localStorage.getItem(
+              "devicesStateClassroomid"
+            );
+            if (classid !== null) {
+              await DeviceDetection.list(classid, 1);
+            }
           } else {
             window._guider.Utils.alert({
               message: res.msg,
@@ -262,3 +286,4 @@ const formatData = (res: Array<Object>) => {
   });
   return ant;
 };
+window.localStorage.setItem("operateRegion", true);

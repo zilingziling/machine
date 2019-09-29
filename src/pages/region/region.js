@@ -10,9 +10,10 @@ import Paginations from "../component/Paginations/Paginations";
 import SchoolBar from "../component/Bar/schoolBar";
 import { Models } from "../component/Model/model";
 import { checkBe } from "../component/function/formatDateReturn";
+import { schoolList } from "../../api/device";
 const FormItem = Form.Item;
 const Option = Select.Option;
-@inject("Region")
+@inject("Region", "DeviceState", "Police", "DeviceDetection")
 @observer
 class Region extends Component {
   componentDidMount() {
@@ -28,7 +29,6 @@ class Region extends Component {
     let type = window.localStorage.getItem("regionType"); //类型
     let Title = window.localStorage.getItem("regionTitle"); //教学楼名字
     let TreeId = window.localStorage.getItem("regionTeachingId");
-
     if (id) {
       this.props.Region.type = type;
       if (type !== "school_academic_building") {
@@ -141,6 +141,15 @@ class Region extends Component {
               });
               this.props.Region._clear();
               this.props.Region.newDataSource();
+              //   设备状态
+              await this.props.DeviceState.schoolList();
+              await this.props.Police.list(0, 1);
+              let classid = window.localStorage.getItem(
+                "devicesStateClassroomid"
+              );
+              if (classid !== null) {
+                await this.props.DeviceDetection.list(classid, 1);
+              }
             } else {
               window._guider.Utils.alert({
                 message: suc.msg,
@@ -165,6 +174,14 @@ class Region extends Component {
               });
               this.props.Region._clear();
               this.props.Region.newClassRoomList();
+              await this.props.DeviceState.schoolList();
+              await this.props.Police.list(0, 1);
+              let classid = window.localStorage.getItem(
+                "devicesStateClassroomid"
+              );
+              if (classid !== null) {
+                await this.props.DeviceDetection.list(classid, 1);
+              }
             } else {
               window._guider.Utils.alert({
                 message: res.msg,

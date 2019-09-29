@@ -6,6 +6,7 @@ import { Icon, Tree } from "antd";
 import "./deviceSelePage.scss";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "mobx-react";
+import { schoolList } from "../../../api/device";
 // import "element-theme-default";
 const TreeNode = Tree.TreeNode;
 const DirectoryTree = Tree.DirectoryTree;
@@ -36,7 +37,7 @@ class DeviceSeleclass extends Component {
   render() {
     return (
       <div style={styles}>
-        {/*deviceState tree*/}
+        {/*deviceState tree deviceEquip tree*/}
         <DirectoryTree
           // multiple
           motion={null}
@@ -46,8 +47,6 @@ class DeviceSeleclass extends Component {
           onExpand={this.onExpand}
           selectedKeys={toJS(this.selected)}
           expandedKeys={toJS(this.expanded)}
-          // data={toJS(this.props.DeviceState.list)}
-          // nodeKey="key"
         >
           {renderTreeNodes(toJS(this.props.DeviceState.list))}
         </DirectoryTree>
@@ -80,15 +79,6 @@ class DeviceSeleclass extends Component {
 }
 
 export default DeviceSeleclass;
-const formatterTreeData = data => {
-  data.forEach(item => {
-    item.label = item.title;
-    item.id = item.key;
-    if (item.children) {
-      formatterTreeData(item.children);
-    }
-  });
-};
 
 const renderTreeNodes = data => {
   return data.map(item => {

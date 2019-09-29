@@ -1,6 +1,6 @@
 .bar {
   width: 240px;
-  display: flex; // align-items: center;  
+  display: flex; // align-items: center;
   flex-direction: column;
 
   .devicesele-selects {
@@ -105,7 +105,7 @@
 
 ::-webkit-scrollbar {
   width: 5px;
-  height: 6px;
+  height: 12px;
 }
 
 /*定义滚动条轨道 内阴影+圆角*/

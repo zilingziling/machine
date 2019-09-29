@@ -9,6 +9,7 @@ import { Tree, Table } from 'antd';
 import { observable, toJS } from 'mobx';
 import { observer, inject, } from 'mobx-react';
 import { RouterPmi } from '../component/function/routerPmi';
+import {getExpand} from "../../api/deviceState";
 const TreeNode = Tree.TreeNode;
 type Props = {
   match: Object,
@@ -95,10 +96,17 @@ class DeviceSele extends Component<Props, State> {
       </div>
     );
   }
-  //跳转
+  //设备配置页面跳转到真正的配置页面
+
   linkAddDevice = async (text: Number, row: Object) => {
+    let r=await getExpand(row.key)
+    console.log(r.data)
+    if(r.code===200){
+      window.localStorage.setItem("stateE",JSON.stringify(r.data))
+    }
     let array = [];
     let res = await Api.Device.get_parent_id(text);
+    console.log(res)
     if (res.code === 200) {
       // console.log(res);
       res.data.forEach(element => {

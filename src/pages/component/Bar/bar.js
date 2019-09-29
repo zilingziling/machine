@@ -26,8 +26,10 @@ class Bar extends Component<Props, State> {
 		expandedKeys: [],
 	}
 	componentDidMount() {
+		const {origin}=this.props
 		let stateEKeys =JSON.parse(window.localStorage.getItem('stateE'))
 		let selected = window.localStorage.getItem('CtrClassrommid');
+
 		if (stateEKeys&&selected !== null) {
 			this.setState({
 				selected: [selected],
@@ -41,7 +43,7 @@ class Bar extends Component<Props, State> {
 		return (
 			<div className="bar">
 				<div className="devicesele-selects">
-					{/* deviceControl tree deviceEquip tree*/}
+					{/* deviceControl tree */}
 					<DirectoryTree
 						// multiple
 						motion={null}
