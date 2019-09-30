@@ -66,8 +66,8 @@ class DeviceSele extends Component<Props> {
             rowSelection={rowSelection}
             className="device-tables-table"
             rowClassName="device-tables-tableRow"
-            columns={this.columns}
-            dataSource={listData}
+            columns={toJS(this.columns)}
+            dataSource={toJS(listData)}
             bordered
             pagination={false}
           />
