@@ -30,6 +30,17 @@ export const LOGIN = {
   }
 };
 
+export const Help = {
+  select: {
+    url: "/release_ver/get_versions",
+    method: "get"
+  },
+  detail: {
+    url: "/release_ver/get_detail_ver_info",
+    method: "post",
+    headers: headerFrom
+  }
+};
 //设备
 export const Device = {
   skip: {

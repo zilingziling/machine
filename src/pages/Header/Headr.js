@@ -20,6 +20,7 @@ import "./header.scss";
 import info from "../../assets/img/info.png";
 import google from "../../assets/img/google.png";
 import close from "../../assets/img/close.png";
+import {getDetail, getVer} from "../../api/help";
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const confirm = Modal.confirm;
@@ -94,7 +95,9 @@ class Home extends Component<Props, State> {
     title: "功能菜单",
     _info: [],
     v:false,
-    href:window.localStorage.getItem("helpdoc")
+    href:window.localStorage.getItem("helpdoc"),
+    helpData:[],
+    detailData:{}
   }
   async componentDidMount() {
     this.props.Devices.validation(); //设备类型
@@ -136,8 +139,19 @@ class Home extends Component<Props, State> {
         })
       }
     }
+    let r=await getVer()
+    if(r.code===200){
+      this.setState({
+        helpData:r.data
+      })
+    }
+    let detail=await getDetail("")
+    if(detail.code===200){
+      this.setState({
+        detailData:detail.data
+      })
+    }
   }
-
   componentWillReceiveProps(nextProps: any, prevState: any) {
     if (this.props.IndexRouter !== nextProps.IndexRouter) {
       if (nextProps.IndexRouter.length > 0) {
@@ -150,8 +164,21 @@ class Home extends Component<Props, State> {
     }
   }
 
+  handleSelectV= async v=>{
+    console.log(1)
+    let detail=await getDetail(v)
+    console.log(detail)
+    if(detail.code===200){
+      this.setState({
+        detailData:detail.data
+      })
+    }else window._guider.Utils.alert({
+      message: detail.msg,
+      type: "error"
+    });
+  }
   render(){
-    const {text,v}=this.state
+    const {text,v,detailData}=this.state
     const menu=(
         <Menu>
           <Menu.Item>
@@ -182,47 +209,33 @@ class Home extends Component<Props, State> {
             })}
           >
             <div className="modalContent">
-              <h1>当前版本:V1.9.0</h1>
+              <h1>当前版本:   {detailData.curverion&&detailData.curverion}</h1>
               <div className="version">
                 <span>历史更新日志</span>
-                <Select style={{width:"10rem"}}>
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
+                <Select style={{width:"12rem"}} onSelect={this.handleSelectV} defaultValue={this.state.helpData[0]&&this.state.helpData[0]}>
+                  {
+                    this.state.helpData.map((i,index)=><Option  key={index} value={i}>{i}</Option>)
+                  }
                 </Select>
               </div>
               <h3>历史主要更新内容：</h3>
               <ul className="history">
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
+                {
+                  detailData.maincontent&&detailData.maincontent.map((i,index)=><li key={index} >{i}</li>)
+                }
               </ul>
               <h3 style={{marginTop:"24px"}}>更新详情</h3>
               <h4>完成的需求:</h4>
               <ul className="add">
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
+                {
+                  detailData.completeReq&&detailData.completeReq.map((i,index)=><li key={index} >{i}</li>)
+                }
               </ul>
               <h4>修复的bug:</h4>
               <ul className="debug">
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
-                <li>3505 产品和项目增加填写备注功能</li>
+                {
+                  detailData.repairbug&&detailData.repairbug.map((i,index)=><li key={index} >{i}</li>)
+                }
               </ul>
             </div>
           </Modal>
