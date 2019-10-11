@@ -123,13 +123,13 @@ class DeviceControl extends Component<Props, State> {
             //处理设备状态返回，这个页面状态主要是这这里面判断
             let res = obj.toObject().detailList;
             if (res.length > 0) {
-              console.log("fromWS", res[0].equipCode);
               if (res[0].equipStatus !== "视频板故障") {
                 if (this.state.sele === res[0].classroomid) {
                   //是当前教室id
                   switch (res[0].equipType) {
                     case "1": {
                       //上课下课
+                      console.log("fromWs",res[0].keyId)
                       this.setState({
                         SwitchOf: res[0].keyId === "78" ? true : false
                       });
@@ -646,6 +646,7 @@ class DeviceControl extends Component<Props, State> {
           if (JSON.stringify(res.data) !== "{}") {
             //判断数据
             let Switch = false;
+            console.log("fromBack",res.data[1])
             if (res.data[1]) {
               if (res.data[1].length > 0) {
                 Switch = res.data[1][0].highlight === "1" ? true : false;

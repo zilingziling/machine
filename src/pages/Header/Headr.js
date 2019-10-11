@@ -60,24 +60,7 @@ const modalStyle={
   height:"80vh",
   borderRadius:"5px",
 }
-const Notice = props => {
-  return (
-      <div className="infoWrapper">
-        <div className="text">
-          <img src={info} />
-          <p>{props.text}</p>
-        </div>
-        <div className="download">
-          <a href="https://www.google.cn/chrome/index.html" target="_blank">
-            <img src={google} alt="google" />
-            <span>下载Chrome</span>
 
-          </a>
-          <img src={close} alt="close" />
-        </div>
-      </div>
-  );
-};
 @inject(
     "Socke",
     "DeviceState",
@@ -106,39 +89,7 @@ class Home extends Component<Props, State> {
     if (window.localStorage.getItem("routerName") !== null) {
       this.setState({ title: window.localStorage.getItem("routerName") });
     }
-    const userAgent = navigator.userAgent;
-    if (userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1) {
-      this.setState({
-        engine: "chrome" //
-      })
-    }else {
-      this.setState({
-        text:'当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。'
-      })
-    }
-    function getChromeVersion() {
-      let arr = navigator.userAgent.split(' ');
-      let chromeVersion = '';
-      for(let i=0;i < arr.length;i++){
-        if(/chrome/i.test(arr[i]))
-          chromeVersion = arr[i]
-      }
-      if(chromeVersion){
-        return Number(chromeVersion.split('/')[1].split('.')[0]);
-      } else {
-        return false;
-      }
-    }
-    if(getChromeVersion()) {
-      let version = getChromeVersion();
-      console.log(version)
-      if(version < 66) {
-        this.setState({
-          text:'当前浏览器或浏览器内核版本过低，请下载新版chrome。',
-          engine:"chromeLow"
-        })
-      }
-    }
+
     let r=await getVer()
     if(r.code===200){
       this.setState({
@@ -240,7 +191,6 @@ class Home extends Component<Props, State> {
             </div>
           </Modal>
         <div>
-          {this.state.engine === "chrome" ? null : <Notice text={text}/>}
           <div className="header">
             <div className="header-top">
               <div className="header-top-left">
@@ -250,7 +200,14 @@ class Home extends Component<Props, State> {
               <div className="header-top-right">
                 <img
                     src={Fd}
-                    onClick={this.siezof.bind(this, document.documentElement)}
+                    // onClick={this.siezof.bind(this, document.documentElement)}
+                    onClick={event => {
+                      if (document.fullscreenElement) {
+                        document.exitFullscreen()
+                      } else {
+                        document.documentElement.requestFullscreen()
+                      }
+                    }}
                     style={Icon_}
                 />
                 <Divider className="header-top-right-shu" type="vertical" />

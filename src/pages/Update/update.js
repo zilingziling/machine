@@ -205,7 +205,9 @@ const row = (item) => {
 				className="update-fu-list-itme-div"
 			/>
 			<List.Item.Meta
-				title={item.filename.length > 15 ? item.filename.substring(0, 15) + '...' : item.filename}
+				// title={item.filename.length > 15 ? item.filename.substring(0, 15) + '...' : item.filename}
+				title={item.filename}
+
 				className="update-fu-list-itme-div"
 			/>
 			<List.Item.Meta

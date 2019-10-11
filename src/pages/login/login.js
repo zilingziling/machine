@@ -41,10 +41,7 @@ const Notice = props => {
 @inject("userInfo", "Socke")
 @observer
 class Login extends Component<Props, State> {
-  state = {
-    engine: null,
-    text:""
-  };
+
 
   @observable user = "";
   @observable pass = "";
@@ -54,46 +51,11 @@ class Login extends Component<Props, State> {
   @observable loading = false;
   componentDidMount() {
     this._checkout();
-    const userAgent = navigator.userAgent;
-    if (userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1) {
-      this.setState({
-        engine: "chrome",
-      })
-    }else {
-      this.setState({
-        text:'当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。'
-      })
-    }
-    function getChromeVersion() {
-      let arr = navigator.userAgent.split(' ');
-      let chromeVersion = '';
-      for(let i=0;i < arr.length;i++){
-        if(/chrome/i.test(arr[i]))
-          chromeVersion = arr[i]
-      }
-      if(chromeVersion){
-        return Number(chromeVersion.split('/')[1].split('.')[0]);
-      } else {
-        return false;
-      }
-    }
-    if(getChromeVersion()) {
-      let version = getChromeVersion();
-      console.log(version)
-      if(version < 66) {
-        this.setState({
-          text:'当前浏览器或浏览器内核版本过低，请下载新版chrome。',
-          engine:"chromeLow"
-        })
-      }
-    }
   }
 
   render() {
-    const {text}=this.state
     return (
         <div>
-          {this.state.engine === "chrome" ? null : <Notice text={text}/>}
           <div className="login">
             {/*<div className="login-img">*/}
             {/*	<img src={require('../../assets/img/loginLog.png')} alt="" />*/}

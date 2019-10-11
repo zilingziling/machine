@@ -301,7 +301,7 @@ class ScenMode extends Component<Props, State> {
   DeleteArray = (e: Object, index: Nmuber) => {
     // console.log(this.state.items);
     // console.log(index);
-    if (e.target.value >= 0 && e.target.value <= 60) {
+    if (e.target.value===""||(e.target.value >0 && e.target.value <= 120)) {
       let data = Object.assign({}, this.state.items[index], {
         time_consuming: e.target.value,
         order_no: index

@@ -75,6 +75,7 @@ class ScenBody extends Component<Props, State> {
 	};
 	item = async (data: Object, index: Number) => {
 		// console.log(data);
+		console.log(data.equiptypeid)
 		if (data.equiptypeid === '2' || data.equiptypeid === '14') {
 			if (data.equiptypeid === '2') {
 				this.setState({
@@ -169,6 +170,7 @@ class ScenBody extends Component<Props, State> {
 		let mrak = this.state.Conditioning;
 		let info = this.state.amplifierOfConditioning;
 		let value = this.state.ConditioningValue.toString();
+		console.log("172hang",info)
 		if (mrak === 0) {
 			this.props.pushItem({ key_name: '立即关机', id: 73 }, info.id, info.equipname);
 		} else if (mrak === 1) {
@@ -183,32 +185,30 @@ class ScenBody extends Component<Props, State> {
 		return (
 			<div className="row">
 				<div className="row-show">
-					<div className="Scene-div">
+					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '开机', 37, false)}>
 						<span>开机</span>
-						<img onClick={this.pushVolume.bind(this, volume, '开机', 37, false)} src={require('./../../../assets/img/jias.png')} />
-
+						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
-					<div className="Scene-div">
+					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '关机', 38, false)}>
 						<span>关机</span>
-						<img onClick={this.pushVolume.bind(this, volume, '关机', 38, false)} src={require('./../../../assets/img/jias.png')} />
-
+						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
-					<div className="Scene-div">
+					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '静音', 41, false)}>
 						<span>静音</span>
-						<img onClick={this.pushVolume.bind(this, volume, '静音', 41, false)} src={require('./../../../assets/img/jias.png')} />
+						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
-					<div className="Scene-div" onClick={this.pushCond.bind(this)}>
+					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '音量加', 39, false)}>
 						<span>音量加</span>
-						<img onClick={this.pushVolume.bind(this, volume, '音量加', 39, false)} src={require('./../../../assets/img/jias.png')} />
+						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
 
-					<div className="Scene-div" onClick={this.pushCond.bind(this)}>
+					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '音量减', 40, false)}>
 						<span>音量减</span>
-						<img onClick={this.pushVolume.bind(this, volume, '音量减', 40, false)} src={require('./../../../assets/img/jias.png')} />
+						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
-					<div className="Scene-div" onClick={this.pushCond.bind(this)}>
+					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '取消静音', 42, false)}>
 						<span>取消静音</span>
-						<img onClick={this.pushVolume.bind(this, volume, '取消静音', 42, false)} src={require('./../../../assets/img/jias.png')} />
+						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
 				</div>
 				<div className="row-Ctrl">

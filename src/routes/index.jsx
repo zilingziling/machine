@@ -10,11 +10,69 @@ import Userinfo from '../stores/userinfo.js';
 import { toJS, autorun, Reaction, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import UserStore from '../stores/userinfo.js';
+import info from "../assets/img/info.png";
+import google from "../assets/img/google.png";
+import close from "../assets/img/close.png";
+
+const Notice = props => {
+	return (
+		<div className="infoWrapper" >
+			<div className="text">
+				<img src={info} />
+				<p>{props.text}</p>
+			</div>
+			<div className="download">
+				<a href="https://www.google.cn/chrome/index.html" target="_blank">
+					<img src={google} alt="google" />
+					<span>下载Chrome</span>
+				</a>
+				<img src={close} alt="close" onClick={props.setDisplay}/>
+			</div>
+		</div>
+	);
+};
 @observer
 class Routes extends Component {
+	state = {
+		engine: null,
+		text:"",
+		display:true
+	};
 	@observable Index = []
 	componentDidMount() { //处理登录过后返回过来的Router
-
+		const userAgent = navigator.userAgent;
+		if (userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1) {
+			this.setState({
+				engine: "chrome" //
+			})
+		}else {
+			this.setState({
+				text:'当前浏览器或内核模式可能存在兼容性问题，建议更换后访问。'
+			})
+		}
+		function getChromeVersion() {
+			let arr = navigator.userAgent.split(' ');
+			let chromeVersion = '';
+			for(let i=0;i < arr.length;i++){
+				if(/chrome/i.test(arr[i]))
+					chromeVersion = arr[i]
+			}
+			if(chromeVersion){
+				return Number(chromeVersion.split('/')[1].split('.')[0]);
+			} else {
+				return false;
+			}
+		}
+		if(getChromeVersion()) {
+			let version = getChromeVersion();
+			console.log(version)
+			if(version < 66) {
+				this.setState({
+					text:'当前浏览器或浏览器内核版本过低，请下载新版chrome。',
+					engine:"chromeLow"
+				})
+			}
+		}
 		autorun(() => {
 			if (Userinfo.data.length === 0) {
 				let res = JSON.parse(window.localStorage.getItem('data'));
@@ -24,9 +82,18 @@ class Routes extends Component {
 			}
 		});
 	}
+	setDisplay=()=>{
+		this.setState({
+			display:false
+		})
+	}
 	render() {
+		const {text}=this.state
+		console.log(this.state.engine,this.state.display)
 		return (
-			<Router history={Historys.history}>
+			<>
+				{this.state.engine !== "chrome"&&this.state.display ? <Notice  setDisplay={this.setDisplay} text={text}/> :null}
+				<Router history={Historys.history}>
 				<Switch>
 					<Route exact path="/" component={router.Login()} />
 					<Route exact path="/login" component={router.Login()} />
@@ -39,6 +106,7 @@ class Routes extends Component {
 					<Route path="/404" component={router.NoMatch} />
 				</Switch>
 			</Router>
+				</>
 		);
 	}
 }
