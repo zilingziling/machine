@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ScenBody from "./components/scenBody";
 import Api from "./../../api";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Button, Input, Select, message } from "antd";
+import { Button, Input, Select, message,InputNumber } from "antd";
 import "./scenMode.scss";
 import { Model } from "../component/Model/model";
 import { RouterPmi } from "../component/function/routerPmi";
@@ -85,7 +85,8 @@ class ScenMode extends Component<Props, State> {
     mark: null, //情景序列>>>点击每一项数据它添加颜色背景
     SerialNumber: [],
     SerialNumberCode: null,
-    _info: RouterPmi() //权限
+    _info: RouterPmi(), //权限
+    display:false
   };
   componentDidMount() {
     let classroomId = window.localStorage.getItem("classroomid");
@@ -260,7 +261,9 @@ class ScenMode extends Component<Props, State> {
               </DragDropContext>
             </div>
           </div>
-          <ScenBody list={this.state.deviceList} pushItem={this.pushItem} />
+          {
+            this.state.display&&<ScenBody list={this.state.deviceList} pushItem={this.pushItem} />
+          }
         </div>
         <Model
           width={700}
@@ -314,7 +317,7 @@ class ScenMode extends Component<Props, State> {
      //    items: buf.sort(sortId)
      //  });
       let data=this.state.items
-      data[index].time_consuming=e.target.value
+      data[index].time_consuming=e.target.value!==""?parseInt(e.target.value):e.target.value
       this.setState({
         items:data
       })
@@ -389,6 +392,9 @@ class ScenMode extends Component<Props, State> {
   };
   //情景list item
   async itemClick(item: Object, index: Number) {
+    this.setState({
+      display:true
+    })
     let res = await Api.Scenario.get_scene_seq_list(item.id);
     let data = await Api.Scenario._get_scene_by_id(item.id);
     if (res.code === 200) {
@@ -472,9 +478,12 @@ class ScenMode extends Component<Props, State> {
   };
   //保存
   save = debounce(async () => {
-    console.log(this.state.seven);
     if (this.state.seven !== null) {
       // console.log(this.state.items);
+      if(this.state.items.find(i=>i.time_consuming===0||i.time_consuming==="")){
+        message.error("延迟时间必须为1~120之间的整数！")
+        return
+      }
       let antd = [];
       this.state.items.forEach((element, index) => {
         antd.push({
