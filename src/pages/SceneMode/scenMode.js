@@ -8,6 +8,7 @@ import "./scenMode.scss";
 import { Model } from "../component/Model/model";
 import { RouterPmi } from "../component/function/routerPmi";
 import { debounce } from "../component/function/formatDateReturn";
+import {getUuid} from "../../utils/handleNumbers";
 
 const Option = Select.Option;
 const grid = 8;
@@ -134,6 +135,7 @@ class ScenMode extends Component<Props, State> {
   };
   render() {
     const { SerialNumberCode } = this.state;
+    console.table(this.state.items)
     return (
       <div className="Scene">
         <div className="clear" />
@@ -297,35 +299,29 @@ class ScenMode extends Component<Props, State> {
     );
   }
 
-  //监听输入inputVal
+  //监听输入inputVal 修改
   DeleteArray = (e: Object, index: Nmuber) => {
     // console.log(this.state.items);
-    // console.log(index);
-    if (e.target.value===""||(e.target.value >0 && e.target.value <= 120)) {
-      let data = Object.assign({}, this.state.items[index], {
-        time_consuming: e.target.value,
-        order_no: index
-      }); //更改当前数据
-      let hash = {};
-      let buf = this.state.items.concat([data]).reduceRight((item, next) => {
-        hash[next.order_no]
-          ? ""
-          : (hash[next.order_no] = true && item.push(next));
-        return item;
-      }, []);
-      // console.log(buf.sort(sortId));
+    if (e.target.value >=0 && e.target.value <= 120) {
+     //  let data = Object.assign({}, this.state.items[index], { time_consuming: e.target.value, order_no: index }); //更改当前数据
+     // console.log(data)
+     //  let hash = {};
+     //  let buf = this.state.items.concat([data]).reduceRight((item, next) => {
+     //    hash[next.order_no] ? '' : (hash[next.order_no] = true && item.push(next)); return item;
+     //  }, []);
+     //  // console.log(buf.sort(sortId));
+     //  this.setState({
+     //    items: buf.sort(sortId)
+     //  });
+      let data=this.state.items
+      data[index].time_consuming=e.target.value
       this.setState({
-        items: buf.sort(sortId)
-      });
+        items:data
+      })
     }
   };
   //删除情景序列 数据
   del = () => {
-    /**
-     * @description: this.state.Delt.order_no 是你点击删除选中的一项数据
-     * @param {type}
-     * @return:
-     */
     let items = [];
     if (this.state.Delt !== null && typeof this.state.Delt !== "undefined") {
       this.state.items.forEach((e, index) => {
@@ -335,11 +331,10 @@ class ScenMode extends Component<Props, State> {
       });
       let res =
         items.length === this.state.mark ? items.length - 1 : this.state.mark;
-      // console.log(items);
       this.setState({
-        // items: _formatData(items), //这里从新遍历一次items数据，因为列表是更具items.order_no排序的，不然列表会乱窜！！
-        items,
-        Delt: items[res],
+        items: _formatData(items), //这里从新遍历一次items数据，因为列表是更具items.order_no排序的，不然列表会乱窜！！
+       // items,
+        Delt: _formatData(items).find(i=>i.uuid===items[res].uuid),
         mark:
           items.length === this.state.mark ? items.length - 1 : this.state.mark
       });
@@ -352,6 +347,7 @@ class ScenMode extends Component<Props, State> {
   onDragEnd = (result: object) => {
     // console.log('原开始的位置' + result.source.index);
     // console.log('托转过后位置坐标' + result.destination.index);
+    console.log(result)
     if (!result.destination) {
       return;
     }
@@ -404,7 +400,8 @@ class ScenMode extends Component<Props, State> {
           id: e.id,
           key_id: e.key_id,
           order_no: e.order_no,
-          time_consuming: e.time_consuming
+          time_consuming: e.time_consuming,
+          uuid:e.uuid
         });
       });
       this.setState({
@@ -416,7 +413,7 @@ class ScenMode extends Component<Props, State> {
       });
     }
   }
-  //addData 从子组件send过来的
+  //addData 从子组件send过来的 添加情景序列
   pushItem = (data: Object, devicesId: String, name: String) => {
     if (this.state.items.length > 0) {
       this.state.items.forEach((e, index) => {
@@ -429,13 +426,15 @@ class ScenMode extends Component<Props, State> {
             equip_id: devicesId,
             time_consuming: 1, // ''
             order_no: ++index, //parseInt(e.key+1)
-            key_value: data.key_value
+            key_value: data.key_value,
+            uuid:getUuid()
           });
-          console.log(ant);
+          console.log("push",ant);
           return this.setState({
             items: this.state.items.concat(ant)
           });
         } else {
+          console.log(index)
           let arr = [];
           arr.push({
             equip_key_name: name + data.key_name,
@@ -444,9 +443,10 @@ class ScenMode extends Component<Props, State> {
             equip_id: devicesId,
             time_consuming: 1, //'1'
             order_no: ++index, //++index === 1 ? 2 : ++index //parseInt(data.id)
-            key_value: data.key_value
+            key_value: data.key_value,
+            uuid:getUuid()
           });
-          // console.log(arr);
+          console.log("hh",arr);
           return this.setState({
             items: this.state.items.concat(arr)
           });
@@ -461,7 +461,8 @@ class ScenMode extends Component<Props, State> {
         equip_id: devicesId,
         time_consuming: 1,
         order_no: 0,
-        key_value: data.key_value
+        key_value: data.key_value,
+        uuid:getUuid()
       });
       console.log(arr);
       return this.setState({
@@ -484,6 +485,7 @@ class ScenMode extends Component<Props, State> {
           equipId: element.equip_id,
           equipKeyName: element.equip_key_name,
           sceneId: this.state.seven.id,
+          uuid:element.uuid,
           key_value:
             typeof element.key_value !== "undefined" ? element.key_value : ""
         });
@@ -561,7 +563,6 @@ class ScenMode extends Component<Props, State> {
   onOk = async () => {
     if (this.state.infoText !== null && this.state.SerialNumberCode !== null) {
       let id = this.state.seven === null ? "" : this.state.seven.id;
-
       let res = await Api.Scenario.save_scene(
         this.state.SerialNumberCode,
         this.state.infoText,
@@ -621,7 +622,8 @@ const _formatData = data => {
       id: e.id,
       key_id: e.key_id,
       order_no: index,
-      time_consuming: e.time_consuming
+      time_consuming: e.time_consuming,
+      uuid:e.uuid
     });
   });
   return array;

@@ -498,6 +498,13 @@ class Home extends Component<Props, State> {
                 </Link>
               </Menu.Item>
           ) : null}
+          {_info.includes("opeLog") ? (
+              <Menu.Item className="menu-bodys-item" key="操作日志">
+                <Link to="/opeLog" style={fonts}>
+                  操作日志
+                </Link>
+              </Menu.Item>
+          ) : null}
           {/*中控升级*/}
           {shoHid(_info, ["update", "TouchUpdate", "aiUpdate"]) ? ( //这些是你router地址
               <Menu.Item disabled className="menu-bodys-item itmes" key="中控模块">
