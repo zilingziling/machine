@@ -91,13 +91,13 @@ class Home extends Component<Props, State> {
     }
 
     let r=await getVer()
-    if(r.code===200){
+    if(r&&r.code===200){
       this.setState({
         helpData:r.data
       })
     }
     let detail=await getDetail("")
-    if(detail.code===200){
+    if(detail&&detail.code===200){
       this.setState({
         detailData:detail.data
       })
@@ -398,10 +398,10 @@ class Home extends Component<Props, State> {
                 src={require("./../../assets/img/devices.png")}
             />
             常用功能
-            <img
-                style={HeadetStyle}
-                src={require("./../../assets/img/jiantou.png")}
-            />
+            {/*<img*/}
+            {/*    style={HeadetStyle}*/}
+            {/*    src={require("./../../assets/img/jiantou.png")}*/}
+            {/*/>*/}
           </Menu.Item>
           <Menu.Item className="menu-bodys-item" key="报警查看">
             <Link to="/police" style={fonts}>
@@ -432,10 +432,6 @@ class Home extends Component<Props, State> {
                     src={require("./../../assets/img/configs.png")}
                 />
                 设备管理
-                <img
-                    style={{ marginLeft: "20px" }}
-                    src={require("./../../assets/img/jiantou.png")}
-                />
               </Menu.Item>
           ) : null}
           {_info.includes("devicesele") ? (
@@ -462,10 +458,6 @@ class Home extends Component<Props, State> {
                     src={require("./../../assets/img/permissions.png")}
                 />
                 高级设置
-                <img
-                    style={{ marginLeft: "20px" }}
-                    src={require("./../../assets/img/jiantou.png")}
-                />
               </Menu.Item>
           ) : null}
           {_info.includes("role") ? (
@@ -513,10 +505,6 @@ class Home extends Component<Props, State> {
                     src={require("./../../assets/img/updates.png")}
                 />
                 中控模块
-                <img
-                    style={{ marginLeft: "20px" }}
-                    src={require("./../../assets/img/jiantou.png")}
-                />
               </Menu.Item>
           ) : null}
           {_info.includes("update") ? (

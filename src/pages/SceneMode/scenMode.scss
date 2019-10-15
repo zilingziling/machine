@@ -172,6 +172,8 @@
         margin-left: 0.7rem;
         background: rgba(25, 86, 143, 0.45);
         padding: 16px;
+        max-height: 19rem;
+        overflow-y: auto;
         &-btn {
           display: flex;
           flex-wrap: wrap;
