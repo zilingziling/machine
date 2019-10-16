@@ -35,9 +35,6 @@ class UserStore {
       if (state) {
         let res = await exitLogin(JSON.parse(obj).userid); //用户被挤下线不用调这个接口， 点击退出登录调用这个接口
         window.localStorage.clear();
-        // localStorage.removeItem("name");
-        // localStorage.removeItem("userName");
-        // localStorage.removeItem("password");
         // 请求验证码
         window._guider.History.replace({
           pathname: "/login"

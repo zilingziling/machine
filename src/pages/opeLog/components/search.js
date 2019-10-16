@@ -1,16 +1,27 @@
 import React from "react";
-import { Form, Select, DatePicker, Button, Radio } from "antd";
+import { Form, Select, DatePicker, Button, Radio, Input } from "antd";
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const dateFormat = "YYYY/MM/DD";
 import moment from "moment";
-const Search = ({ form }) => {
+const onValuesChange = (props, changedValues, allValues) => {
+  const { setName, setB, setSign, setE } = props;
+  const { selsign, username, time } = allValues;
+  setName(username ? username : "");
+  setSign(selsign ? selsign : "");
+  if (time) {
+    setB(moment(time[0]).format("YYYY-MM-DD HH:mm:ss"));
+    setE(moment(time[1]).format("YYYY-MM-DD HH:mm:ss"));
+  }
+};
+const Search = ({ form, setClick, clickS, setCurrent }) => {
   const { getFieldDecorator } = form;
+
   return (
     <Form className="form">
       <FormItem className="formItem">
-        {getFieldDecorator("date", {
+        {getFieldDecorator("selsign", {
           initialValue: 1
         })(
           <Radio.Group buttonStyle="solid">
@@ -21,28 +32,21 @@ const Search = ({ form }) => {
         )}
       </FormItem>
       <FormItem label="用户" className="formItem">
-        {getFieldDecorator("name")(
-          <Select style={{ width: "10rem" }} placeholder="选择用户">
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-          </Select>
-        )}
+        {getFieldDecorator("username")(<Input placeholder="输入用户名" />)}
       </FormItem>
       <FormItem label="选择时间" className="formItem">
-        {getFieldDecorator("time")(
-          <RangePicker
-            defaultValue={[
-              moment("2015/01/01", dateFormat),
-              moment("2015/01/01", dateFormat)
-            ]}
-            format={dateFormat}
-          />
-        )}
+        {getFieldDecorator("time")(<RangePicker format={dateFormat} />)}
       </FormItem>
-      <Button className="antBtn searchBtn" type="primary">
+      <Button
+        className="antBtn searchBtn"
+        type="primary"
+        onClick={() => {
+          setClick(!clickS);
+        }}
+      >
         搜索
       </Button>
     </Form>
   );
 };
-export default Form.create({})(Search);
+export default Form.create({ onValuesChange: onValuesChange })(Search);

@@ -483,3 +483,11 @@ export const setUp = {
     headers: headerFrom
   }
 };
+//操作日志
+export const Log = {
+  opeLog: {
+    url: "aop_log/get_logs",
+    method: "post",
+    headers: headerFrom
+  }
+};

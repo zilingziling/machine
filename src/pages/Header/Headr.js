@@ -321,6 +321,7 @@ class Home extends Component<Props, State> {
   };
   //处理title在右边显示
   _click = (e: Object<string>) => {
+    console.log(e)
     window.localStorage.setItem("routerName", e.key);
     this.setState({ title: e.key });
   };
