@@ -10,9 +10,13 @@ const onValuesChange = (props, changedValues, allValues) => {
   const { selsign, username, time } = allValues;
   setName(username ? username : "");
   setSign(selsign ? selsign : "");
-  if (time) {
+  console.log(time);
+  if (time && time.length > 0) {
     setB(moment(time[0]).format("YYYY-MM-DD HH:mm:ss"));
     setE(moment(time[1]).format("YYYY-MM-DD HH:mm:ss"));
+  } else {
+    setB("");
+    setE("");
   }
 };
 const Search = ({ form, setClick, clickS, setCurrent }) => {
@@ -32,7 +36,9 @@ const Search = ({ form, setClick, clickS, setCurrent }) => {
         )}
       </FormItem>
       <FormItem label="用户" className="formItem">
-        {getFieldDecorator("username")(<Input placeholder="输入用户名" />)}
+        {getFieldDecorator("username")(
+          <Input allowClear placeholder="输入用户名" />
+        )}
       </FormItem>
       <FormItem label="选择时间" className="formItem">
         {getFieldDecorator("time")(<RangePicker format={dateFormat} />)}

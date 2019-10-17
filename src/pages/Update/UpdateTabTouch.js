@@ -21,13 +21,15 @@ type Props = {
 class DeviceSele extends Component<Props> {
   @observable school = null;
   @observable classid = null;
+  @observable size = 10;
   @observable columns = [
     { title: '位置', dataIndex: 'school_room', key: 'school_room' },
     { title: '中控ID号', dataIndex: 'imei_no', key: 'imei_no' },
     { title: '当前固件版本', dataIndex: 'versionname', key: 'versionname' },
   ];
-  @observable count = null;
   @observable selectedRowKeys = [];
+  @observable count = null;
+
   async componentDidMount() {
     let school = window.localStorage.getItem('devicesStateClassroomid');
     let classid = window.localStorage.getItem('devicesStateschool');
@@ -41,7 +43,11 @@ class DeviceSele extends Component<Props> {
       this.selectedRowKeys = toJS(this.props.UpdateTouch.selid).map(Number);
     });
   }
-
+  onShowSizeChange = (current, pageSize) => {
+    this.props.UpdateTouch.current = 1;
+    this.size = pageSize;
+    this.props.UpdateTouch._list(this.school, "2", 1, this.size);
+  };
   render() {
     const { total, listData, current } = this.props.UpdateTouch;
     const { selectedRowKeys } = this;
@@ -49,41 +55,43 @@ class DeviceSele extends Component<Props> {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
+    console.log(this.count)
     return (
       <div className='UpdateTable'>
         <Bar renderValue={this.onchang} />
         <div className='UpdateTable-left'>
           <Badge className='UpdateTable-left-number' count={this.count}>
-            <Button onClick={this._UpdateSeve} type="primary" className='UpdateTable-left-number-button'>保存</Button>
+            <Button onClick={this._UpdateSeve} type="primary" className='UpdateTable-left-number-button'>保存当前页</Button>
           </Badge>
           <Button onClick={this._UpdategoBanck} type="primary" className='UpdateTable-left-number-button rights'>返回升级页面</Button>
 
           <Table
             rowSelection={rowSelection}
-
             className="device-tables-table"
             rowClassName="device-tables-tableRow"
-            columns={this.columns}
-            dataSource={listData}
+            columns={toJS(this.columns)}
+            dataSource={toJS(listData)}
             bordered
             pagination={false}
           />
           <Pagination
             current={current}
             total={total}
+            showSizeChanger
+            onShowSizeChange={this.onShowSizeChange}
+            pageSize={this.size}
             paging={e => {
               this.props.UpdateTouch.current = e;
-              this.props.UpdateTouch._list(this.school, '2', e);
+              this.props.UpdateTouch._list(this.school, '2', e,this.size);
             }}
           />
         </div>
       </div>
     );
   }
-  onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.selectedRowKeys = selectedRowKeys;
-    this.count = selectedRowKeys.length;
+  onSelectChange = (keys) => {
+    this.selectedRowKeys = keys;
+    this.count = keys.length;
   }
   //选择
   onchang = (id: Number) => {

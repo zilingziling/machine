@@ -161,10 +161,9 @@ class Login extends Component<Props, State> {
           if (res.code === 200) {
             if(res.data.menu_operation_tree!==null){
               window.localStorage.setItem("schoolid", res.data.schoolid);
-              let routerUrl=window.localStorage.getItem("routerUrl")
               this.props.userInfo.updateStatus(
                   true,
-                  routerUrl?routerUrl:"police",
+                  "police",
                   res.data,
                   this.user,
                   SparkMD5.hash(this.pass),

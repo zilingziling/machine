@@ -13,15 +13,18 @@ type Props = {
 };
 export default class Paint extends Component<Props> {
 	render() {
+		const {showSizeChanger,onShowSizeChange,pageSize}=this.props
 		return (
 			<div>
 				<Pagination
 					className="pages"
 					style={{marginTop:'1rem', float:'right', marginRight: '2rem'}}
 					current={this.props.current} //当前页数
-					total={this.props.total}			//总数量
+					total={this.props.total}
+					pageSize={pageSize?pageSize:10}
 					showQuickJumper
-					// pageSize={2}
+					showSizeChanger={showSizeChanger}
+					onShowSizeChange={onShowSizeChange}
 					onChange={e => {
 						this.props.paging(e);
 					}}

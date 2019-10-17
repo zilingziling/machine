@@ -228,12 +228,17 @@ export const CommProt = (id: any) => {
 };
 
 //查询教室升级列表
-export const get_upgrade_room = (id: String, sign: String, page: number) => {
+export const get_upgrade_room = (
+  id: String,
+  sign: String,
+  page: number,
+  pageSize
+) => {
   const formData = new URLSearchParams();
   formData.append("schoolid", id);
   formData.append("sign", sign);
   formData.append("pageNo", page);
-  formData.append("pageSize", 10);
+  formData.append("pageSize", pageSize ? pageSize : 10);
 
   return makeRequest(Device.get_upgrade_room, formData);
 };

@@ -24,6 +24,7 @@ type Props = {
 class DeviceSele extends Component<Props> {
   @observable school = null;
   @observable classid = null;
+  @observable size = 10;
   @observable columns = [
     { title: '位置', dataIndex: 'school_room', key: 'school_room' },
     { title: '中控ID号', dataIndex: 'imei_no', key: 'imei_no' },
@@ -45,6 +46,11 @@ class DeviceSele extends Component<Props> {
       this.count = toJS(this.props.Update.selid).length;
     });
   }
+  onShowSizeChange = (current, pageSize) => {
+    this.props.Update.current = 1;
+    this.size = pageSize;
+    this.props.Update._list(this.school, "3", 1, this.size);
+  };
   render() {
     const { total, listData, current } = this.props.Update;
     const { selectedRowKeys } = this;
@@ -57,26 +63,28 @@ class DeviceSele extends Component<Props> {
         <Bar renderValue={this.onchang} />
         <div className='UpdateTable-left'>
           <Badge className='UpdateTable-left-number' count={this.count}>
-            <Button onClick={this._UpdateSeve} type="primary" className='UpdateTable-left-number-button'>保存</Button>
+            <Button onClick={this._UpdateSeve} type="primary" className='UpdateTable-left-number-button'>保存当前页</Button>
           </Badge>
           <Button onClick={this._UpdategoBanck} type="primary" className='UpdateTable-left-number-button rights'>返回升级页面</Button>
 
           <Table
-
             rowSelection={rowSelection}
             className="device-tables-table"
             rowClassName="device-tables-tableRow"
-            columns={this.columns}
-            dataSource={listData}
+            columns={toJS(this.columns)}
+            dataSource={toJS(listData)}
             bordered
             pagination={false}
           />
           <Pagination
             current={current}
+            showSizeChanger
+            onShowSizeChange={this.onShowSizeChange}
+            pageSize={this.size}
             total={total}
             paging={e => {
               this.props.Update.current = e;
-              this.props.Update._list(this.school, '3', e);
+              this.props.Update._list(this.school, '3', e,this.size);
             }}
           />
         </div>

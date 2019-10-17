@@ -11,9 +11,7 @@
   background: rgba(56, 150, 222, 0.4);
   border: 1px solid rgba(69, 233, 252, 1);
   border-radius: 2px;
-  margin: 0 auto;
-  margin-top: 2rem;
-  margin-bottom: 3.1rem;
+  margin: 2rem auto 3.1rem;
 
   &-div {
     display: flex;
@@ -35,12 +33,11 @@
   }
 
   &-up {
-    margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.4rem;
+    margin: 0.4rem auto 0;
     // margin-right: 9rem;
     width: 30rem;
 
@@ -89,12 +86,11 @@
   }
 
   &-info {
-    margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
+    margin: 1rem auto 0;
     width: 30rem;
 
     // margin-right: 2rem;
@@ -126,8 +122,7 @@
     background: rgba(45, 52, 63, 0.1);
     border-radius: 1px;
     display: flex;
-    margin: 0 auto;
-    margin-top: 1.3rem;
+    margin: 1.3rem auto 0;
 
     &-list {
       width: 100%;
@@ -379,7 +374,10 @@
 
 .UpdateTable {
   display: flex;
-
+  .ant-table-content{
+    max-height: 70vh;
+    overflow-y: auto;
+  }
   &-left {
     margin-left: 15px;
     width: 80rem;
@@ -420,4 +418,5 @@
   .ant-empty-description {
     color: #fff
   }
+
 }

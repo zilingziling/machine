@@ -87,7 +87,7 @@ class DeviceBtn extends Component {
         <div className="devCtl-row-btn-control">
           <div className="devCtl-row-btn-control-lightCtr">
             <span className="devCtl-row-btn-control-lightCtr-span">
-              灯控控制
+              灯光控制
             </span>
             <div className="devMaps bntrow">
               {" "}
