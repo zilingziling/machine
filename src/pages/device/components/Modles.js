@@ -645,7 +645,7 @@ const DeviceInfo = Form.create()(
 								className="tiems-select"
 								disabled={this.state.mark}
 							>
-								<Option value="0">请选择或输入设备品牌</Option>
+								{/*<Option value="0">请选择或输入设备品牌</Option>*/}
 								{brands.map((res, index) => {
 									return (
 										<Option value={res.id} key={index}>

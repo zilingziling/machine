@@ -295,6 +295,18 @@ const router = {
         return <Loading />;
       },
       delay: 300
+    }),
+  help: () =>
+    Loadable({
+      loader: () => import("./../pages/helpBook/helpBook"),
+      render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} userStore={Stores} />;
+      },
+      loading() {
+        return <Loading />;
+      },
+      delay: 300
     })
 };
 export default router;

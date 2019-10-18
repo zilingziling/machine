@@ -9,9 +9,9 @@ import { Model } from "../component/Model/model";
 import { RouterPmi } from "../component/function/routerPmi";
 import { debounce } from "../component/function/formatDateReturn";
 import {getUuid} from "../../utils/handleNumbers";
-import Drag from "./components/drag";
 
 const Option = Select.Option;
+const grid = 8;
 
 //数组排序
 const sortId = (a: Object, b: Object) => {
@@ -24,7 +24,22 @@ const reorder = (list, startIndex, endIndex) => {
 
   return result;
 };
-
+const getItemStyle = (isDragging, draggableStyle) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: "none",
+  padding: grid * 2,
+  // margin: `0 0 ${2}px 0`,
+  height: "3rem",
+  background: isDragging ? "rgba(56,150,222,0.6)" : "rgba(0,160,233,0.75)",
+  borderBottom: "2px solid #3896de",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  ...draggableStyle
+  // change background colour if dragging
+  // background: isDragging ? 'lightgreen' : 'grey',
+  // styles we need to apply on draggables
+});
 
 type Props = {
   match: Object,
@@ -131,7 +146,6 @@ class ScenMode extends Component<Props, State> {
       mark:this.state.mark,
       DeleteArray:this.DeleteArray
     }
-    console.table(this.state.items)
     return (
       <div className="Scene">
         <div className="clear" />
@@ -194,7 +208,66 @@ class ScenMode extends Component<Props, State> {
                   </Button>
                 </div>
               </div>
-             <Drag {...dragProps}/>
+              <DragDropContext
+                onDragStart={this.onDragStart}
+                onDragEnd={this.onDragEnd}
+                onDragUpdate={this.onDragUpdate}
+              >
+                <Droppable
+                  ignoreContainerClipping={true}
+                  droppableId="droppable"
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      className="Scene-body-left-list-centent"
+                      ref={provided.innerRef}
+                    >
+                      {/* {console.log(this.state.items)} */}
+                      {this.state.items.map((item, index) => {
+                        return (
+                          <Draggable
+                            key={index}
+                            draggableId={item.order_no.toString()} //order_no作为ID
+                            index={index}
+                          >
+                            {(provided, snapshot) => (
+                              <div
+                                onClick={this.itemData.bind(this, item, index)}
+                                className={
+                                  this.state.mark === index
+                                    ? "aaaaaaaa"
+                                    : "Scene-body-list-centent-item"
+                                }
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  provided.draggableProps.style
+                                )}
+                              >
+                                <span>{item.equip_key_name}</span>
+                                <Input
+                                  size="small"
+                                  addonBefore="延迟"
+                                  addonAfter="秒"
+                                  value={item.time_consuming}
+                                  className="input"
+                                  onChange={e => {
+                                    this.DeleteArray(e, index);
+                                  }}
+                                  // onChange={this.DeleteArray.bind(this,)}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </div>
           </div>
           {
@@ -312,6 +385,7 @@ class ScenMode extends Component<Props, State> {
     // console.log(item);
     return (
       <div
+
         style={
           this.state.itemStyle === index
             ? { background: "rgba(0, 160, 233, 0.75)" }
@@ -450,6 +524,7 @@ class ScenMode extends Component<Props, State> {
 
   //情景序列点击每一项
   itemData = (Delt: Object, mark: number) => {
+    console.log(Delt,mark)
     this.setState({
       Delt,
       mark

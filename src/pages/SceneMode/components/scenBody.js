@@ -75,7 +75,6 @@ class ScenBody extends Component<Props, State> {
 	};
 	item = async (data: Object, index: Number) => {
 		// console.log(data);
-		console.log(data.equiptypeid)
 		if (data.equiptypeid === '2' || data.equiptypeid === '14') {
 			if (data.equiptypeid === '2') {
 				this.setState({

@@ -6,11 +6,11 @@ const Option = Select.Option;
 const dateFormat = "YYYY/MM/DD";
 import moment from "moment";
 const onValuesChange = (props, changedValues, allValues) => {
-  const { setName, setB, setSign, setE } = props;
+  const { setName, setB, setSign, setE, setCurrent } = props;
   const { selsign, username, time } = allValues;
+  setCurrent(1);
   setName(username ? username : "");
   setSign(selsign ? selsign : "");
-  console.log(time);
   if (time && time.length > 0) {
     setB(moment(time[0]).format("YYYY-MM-DD HH:mm:ss"));
     setE(moment(time[1]).format("YYYY-MM-DD HH:mm:ss"));

@@ -89,7 +89,6 @@ class Routes extends Component {
 	}
 	render() {
 		const {text}=this.state
-		console.log(this.state.engine,this.state.display)
 		return (
 			<>
 				{this.state.engine !== "chrome"&&this.state.display ? <Notice  setDisplay={this.setDisplay} text={text}/> :null}

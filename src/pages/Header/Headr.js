@@ -132,11 +132,11 @@ class Home extends Component<Props, State> {
     const {text,v,detailData}=this.state
     const menu=(
         <Menu>
-          <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href={this.state.href}>
-              手册
-            </a>
-          </Menu.Item>
+          {/*<Menu.Item>*/}
+          {/*  <Link target="_blank"   to="#">*/}
+          {/*    手册*/}
+          {/*  </Link>*/}
+          {/*</Menu.Item>*/}
           <Menu.Item onClick={()=>{
             this.setState({
               v:true

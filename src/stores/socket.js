@@ -93,6 +93,7 @@ class Socke {
         console.log(time);
         console.log(e);
         if (e.code === 4900) {
+          console.log("被挤下线了");
           if (time === e.reason) {
             this.LoginOfline();
             _userinfo.outLogin();

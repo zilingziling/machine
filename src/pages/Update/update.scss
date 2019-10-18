@@ -7,11 +7,11 @@
 }
 
 .update-fu {
-  width: 88rem;
+  width: 86rem;
   background: rgba(56, 150, 222, 0.4);
   border: 1px solid rgba(69, 233, 252, 1);
   border-radius: 2px;
-  margin: 2rem auto 3.1rem;
+  margin: 2rem auto 1.1rem;
 
   &-div {
     display: flex;
@@ -118,7 +118,7 @@
 
   &-list {
     width: 898px;
-    height: 450px;
+    height: 405px;
     background: rgba(45, 52, 63, 0.1);
     border-radius: 1px;
     display: flex;
@@ -126,6 +126,7 @@
 
     &-list {
       width: 100%;
+      overflow-y: auto;
     }
 
     &-itme {

@@ -40,7 +40,7 @@ class Updates extends Component {
 		const { text } = this.state;
 		return (
 			<div className="update-fu">
-				<Spin tip="上传文件中" spinning={this.state.spinning}>
+				<Spin tip="上传文件中"  spinning={this.state.spinning} >
 					<div className="update-fu-div">
 						<p className="update-fu-div-p">
 							{window.location.pathname === '/update' && '中控固件升级'}
