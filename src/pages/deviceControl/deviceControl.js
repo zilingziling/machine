@@ -67,7 +67,7 @@ class DeviceControl extends Component<Props, State> {
       _info: RouterPmi(), //[], //权限
       spin: false,
       eroomid:"",
-      mcstatus:""
+      mcstatus:"",
     };
   }
   componentDidMount() {
@@ -80,8 +80,8 @@ class DeviceControl extends Component<Props, State> {
     window.addEventListener("online", () => {
       this._infomsg();
     });
+    window.addEventListener("scroll",this.handleScroll)
   }
-
   //接受websock消息
   _infomsg = () => {
     window.ws.onmessage = evt => {
@@ -314,7 +314,7 @@ class DeviceControl extends Component<Props, State> {
       eroomid,
     } = this.state;
     return (
-      <div className="devCtl" style={top}>
+      <div className="devCtl" style={top}  >
         <Bar Seleshcool={this.Bars} />
         <div className="devCtl-row">
           <Row type="flex">

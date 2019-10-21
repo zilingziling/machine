@@ -75,7 +75,13 @@
     }
   }
 }
-
+.headerWrap{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background:#1757a0 ;
+}
 .header {
   display: flex;
   flex-direction: column;
@@ -85,7 +91,7 @@
     background: rgba(52, 59, 73, 0.41);
     height: 2.5rem;
     line-height: 2.5rem;
-    border-bottom: 1px solid #FF435468;
+    border-bottom: 1px solid #29d1d1;
     display: flex;
     justify-content: space-between;
 
