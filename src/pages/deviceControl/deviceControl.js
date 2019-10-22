@@ -313,6 +313,7 @@ class DeviceControl extends Component<Props, State> {
       InteractiveTablet,
       eroomid,
     } = this.state;
+    console.log(hot,we)
     return (
       <div className="devCtl" style={top}  >
         <Bar Seleshcool={this.Bars} />
@@ -389,28 +390,6 @@ class DeviceControl extends Component<Props, State> {
                       className="devCtl-text-imgs-top-p-img1"
                       src={require("./../../assets/img/temperature.png")}
                     />
-                    {hot !== "" ? (
-                      <span style={{ marginTop: 10 }}>
-                        <Badge
-                          overflowCount={9999}
-                          style={{
-                            fontSize: 14,
-                            marginTop: "-2px",
-                            background: "rgba(0,0,0,0.1)",
-                            color: "#A4D2FDFF",
-                            boxShadow: "0 0 0 1px #d9d9d9 inset"
-                          }}
-                          count={hot.toFixed()}
-                        />{" "}
-                        °C
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="devCtl-text-imgs-top-p borderp-d">
-                    <img
-                      className="devCtl-text-imgs-top-p-img2"
-                      src={require("./../../assets/img/temperature2.png")}
-                    />
                     {we !== "" ? (
                       <span style={{ marginTop: 10 }}>
                         <Badge
@@ -422,7 +401,29 @@ class DeviceControl extends Component<Props, State> {
                             color: "#A4D2FDFF",
                             boxShadow: "0 0 0 1px #d9d9d9 inset"
                           }}
-                          count={we.toFixed()}
+                          count={parseInt(we)}
+                        />{" "}
+                        °C
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="devCtl-text-imgs-top-p borderp-d">
+                    <img
+                      className="devCtl-text-imgs-top-p-img2"
+                      src={require("./../../assets/img/temperature2.png")}
+                    />
+                    {hot !== "" ? (
+                      <span style={{ marginTop: 10 }}>
+                        <Badge
+                          overflowCount={9999}
+                          style={{
+                            fontSize: 14,
+                            marginTop: "-2px",
+                            background: "rgba(0,0,0,0.1)",
+                            color: "#A4D2FDFF",
+                            boxShadow: "0 0 0 1px #d9d9d9 inset"
+                          }}
+                          count={parseInt(hot)}
                         />
                         %RH
                       </span>
@@ -446,7 +447,7 @@ class DeviceControl extends Component<Props, State> {
                             color: "#A4D2FDFF",
                             boxShadow: "0 0 0 1px #d9d9d9 inset"
                           }}
-                          count={PM}
+                          count={parseInt(PM)}
                         />
                         μg/m3
                       </span>
@@ -468,7 +469,7 @@ class DeviceControl extends Component<Props, State> {
                             color: "#A4D2FDFF",
                             boxShadow: "0 0 0 1px #d9d9d9 inset"
                           }}
-                          count={light}
+                          count={parseInt(light)}
                         />
                         Lux
                       </span>

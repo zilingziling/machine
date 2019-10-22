@@ -25,9 +25,7 @@ const Search = ({ form, setClick, clickS, setCurrent }) => {
   return (
     <Form className="form">
       <FormItem className="formItem">
-        {getFieldDecorator("selsign", {
-          initialValue: 1
-        })(
+        {getFieldDecorator("selsign")(
           <Radio.Group buttonStyle="solid">
             <Radio.Button value={1}>今天</Radio.Button>
             <Radio.Button value={2}>昨天</Radio.Button>

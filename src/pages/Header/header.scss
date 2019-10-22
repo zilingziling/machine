@@ -197,7 +197,10 @@
   }
 
 }
-
+.dropdown{
+  z-index: 1;
+  top: 104px !important;
+}
 .help {
   color: #fff;
   margin-left: 10px;

@@ -39,7 +39,6 @@ class Bar extends Component<Props, State> {
 	}
 	render() {
 		const { selected, expandedKeys } = this.state;
-		console.log(expandedKeys)
 		return (
 			<div className="bar">
 				<div className="devicesele-selects">

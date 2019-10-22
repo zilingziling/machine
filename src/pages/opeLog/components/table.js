@@ -6,20 +6,24 @@ import { opeLog } from "../../../api/help";
 const column = [
   {
     title: "时间",
-    dataIndex: "operatetime"
+    dataIndex: "operatetime",
+    width: 300
   },
   {
     title: "用户",
-    dataIndex: "username"
+    dataIndex: "username",
+    width: 300
   },
   {
     title: "IP",
-    dataIndex: "ip"
+    dataIndex: "ip",
+    width: 300
   },
 
   {
     title: "操作结果",
-    dataIndex: "operateresult"
+    dataIndex: "operateresult",
+    width: 300
   },
   {
     title: "操作类型",

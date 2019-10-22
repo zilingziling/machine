@@ -236,6 +236,7 @@ class Home extends Component<Props, State> {
                     trigger={["click"]}
                     onVisibleChange={this._Change}
                     overlay={this.Menus()}
+                    overlayClassName="dropdown"
                 >
                   <div style={this.state.styles} className="header-second-nav">
                     <img src={Pack} />
