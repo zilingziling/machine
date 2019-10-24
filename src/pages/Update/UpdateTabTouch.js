@@ -107,9 +107,22 @@ class DeviceSele extends Component<Props> {
   }
   //保存
   _UpdateSeve = async () => {
+    const { listData } = this.props.UpdateTouch;
+    let ids = [];
+    let status = [];
+    toJS(listData).forEach(i => ids.push(i.classroomid));
+    let arr = toJS(listData);
+    arr.forEach(i=>i.isupgradequeue=0)
+    arr.forEach(i =>
+        toJS(this.selectedRowKeys).forEach(j => {
+          console.log(i.classroomid===j)
+          if(i.classroomid===j)i.isupgradequeue = 1
+        })
+    );
+    arr.forEach(i => status.push(i.isupgradequeue));
     if (this.selectedRowKeys.length > 0) {
       try {
-        let res = await Api.Device.upgrade_room(this.selectedRowKeys, 2);
+        let res = await Api.Device.upgrade_room(ids,status, 2);
         console.log(res);
         if (res.code === 200) {
           window._guider.Utils.alert({

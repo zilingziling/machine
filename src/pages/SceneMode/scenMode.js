@@ -336,6 +336,7 @@ class ScenMode extends Component<Props, State> {
   del = () => {
     let items = [];
     if (this.state.Delt !== null && typeof this.state.Delt !== "undefined") {
+      console.log(this.state.Delt.order_no,this.state.mark)
       this.state.items.forEach((e, index) => {
         if (e.order_no !== this.state.Delt.order_no) {
           return items.push(e);

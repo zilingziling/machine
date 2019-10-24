@@ -244,10 +244,11 @@ export const get_upgrade_room = (
 };
 
 //保存教室
-export const upgrade_room = (id: Array, sign: number) => {
+export const upgrade_room = (id: Array, status: Array, sign: number) => {
   const formData = new URLSearchParams();
   formData.append("classroomids", id);
   formData.append("sign", sign);
+  formData.append("isupgradequeue", status);
   return makeRequest(Device.upgrade_room, formData);
 };
 //拷贝数据

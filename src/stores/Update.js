@@ -36,7 +36,8 @@ const formatTable = (data: Array<Object>) => {
       key: res.classroomid,
       school_room: res.school_room,
       versionname: res.versionname,
-      versionno: res.versionno
+      versionno: res.versionno,
+      isupgradequeue: res.isupgradequeue
     });
   });
   return ant;
