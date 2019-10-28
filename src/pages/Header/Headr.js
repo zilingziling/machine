@@ -80,7 +80,7 @@ class Home extends Component<Props, State> {
     v:false,
     href:window.localStorage.getItem("helpdoc"),
     helpData:[],
-    detailData:{}
+    detailData:""
   }
   async componentDidMount() {
     this.props.Devices.validation(); //设备类型
@@ -97,12 +97,11 @@ class Home extends Component<Props, State> {
       })
     }
     let detail=await getDetail("")
-    if(detail&&detail.code===200){
       this.setState({
-        detailData:detail.data
+        detailData:detail
       })
-    }
   }
+
   componentWillReceiveProps(nextProps: any, prevState: any) {
     if (this.props.IndexRouter !== nextProps.IndexRouter) {
       if (nextProps.IndexRouter.length > 0) {
@@ -118,15 +117,9 @@ class Home extends Component<Props, State> {
   handleSelectV= async v=>{
     console.log(1)
     let detail=await getDetail(v)
-    console.log(detail)
-    if(detail.code===200){
       this.setState({
-        detailData:detail.data
+        detailData:detail
       })
-    }else window._guider.Utils.alert({
-      message: detail.msg,
-      type: "error"
-    });
   }
   render(){
     const {text,v,detailData}=this.state
@@ -146,6 +139,9 @@ class Home extends Component<Props, State> {
           </Menu.Item>
         </Menu>
     )
+   const createMarkup=()=>{
+     return {__html: this.state.detailData};
+    }
     return (
         <>
           <Modal
@@ -160,7 +156,7 @@ class Home extends Component<Props, State> {
             })}
           >
             <div className="modalContent">
-              <h1>当前版本:   {detailData.curverion&&detailData.curverion}</h1>
+              {/*<h1>当前版本:   {detailData.curverion&&detailData.curverion}</h1>*/}
               <div className="version">
                 <span>历史更新日志</span>
                 <Select style={{width:"12rem"}} onSelect={this.handleSelectV} defaultValue={this.state.helpData[0]&&this.state.helpData[0]}>
@@ -169,25 +165,26 @@ class Home extends Component<Props, State> {
                   }
                 </Select>
               </div>
-              <h3>历史主要更新内容：</h3>
-              <ul className="history">
-                {
-                  detailData.maincontent&&detailData.maincontent.map((i,index)=><li key={index} >{i}</li>)
-                }
-              </ul>
-              <h3 style={{marginTop:"24px"}}>更新详情</h3>
-              <h4>完成的需求:</h4>
-              <ul className="add">
-                {
-                  detailData.completeReq&&detailData.completeReq.map((i,index)=><li key={index} >{i}</li>)
-                }
-              </ul>
-              <h4>修复的bug:</h4>
-              <ul className="debug">
-                {
-                  detailData.repairbug&&detailData.repairbug.map((i,index)=><li key={index} >{i}</li>)
-                }
-              </ul>
+              <p dangerouslySetInnerHTML={createMarkup()}/>
+              {/*<h3>历史主要更新内容：</h3>*/}
+              {/*<ul className="history">*/}
+              {/*  {*/}
+              {/*    detailData.maincontent&&detailData.maincontent.map((i,index)=><li key={index} >{i}</li>)*/}
+              {/*  }*/}
+              {/*</ul>*/}
+              {/*<h3 style={{marginTop:"24px"}}>更新详情</h3>*/}
+              {/*<h4>完成的需求:</h4>*/}
+              {/*<ul className="add">*/}
+              {/*  {*/}
+              {/*    detailData.completeReq&&detailData.completeReq.map((i,index)=><li key={index} >{i}</li>)*/}
+              {/*  }*/}
+              {/*</ul>*/}
+              {/*<h4>修复的bug:</h4>*/}
+              {/*<ul className="debug">*/}
+              {/*  {*/}
+              {/*    detailData.repairbug&&detailData.repairbug.map((i,index)=><li key={index} >{i}</li>)*/}
+              {/*  }*/}
+              {/*</ul>*/}
             </div>
           </Modal>
         <div className="headerWrap" >

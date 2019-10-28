@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import Api from './../../../api';
-import { Slider } from 'antd';
+import { Slider,Button } from 'antd';
+import {getUuid} from "../../../utils/handleNumbers";
 type Props = {
 	list: Array<Object>,
 	pushItem: Function,
@@ -129,7 +130,7 @@ class ScenBody extends Component<Props, State> {
 		this.setState({
 			btnStyle: index
 		});
-		this.props.pushItem(data, this.state.deivcesID, this.state.name);
+		this.props.pushItem({...data,uuid:getUuid()}, this.state.deivcesID, this.state.name);
 	};
 	//空调render
 	amplifierOfConditioning = (mark: String) => {
@@ -171,16 +172,16 @@ class ScenBody extends Component<Props, State> {
 		let value = this.state.ConditioningValue.toString();
 		console.log("172hang",info)
 		if (mrak === 0) {
-			this.props.pushItem({ key_name: '立即关机', id: 73 }, info.id, info.equipname);
+			this.props.pushItem({ key_name: '立即关机', id: 73,uuid:getUuid() }, info.id, info.equipname);
 		} else if (mrak === 1) {
-			this.props.pushItem({ key_name: '开机制热' + value + '度', id: hotMapKey[temper(value)], key_value: value }, info.id, info.equipname);
+			this.props.pushItem({ key_name: '开机制热' + value + '度',uuid:getUuid(), id: hotMapKey[temper(value)], key_value: value }, info.id, info.equipname);
 		} else if (mrak === 2) {
-			this.props.pushItem({ key_name: '开机制冷' + value + '度', id: ColdmapKey[temper(value)], key_value: value }, info.id, info.equipname);
+			this.props.pushItem({ key_name: '开机制冷' + value + '度',uuid:getUuid(), id: ColdmapKey[temper(value)], key_value: value }, info.id, info.equipname);
 		}
 	}
 	//功放
 	volume = (volume: Object<string>) => {
-		// console.log(volume);
+		console.log(typeof this.state.volumeValue);
 		return (
 			<div className="row">
 				<div className="row-show">
@@ -192,11 +193,11 @@ class ScenBody extends Component<Props, State> {
 						<span>关机</span>
 						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
-					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '静音', 41, false)}>
+					<Button  disabled={this.state.volumeValue === 0} className="Scene-div" onClick={this.pushVolume.bind(this, volume, '静音', 41, this.state.volumeValue)}>
 						<span>静音</span>
 						<img  src={require('./../../../assets/img/jias.png')} />
-					</div>
-					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '音量加', 39, false)}>
+					</Button>
+					<div  className="Scene-div" onClick={this.pushVolume.bind(this, volume, '音量加', 39, false)}>
 						<span>音量加</span>
 						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
@@ -205,10 +206,10 @@ class ScenBody extends Component<Props, State> {
 						<span>音量减</span>
 						<img  src={require('./../../../assets/img/jias.png')} />
 					</div>
-					<div className="Scene-div" onClick={this.pushVolume.bind(this, volume, '取消静音', 42, false)}>
+					<Button disabled={this.state.volumeValue === 0} className="Scene-div" onClick={this.pushVolume.bind(this, volume, '取消静音', 42, this.state.volumeValue)}>
 						<span>取消静音</span>
 						<img  src={require('./../../../assets/img/jias.png')} />
-					</div>
+					</Button>
 				</div>
 				<div className="row-Ctrl">
 					<img src={require('./../../../assets/img/voiceno.png')} />
@@ -233,13 +234,14 @@ class ScenBody extends Component<Props, State> {
 	pushVolume = (info: Object, name: String, id: number, value: String) => {
 		// console.log(value);
 		if (value) {
-			this.props.pushItem({ key_name: name, id, key_value: value }, info.id, info.equipname);
+			this.props.pushItem({ key_name: name, id, key_value: value ,uuid:getUuid()}, info.id, info.equipname);
 		} else {
-			this.props.pushItem({ key_name: name, id, }, info.id, info.equipname);
+			this.props.pushItem({ key_name: name, id,uuid:getUuid() }, info.id, info.equipname);
 		}
 	};
 	volumeValue = (volumeValue: String) => {
 		this.setState({ volumeValue });
+
 	}
 }
 export default ScenBody;

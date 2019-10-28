@@ -291,6 +291,9 @@
   justify-content: center;
   margin-right: 0.6rem;
   cursor: pointer;
+
+  background: none;
+  color: #ffffff;
   span {
     font-size: 0.8rem;
   }
@@ -303,5 +306,6 @@
 }
 
 .Scene-div:hover {
-  background: #303b89
+  background: #303b89;
+  color:#ffffff;
 }

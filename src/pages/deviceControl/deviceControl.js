@@ -3,7 +3,7 @@
 //@flow
 import React, { Component, useState } from "react";
 import Bar from "../component/Bar/bar";
-import { Switch, Checkbox, Button, Row, Modal, Badge, Spin,Alert } from "antd";
+import { Switch, Checkbox, Button, Row, Modal, Badge, Spin, Alert } from "antd";
 import Video from "./components/DeviceViode";
 import Btn from "./components/DeviceBtn";
 import Api from "./../../api";
@@ -12,12 +12,12 @@ import {
   handleProjector,
   stateCtrLight
 } from "../component/function/formatDateReturn";
-import {observable, toJS, autorun, action} from "mobx";
+import { observable, toJS, autorun, action } from "mobx";
 import { observer, inject } from "mobx-react";
 import { RouterPmi } from "../component/function/routerPmi";
 import "./deviceControl.scss";
-import {makeRequest} from "../../api/config";
-import {handleAutom} from "../../api/ctrl";
+import { makeRequest } from "../../api/config";
+import { handleAutom } from "../../api/ctrl";
 const confirm = Modal.confirm;
 type Props = {
   match: Object,
@@ -27,21 +27,21 @@ type Props = {
 const top = {
   display: "flex"
 };
-const alertStyle={
+const alertStyle = {
   height: "36px",
   marginTop: "2.36rem",
   marginLeft: "1rem",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  color:'red',
-  fontSize:"18px"
-}
+  color: "red",
+  fontSize: "18px"
+};
 let Istrue = true;
 @inject("Police", "Socke", "DeviceDetection", "userInfo")
 @observer
 class DeviceControl extends Component<Props, State> {
-  @observable  isRestart=false
+  @observable isRestart = false;
   constructor(props: any) {
     super(props);
     //OPS or  pc 都是电脑
@@ -66,8 +66,8 @@ class DeviceControl extends Component<Props, State> {
       InteractiveTablet: [], //交互屏蔽
       _info: RouterPmi(), //[], //权限
       spin: false,
-      eroomid:"",
-      mcstatus:"",
+      eroomid: "",
+      mcstatus: ""
     };
   }
   componentDidMount() {
@@ -80,7 +80,7 @@ class DeviceControl extends Component<Props, State> {
     window.addEventListener("online", () => {
       this._infomsg();
     });
-    window.addEventListener("scroll",this.handleScroll)
+    window.addEventListener("scroll", this.handleScroll);
   }
   //接受websock消息
   _infomsg = () => {
@@ -129,7 +129,7 @@ class DeviceControl extends Component<Props, State> {
                   switch (res[0].equipType) {
                     case "1": {
                       //上课下课
-                      console.log("fromWs",res[0].keyId)
+                      console.log("fromWs", res[0].keyId);
                       this.setState({
                         SwitchOf: res[0].keyId === "78" ? true : false
                       });
@@ -215,7 +215,6 @@ class DeviceControl extends Component<Props, State> {
                       //ops
                       this.setState({
                         OPS: stateCtrLight(this.state.OPS, res[0])
-
                       });
                       break;
                     }
@@ -261,12 +260,12 @@ class DeviceControl extends Component<Props, State> {
             dataMsg.getData()
           );
           let detailList = obj.toObject().detailList;
-          console.log(window.location.href)
-          if(window.location.href.includes("devicectl")){
+          console.log(window.location.href);
+          if (window.location.href.includes("devicectl")) {
             if (detailList[detailList.length - 1].id != msg_id) {
               this.props.Socke.jumpCtr(detailList);
             }
-          }else {
+          } else {
             this.props.Socke.jumpCtr(detailList);
           }
         }
@@ -280,18 +279,19 @@ class DeviceControl extends Component<Props, State> {
       spin: true
     });
   };
-  handleAutom=async e=>{
-    let res=await handleAutom(this.state.sele,e.target.checked?1:0)
+  handleAutom = async e => {
+    let res = await handleAutom(this.state.sele, e.target.checked ? 1 : 0);
     if (res.code === 200) {
       window._guider.Utils.alert({
         message: res.msg,
         type: "success"
       });
-    }else  window._guider.Utils.alert({
-      message: res.msg,
-      type: "error"
-    });
-  }
+    } else
+      window._guider.Utils.alert({
+        message: res.msg,
+        type: "error"
+      });
+  };
   render() {
     const {
       spin,
@@ -311,11 +311,11 @@ class DeviceControl extends Component<Props, State> {
       equip_code,
       sele,
       InteractiveTablet,
-      eroomid,
+      eroomid
     } = this.state;
-    console.log(hot,we)
+    console.log(hot, we);
     return (
-      <div className="devCtl" style={top}  >
+      <div className="devCtl" style={top}>
         <Bar Seleshcool={this.Bars} />
         <div className="devCtl-row">
           <Row type="flex">
@@ -349,131 +349,160 @@ class DeviceControl extends Component<Props, State> {
             >
               返回配置页面
             </Button>
-
             {/* <Button className="devCtl-row-switch-btn" type="primary" onClick={this.computer} >远程电脑</Button> */}
-
-            <div  style={alertStyle}><span className='alertSpan'>{this.state.mcstatus?"*":null}</span><p className='alertP'>{this.state.mcstatus}</p></div>
+            <div style={alertStyle}>
+              <span className="alertSpan">
+                {this.state.mcstatus ? "*" : null}
+              </span>
+              <p className="alertP">{this.state.mcstatus}</p>
+            </div>
           </Row>
           {/*视频、右边按钮*/}
-          <Video
-            handleSpin={this.handleSpin}
-            getInfo={this.info}
-            projector={projector}
-            curtainControl={curtainControl}
-            OPS={this.state.OPS}
-            classSwitch={this.state.classSwitch}
-            classid={this.state.sele}
-            pc={pc}
-            InteractiveTablet={InteractiveTablet}
-            ref="videoPyl"
-          />
-          {/*下边的按钮*/}
-          <div className="devCtl-rows">
-            <Btn
-              screen={screen}
-              screen2={screen2}
-              curtain={curtains}
-              lights={lights}
-              classid={sele}
-              conditioning={conditioning}
-              equip_code={equip_code}
-              eroomid={eroomid}
-              voice={voice}
-            />
-
-            {/*温湿度 */}
-            <div className="devCtl-text">
-              <div className="devCtl-text-imgs">
-                <div className="devCtl-text-imgs-top">
-                  <div className="devCtl-text-imgs-top-p borderp-b">
-                    <img
-                      className="devCtl-text-imgs-top-p-img1"
-                      src={require("./../../assets/img/temperature.png")}
-                    />
-                    {we !== "" ? (
-                      <span style={{ marginTop: 10 }}>
-                        <Badge
-                          overflowCount={9999}
-                          style={{
-                            fontSize: 14,
-                            marginTop: "-2px",
-                            background: "rgba(0,0,0,0.1)",
-                            color: "#A4D2FDFF",
-                            boxShadow: "0 0 0 1px #d9d9d9 inset"
-                          }}
-                          count={parseInt(we)}
-                        />{" "}
-                        °C
-                      </span>
-                    ) : null}
+          <div className="contentWrap">
+            <div className="controlBtn">
+              <Video
+                handleSpin={this.handleSpin}
+                getInfo={this.info}
+                projector={projector}
+                curtainControl={curtainControl}
+                OPS={this.state.OPS}
+                classSwitch={this.state.classSwitch}
+                classid={this.state.sele}
+                pc={pc}
+                InteractiveTablet={InteractiveTablet}
+                ref="videoPyl"
+              />
+              {/*下边的按钮*/}
+              <div className="devCtl-rows">
+                <Btn
+                  screen={screen}
+                  screen2={screen2}
+                  curtain={curtains}
+                  lights={lights}
+                  classid={sele}
+                  conditioning={conditioning}
+                  equip_code={equip_code}
+                  eroomid={eroomid}
+                  voice={voice}
+                />
+              </div>
+            </div>
+            {/*status*/}
+            <div className="rightStatus">
+              <div className="status">
+                <ul>
+                  <li>教室名称：</li>
+                  <li>教室座位：</li>
+                  <li>
+                    电脑网络：<span>已断开</span>
+                  </li>
+                  <li>
+                    中控网络：<span>已连接</span>
+                  </li>
+                  <li>电脑IP：</li>
+                  <li>中控IP：</li>
+                  <li>灯光：</li>
+                  <li>空调：</li>
+                  <li>投影：</li>
+                  <li>幕布：</li>
+                  <li>屏幕1视频：</li>
+                  <li>屏幕2视频：</li>
+                </ul>
+              </div>
+              {/*温湿度*/}
+              <div className="devCtl-text">
+                <div className="devCtl-text-imgs">
+                  <div className="devCtl-text-imgs-top">
+                    <div className="devCtl-text-imgs-top-p borderp-b">
+                      <img
+                        className="devCtl-text-imgs-top-p-img1"
+                        src={require("./../../assets/img/temperature.png")}
+                      />
+                      {we !== "" ? (
+                        <span style={{ marginTop: 10 }}>
+                          <Badge
+                            overflowCount={9999}
+                            style={{
+                              fontSize: 14,
+                              marginTop: "-2px",
+                              background: "rgba(0,0,0,0.1)",
+                              color: "#A4D2FDFF",
+                              boxShadow: "0 0 0 1px #d9d9d9 inset"
+                            }}
+                            count={parseInt(we)}
+                          />{" "}
+                          °C
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="devCtl-text-imgs-top-p borderp-d">
+                      <img
+                        className="devCtl-text-imgs-top-p-img2"
+                        src={require("./../../assets/img/temperature2.png")}
+                      />
+                      {hot !== "" ? (
+                        <span style={{ marginTop: 10 }}>
+                          <Badge
+                            overflowCount={9999}
+                            style={{
+                              fontSize: 14,
+                              marginTop: "-2px",
+                              background: "rgba(0,0,0,0.1)",
+                              color: "#A4D2FDFF",
+                              boxShadow: "0 0 0 1px #d9d9d9 inset"
+                            }}
+                            count={parseInt(hot)}
+                          />
+                          %RH
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="devCtl-text-imgs-top-p borderp-d">
-                    <img
-                      className="devCtl-text-imgs-top-p-img2"
-                      src={require("./../../assets/img/temperature2.png")}
-                    />
-                    {hot !== "" ? (
-                      <span style={{ marginTop: 10 }}>
-                        <Badge
-                          overflowCount={9999}
-                          style={{
-                            fontSize: 14,
-                            marginTop: "-2px",
-                            background: "rgba(0,0,0,0.1)",
-                            color: "#A4D2FDFF",
-                            boxShadow: "0 0 0 1px #d9d9d9 inset"
-                          }}
-                          count={parseInt(hot)}
-                        />
-                        %RH
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-                <div className="devCtl-text-imgs-top">
-                  <div className="devCtl-text-imgs-top-p borderp-c">
-                    <img
-                      style={{ height: 40, width: 40 }}
-                      src={require("./../../assets/img/pm.png")}
-                    />
-                    {PM !== "" ? (
-                      <span style={{ marginTop: 10 }}>
-                        <Badge
-                          overflowCount={9999}
-                          style={{
-                            fontSize: 14,
-                            marginTop: "-2px",
-                            background: "rgba(0,0,0,0.1)",
-                            color: "#A4D2FDFF",
-                            boxShadow: "0 0 0 1px #d9d9d9 inset"
-                          }}
-                          count={parseInt(PM)}
-                        />
-                        μg/m3
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="devCtl-text-imgs-top-p ">
-                    <img
-                      className="devCtl-text-imgs-top-p-img2"
-                      src={require("./../../assets/img/temperature3.png")}
-                    />
-                    {light !== "" ? (
-                      <span style={{ marginTop: 10 }}>
-                        <Badge
-                          overflowCount={9999}
-                          style={{
-                            fontSize: 14,
-                            marginTop: "-2px",
-                            background: "rgba(0,0,0,0.1)",
-                            color: "#A4D2FDFF",
-                            boxShadow: "0 0 0 1px #d9d9d9 inset"
-                          }}
-                          count={parseInt(light)}
-                        />
-                        Lux
-                      </span>
-                    ) : null}
+                  <div className="devCtl-text-imgs-top">
+                    <div className="devCtl-text-imgs-top-p borderp-c">
+                      <img
+                        style={{ height: 40, width: 40 }}
+                        src={require("./../../assets/img/pm.png")}
+                      />
+                      {PM !== "" ? (
+                        <span style={{ marginTop: 10 }}>
+                          <Badge
+                            overflowCount={9999}
+                            style={{
+                              fontSize: 14,
+                              marginTop: "-2px",
+                              background: "rgba(0,0,0,0.1)",
+                              color: "#A4D2FDFF",
+                              boxShadow: "0 0 0 1px #d9d9d9 inset"
+                            }}
+                            count={parseInt(PM)}
+                          />
+                          μg/m3
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="devCtl-text-imgs-top-p ">
+                      <img
+                        className="devCtl-text-imgs-top-p-img2"
+                        src={require("./../../assets/img/temperature3.png")}
+                      />
+                      {light !== "" ? (
+                        <span style={{ marginTop: 10 }}>
+                          <Badge
+                            overflowCount={9999}
+                            style={{
+                              fontSize: 14,
+                              marginTop: "-2px",
+                              background: "rgba(0,0,0,0.1)",
+                              color: "#A4D2FDFF",
+                              boxShadow: "0 0 0 1px #d9d9d9 inset"
+                            }}
+                            count={parseInt(light)}
+                          />
+                          Lux
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -488,7 +517,7 @@ class DeviceControl extends Component<Props, State> {
   //返回上级页面
   _returnPage = () => {
     window._guider.History.history.push({
-      pathname: "/deviceAdd",
+      pathname: "/deviceAdd"
     });
   };
   //上下课
@@ -647,7 +676,7 @@ class DeviceControl extends Component<Props, State> {
           if (JSON.stringify(res.data) !== "{}") {
             //判断数据
             let Switch = false;
-            console.log("fromBack",res.data[1])
+            console.log("fromBack", res.data[1]);
             if (res.data[1]) {
               if (res.data[1].length > 0) {
                 Switch = res.data[1][0].highlight === "1" ? true : false;
@@ -662,13 +691,16 @@ class DeviceControl extends Component<Props, State> {
                   res.data[2].aircode.length > 0
                     ? res.data[2].aircode[0].equipcode
                     : null,
-                eroomid:res.data[2].airstatus.length > 0 ? res.data[2].airstatus[0].eroomid : ""
+                eroomid:
+                  res.data[2].airstatus.length > 0
+                    ? res.data[2].airstatus[0].eroomid
+                    : ""
               });
             } else {
               this.setState({
                 conditioning: [],
                 equip_code: null,
-                eroomid:""
+                eroomid: ""
               });
             }
 
@@ -746,7 +778,7 @@ class DeviceControl extends Component<Props, State> {
               screen2,
               voice,
               InteractiveTablet,
-              mcstatus:res.data.mcstatus.mcstatus
+              mcstatus: res.data.mcstatus.mcstatus
             });
           } else {
             this.clearData(); //数据不在清楚状态
@@ -778,8 +810,7 @@ class DeviceControl extends Component<Props, State> {
       projector: [],
       curtainControl: [],
       screen: [],
-      screen2: [],
-
+      screen2: []
     });
   };
 }

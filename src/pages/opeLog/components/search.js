@@ -41,15 +41,15 @@ const Search = ({ form, setClick, clickS, setCurrent }) => {
       <FormItem label="选择时间" className="formItem">
         {getFieldDecorator("time")(<RangePicker format={dateFormat} />)}
       </FormItem>
-      <Button
-        className="antBtn searchBtn"
-        type="primary"
-        onClick={() => {
-          setClick(!clickS);
-        }}
-      >
-        搜索
-      </Button>
+      {/*<Button*/}
+      {/*  className="antBtn searchBtn"*/}
+      {/*  type="primary"*/}
+      {/*  onClick={() => {*/}
+      {/*    setClick(!clickS);*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  搜索*/}
+      {/*</Button>*/}
     </Form>
   );
 };

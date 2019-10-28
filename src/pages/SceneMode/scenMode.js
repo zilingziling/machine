@@ -336,9 +336,8 @@ class ScenMode extends Component<Props, State> {
   del = () => {
     let items = [];
     if (this.state.Delt !== null && typeof this.state.Delt !== "undefined") {
-      console.log(this.state.Delt.order_no,this.state.mark)
       this.state.items.forEach((e, index) => {
-        if (e.order_no !== this.state.Delt.order_no) {
+        if (e.uuid !== this.state.Delt.uuid) {
           return items.push(e);
         }
       });
@@ -348,6 +347,7 @@ class ScenMode extends Component<Props, State> {
         items: _formatData(items), //这里从新遍历一次items数据，因为列表是更具items.order_no排序的，不然列表会乱窜！！
        // items,
         Delt: _formatData(items).find(i=>i.uuid===items[res].uuid),
+       //  Delt:items[res],
         mark:
           items.length === this.state.mark ? items.length - 1 : this.state.mark
       });
@@ -410,6 +410,7 @@ class ScenMode extends Component<Props, State> {
     let data = await Api.Scenario._get_scene_by_id(item.id);
     if (res.code === 200) {
       let ant = [];
+      // 生成uuid
       res.data.forEach((e, index) => {
         ant.push({
           equip_id: e.equip_id,
@@ -418,7 +419,8 @@ class ScenMode extends Component<Props, State> {
           key_id: e.key_id,
           order_no: e.order_no,
           time_consuming: e.time_consuming,
-          uuid:e.uuid
+          uuid:getUuid(),
+          key_value:e.key_value&&e.key_value
         });
       });
       this.setState({
@@ -444,7 +446,7 @@ class ScenMode extends Component<Props, State> {
             time_consuming: 1, // ''
             order_no: ++index, //parseInt(e.key+1)
             key_value: data.key_value,
-            uuid:getUuid()
+            uuid:data.uuid
           });
           console.log("push",ant);
           return this.setState({
@@ -461,7 +463,7 @@ class ScenMode extends Component<Props, State> {
             time_consuming: 1, //'1'
             order_no: ++index, //++index === 1 ? 2 : ++index //parseInt(data.id)
             key_value: data.key_value,
-            uuid:getUuid()
+            uuid:data.uuid
           });
           console.log("hh",arr);
           return this.setState({
@@ -479,7 +481,7 @@ class ScenMode extends Component<Props, State> {
         time_consuming: 1,
         order_no: 0,
         key_value: data.key_value,
-        uuid:getUuid()
+        uuid:data.uuid
       });
       console.log(arr);
       return this.setState({
@@ -496,6 +498,8 @@ class ScenMode extends Component<Props, State> {
         return
       }
       let antd = [];
+      console.log(this.state.items)
+
       this.state.items.forEach((element, index) => {
         antd.push({
           id: element.id,
@@ -510,7 +514,6 @@ class ScenMode extends Component<Props, State> {
             typeof element.key_value !== "undefined" ? element.key_value : ""
         });
       });
-
       let res = await Api.Scenario.save_scene_seq(antd, this.state.seven.id);
       // console.log(res);
       if (res.code == 200) {
