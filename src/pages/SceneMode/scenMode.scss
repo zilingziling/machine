@@ -3,6 +3,10 @@
 }
 
 .row {
+  .ant-btn:hover, .ant-btn:focus, .ant-btn:active, .ant-btn.active{
+    background: none;
+    color: #ffffff;
+  }
   &-show {
     display: flex;
     flex-wrap: wrap;
@@ -309,3 +313,5 @@
   background: #303b89;
   color:#ffffff;
 }
+
+
