@@ -647,7 +647,8 @@ const _formatData = data => {
       key_id: e.key_id,
       order_no: index,
       time_consuming: e.time_consuming,
-      uuid:e.uuid
+      uuid:e.uuid,
+      key_value:e.key_value&&e.key_value
     });
   });
   return array;

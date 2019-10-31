@@ -150,8 +150,8 @@ class DeviceViode extends Component<Props, State> {
               {projector.length > 0 ? projector[0].equip_type_name : "投影"}
             </span>
             <div className="devMap">
-              {this.renderButtons(projector.concat(curtainControl))}
-              {/*{projector.concat(curtainControl).map(this.pcView)}*/}
+              {/*{this.renderButtons(projector.concat(curtainControl))}*/}
+              {projector.concat(curtainControl).map(this.pcView)}
             </div>
           </div>
 

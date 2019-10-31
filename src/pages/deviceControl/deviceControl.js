@@ -389,26 +389,26 @@ class DeviceControl extends Component<Props, State> {
             </div>
             {/*status*/}
             <div className="rightStatus">
-              <div className="status">
-                <ul>
-                  <li>教室名称：</li>
-                  <li>教室座位：</li>
-                  <li>
-                    电脑网络：<span>已断开</span>
-                  </li>
-                  <li>
-                    中控网络：<span>已连接</span>
-                  </li>
-                  <li>电脑IP：</li>
-                  <li>中控IP：</li>
-                  <li>灯光：</li>
-                  <li>空调：</li>
-                  <li>投影：</li>
-                  <li>幕布：</li>
-                  <li>屏幕1视频：</li>
-                  <li>屏幕2视频：</li>
-                </ul>
-              </div>
+            {/*  <div className="status">*/}
+            {/*    <ul>*/}
+            {/*      <li>教室名称：</li>*/}
+            {/*      <li>教室座位：</li>*/}
+            {/*      <li>*/}
+            {/*        电脑网络：<span>已断开</span>*/}
+            {/*      </li>*/}
+            {/*      <li>*/}
+            {/*        中控网络：<span>已连接</span>*/}
+            {/*      </li>*/}
+            {/*      <li>电脑IP：</li>*/}
+            {/*      <li>中控IP：</li>*/}
+            {/*      <li>灯光：</li>*/}
+            {/*      <li>空调：</li>*/}
+            {/*      <li>投影：</li>*/}
+            {/*      <li>幕布：</li>*/}
+            {/*      <li>屏幕1视频：</li>*/}
+            {/*      <li>屏幕2视频：</li>*/}
+            {/*    </ul>*/}
+            {/*  </div>*/}
               {/*温湿度*/}
               <div className="devCtl-text">
                 <div className="devCtl-text-imgs">

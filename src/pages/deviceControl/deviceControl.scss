@@ -480,11 +480,14 @@
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  padding-right: 4.2rem;
+  //padding-right: 4.2rem;
   .controlBtn{
 
   }
   .rightStatus{
+    position: absolute;
+    right: 7rem;
+    top: 20rem;
     .status{
       width: 13rem;
       height: 17rem;
