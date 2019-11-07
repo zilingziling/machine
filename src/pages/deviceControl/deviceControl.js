@@ -418,28 +418,6 @@ class DeviceControl extends Component<Props, State> {
                         className="devCtl-text-imgs-top-p-img1"
                         src={require("./../../assets/img/temperature.png")}
                       />
-                      {we !== "" ? (
-                        <span style={{ marginTop: 10 }}>
-                          <Badge
-                            overflowCount={9999}
-                            style={{
-                              fontSize: 14,
-                              marginTop: "-2px",
-                              background: "rgba(0,0,0,0.1)",
-                              color: "#A4D2FDFF",
-                              boxShadow: "0 0 0 1px #d9d9d9 inset"
-                            }}
-                            count={parseInt(we)}
-                          />{" "}
-                          °C
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className="devCtl-text-imgs-top-p borderp-d">
-                      <img
-                        className="devCtl-text-imgs-top-p-img2"
-                        src={require("./../../assets/img/temperature2.png")}
-                      />
                       {hot !== "" ? (
                         <span style={{ marginTop: 10 }}>
                           <Badge
@@ -452,6 +430,28 @@ class DeviceControl extends Component<Props, State> {
                               boxShadow: "0 0 0 1px #d9d9d9 inset"
                             }}
                             count={parseInt(hot)}
+                          />{" "}
+                          °C
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="devCtl-text-imgs-top-p borderp-d">
+                      <img
+                        className="devCtl-text-imgs-top-p-img2"
+                        src={require("./../../assets/img/temperature2.png")}
+                      />
+                      {we !== "" ? (
+                        <span style={{ marginTop: 10 }}>
+                          <Badge
+                            overflowCount={9999}
+                            style={{
+                              fontSize: 14,
+                              marginTop: "-2px",
+                              background: "rgba(0,0,0,0.1)",
+                              color: "#A4D2FDFF",
+                              boxShadow: "0 0 0 1px #d9d9d9 inset"
+                            }}
+                            count={parseInt(we)}
                           />
                           %RH
                         </span>
@@ -676,7 +676,6 @@ class DeviceControl extends Component<Props, State> {
           if (JSON.stringify(res.data) !== "{}") {
             //判断数据
             let Switch = false;
-            console.log("fromBack", res.data[1]);
             if (res.data[1]) {
               if (res.data[1].length > 0) {
                 Switch = res.data[1][0].highlight === "1" ? true : false;
@@ -742,11 +741,11 @@ class DeviceControl extends Component<Props, State> {
               typeof res.data[14] !== "undefined" && res.data[14].length > 0
                 ? res.data[14][0]
                 : []; //音量
-            let hot =
+            let we =
               typeof res.data[8] !== "undefined" && res.data[8].length > 0
                 ? res.data[8][0].statusdata
                 : ""; //温度
-            let we =
+            let hot =
               typeof res.data[8] !== "undefined" && res.data[8].length > 0
                 ? res.data[8][1].statusdata
                 : ""; //温度湿度

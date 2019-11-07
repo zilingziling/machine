@@ -158,6 +158,7 @@ class Home extends Component<Props, State> {
             <div className="modalContent">
               {/*<h1>当前版本:   {detailData.curverion&&detailData.curverion}</h1>*/}
               <div className="version">
+                <h1>当前版本：{this.state.helpData&&this.state.helpData[0]}</h1>
                 <span>历史更新日志</span>
                 <Select style={{width:"12rem"}} onSelect={this.handleSelectV} defaultValue={this.state.helpData[0]&&this.state.helpData[0]}>
                   {
@@ -166,25 +167,6 @@ class Home extends Component<Props, State> {
                 </Select>
               </div>
               <p dangerouslySetInnerHTML={createMarkup()}/>
-              {/*<h3>历史主要更新内容：</h3>*/}
-              {/*<ul className="history">*/}
-              {/*  {*/}
-              {/*    detailData.maincontent&&detailData.maincontent.map((i,index)=><li key={index} >{i}</li>)*/}
-              {/*  }*/}
-              {/*</ul>*/}
-              {/*<h3 style={{marginTop:"24px"}}>更新详情</h3>*/}
-              {/*<h4>完成的需求:</h4>*/}
-              {/*<ul className="add">*/}
-              {/*  {*/}
-              {/*    detailData.completeReq&&detailData.completeReq.map((i,index)=><li key={index} >{i}</li>)*/}
-              {/*  }*/}
-              {/*</ul>*/}
-              {/*<h4>修复的bug:</h4>*/}
-              {/*<ul className="debug">*/}
-              {/*  {*/}
-              {/*    detailData.repairbug&&detailData.repairbug.map((i,index)=><li key={index} >{i}</li>)*/}
-              {/*  }*/}
-              {/*</ul>*/}
             </div>
           </Modal>
         <div className="headerWrap" >
@@ -493,6 +475,13 @@ class Home extends Component<Props, State> {
               <Menu.Item className="menu-bodys-item" key="操作日志">
                 <Link to="/opeLog" style={fonts}>
                   操作日志
+                </Link>
+              </Menu.Item>
+          ) : null}
+          {_info.includes("miniProManage") ? (
+              <Menu.Item className="menu-bodys-item" key="小程序管理">
+                <Link to="/miniProManage" style={fonts}>
+                  小程序管理
                 </Link>
               </Menu.Item>
           ) : null}

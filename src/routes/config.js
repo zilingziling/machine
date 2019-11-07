@@ -244,6 +244,19 @@ const router = {
       },
       delay: 300
     }),
+  miniProManage: () =>
+    //操作日志
+    Loadable({
+      loader: () => import("./../pages/miniPro/miniPro"),
+      render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} userStore={Stores} />;
+      },
+      loading() {
+        return <Loading />;
+      },
+      delay: 300
+    }),
 
   region: () =>
     //区域管理

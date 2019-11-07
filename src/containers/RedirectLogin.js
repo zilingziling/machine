@@ -24,7 +24,8 @@ class RedirectLogin extends Component<Props, State> {
 	};
 	componentWillMount() {
 
-		let isLogin = window.localStorage.getItem('status');
+		let isLogin = window.sessionStorage.getItem('status');
+		console.log(isLogin)
 		if (!isLogin) {
 			window._guider.History.replace('/login');
 		}

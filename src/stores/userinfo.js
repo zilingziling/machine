@@ -22,6 +22,7 @@ class UserStore {
     window.localStorage.setItem("userName", Name);
     window.localStorage.setItem("password", password);
     window.localStorage.setItem("name", name);
+    window.sessionStorage.setItem("status", true);
     window._guider.History.history.push({
       pathname: routerName
     });
@@ -35,6 +36,7 @@ class UserStore {
       if (state) {
         let res = await exitLogin(JSON.parse(obj).userid); //用户被挤下线不用调这个接口， 点击退出登录调用这个接口
         window.localStorage.clear();
+        window.sessionStorage.clear();
         // 请求验证码
         window._guider.History.replace({
           pathname: "/login"

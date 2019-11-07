@@ -21,7 +21,7 @@ class Operating extends Component<Props, State> {
 		this.datalist();
 	}
 	datalist = async () => {
-		let id = JSON.parse(window.localStorage.getItem('data')).schoolid;
+		let id = JSON.parse(window.localStorage.getItem('data'))?JSON.parse(window.localStorage.getItem('data')).schoolid:null;
 		let res = await Api.Device.get_room_num(id);
 		console.log(res);
 		if (res.code === 200) {
@@ -73,7 +73,7 @@ class Operating extends Component<Props, State> {
 				]
 			};
 			let dom = document.getElementById('pies');
-			var myChart = echarts.init(dom);
+			let myChart = echarts.init(dom);
 			myChart.setOption(option);
 		}
 		let data = await Api.Device.get_equip_num(id);

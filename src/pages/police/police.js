@@ -42,6 +42,7 @@ export default class Police extends Component<Props, State> {
 		// 	_info: RouterPmi(),
 		// });
 	}
+
 	render() {
 		const { untreatedData, current, total, mark } = this.props.Police;
 		return (
@@ -186,12 +187,12 @@ export default class Police extends Component<Props, State> {
 // 		try{
 // 			let msg = new window.proto.com.yj.itgm.protocol.BaseMsg.deserializeBinary(evt.data);
 // 			let obj = new window.proto.com.yj.itgm.protocol.EquipStatusReport.deserializeBinary(msg.getData());
-// 			console.log(obj.getStatusType());	
+// 			console.log(obj.getStatusType());
 // 			if(obj.getStatusType() === 'classes_report'){
 // 				this.props.Devicestateall.list(	this.props.Devicestateall.classid, 	this.props.Devicestateall.pageNo);
 // 			}else if(obj.getStatusType() === 'fault_report'){
-// 				this.props.Police.list(0,1);  
-// 			}		
+// 				this.props.Police.list(0,1);
+// 			}
 // 		}catch(error){
 // 			console.log(error);
 // 		}

@@ -16,8 +16,8 @@ const { confirm } = Modal;
 
 class Socke {
   constructor() {
-    // if (window.localStorage.getItem('userName') !== null && window.localStorage.getItem('password') !== null) {}
-    if (window.location.pathname !== "/login") {
+    let logStatus = window.sessionStorage.getItem("status");
+    if (logStatus && !window.location.href.includes("login")) {
       this.Socke();
     }
   }
@@ -89,9 +89,8 @@ class Socke {
         console.log(
           "websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean
         );
-        let time = window.localStorage.getItem("time");
+        let time = window.sessionStorage.getItem("time");
         console.log(time);
-        console.log(e);
         if (e.code === 4900) {
           console.log("被挤下线了");
           if (time === e.reason) {
@@ -170,7 +169,8 @@ class Socke {
               evt.wasClean
           );
           console.log(evt);
-          let time = window.localStorage.getItem("time");
+          let time = window.sessionStorage.getItem("time");
+          console.log("time", time);
           if (evt.code === 4900) {
             if (time !== evt.reason) return;
             this.LoginOfline();
@@ -184,8 +184,11 @@ class Socke {
   @action send = (ws, jsonObj, datatype) => {
     //HANDSHAKE
     if (ws && ws.readyState === 1) {
-      let timestamp = Date.parse(new Date());
-      window.localStorage.setItem("time", JSON.stringify(timestamp)); //储存时间
+      let logStatus = window.sessionStorage.getItem("status");
+      let timestamp;
+      timestamp = Date.parse(new Date());
+      window.sessionStorage.setItem("time", JSON.stringify(timestamp)); //储存时间
+
       let baseMsg_ = new window.proto.com.yj.itgm.protocol.BaseDataMsg();
       baseMsg_.setCommand(1000);
       var baseMsg = new window.proto.com.yj.itgm.protocol.BaseMsg();

@@ -491,3 +491,21 @@ export const Log = {
     headers: headerFrom
   }
 };
+// 小程序管理
+export const MiniPro = {
+  getList: {
+    url: "base_teacher/return_appletPC",
+    method: "get",
+    headers: headerFrom
+  },
+  ope: {
+    url: "base_teacher/save_applet",
+    method: "post",
+    headers: headerFrom
+  },
+  del: {
+    url: "base_teacher/delete_applet",
+    method: "post",
+    headers: headerFrom
+  }
+};

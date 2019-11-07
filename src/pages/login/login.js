@@ -53,6 +53,7 @@ class Login extends Component<Props, State> {
     this._checkout();
   }
 
+
   render() {
     return (
         <div>
@@ -148,7 +149,6 @@ class Login extends Component<Props, State> {
   };
   //登录
   UpUser = async () => {
-    console.log("登录")
     if (this.user !== "" && this.pass !== "") {
       if (this.validation !== "") {
         try {
