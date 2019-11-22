@@ -73,107 +73,107 @@ class DeviceViode extends Component<Props, State> {
     }
     return (
       <div className="devCtl-row-div">
-        {/* 视频 */}
-        <div>
-          <div className="devCtl-row-div-vide">
-            {/* flash更新过后防止页面缓存的是上个版本falsh版本设置?param=0.0xx  */}
-            <object
+      {/* 视频 */}
+      <div>
+        <div className="devCtl-row-div-vide">
+          {/* flash更新过后防止页面缓存的是上个版本falsh版本设置?param=0.0xx  */}
+          <object
               classID="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
               width="550"
               height="240"
               id="XKFlashPlayer"
-            >
-              <param name="movie" value="HWFlashPlayer.swf?param=2.0" />
-              <param name="quality" value="high" />
-              <param name="bgcolor" value="#000000" />
-              <param name="allowScriptAccess" value="always" />
-              <param name="allowFullScreen" value="true" />
-              <param name="wmode" value="window" />
-              {/* <!--[if !IE]>--> */}
-              <object
+          >
+            <param name="movie" value="HWFlashPlayer.swf?param=2.0" />
+            <param name="quality" value="high" />
+            <param name="bgcolor" value="#000000" />
+            <param name="allowScriptAccess" value="always" />
+            <param name="allowFullScreen" value="true" />
+            <param name="wmode" value="window" />
+            {/* <!--[if !IE]>--> */}
+            <object
                 type="application/x-shockwave-flash"
                 data="HWFlashPlayer.swf?param=2.0"
                 width="550"
                 height="240"
                 id="XKFlashPlayer"
-              >
-                <param name="quality" value="high" />
-                <param name="bgcolor" value="#000000" />
-                <param name="allowScriptAccess" value="always" />
-                <param name="allowFullScreen" value="true" />
-                <param name="wmode" value="window" />
-                {/* <!--<![endif]-->
+            >
+              <param name="quality" value="high" />
+              <param name="bgcolor" value="#000000" />
+              <param name="allowScriptAccess" value="always" />
+              <param name="allowFullScreen" value="true" />
+              <param name="wmode" value="window" />
+              {/* <!--<![endif]-->
             		<!--[if gte IE 6]>--> */}
-                <p>
-                  请点击下面图标，选择允许
-                  {/* Either scripts and active content are not permitted to run or Adobe Flash Player version
+              <p>
+                请点击下面图标，选择允许
+                {/* Either scripts and active content are not permitted to run or Adobe Flash Player version
 									10.0.0 or greater is not installed. */}
-                </p>
-                {/* <!--<![endif]--> */}
-                <a href="http://www.adobe.com/go/getflashplayer">
-                  <img
+              </p>
+              {/* <!--<![endif]--> */}
+              <a href="http://www.adobe.com/go/getflashplayer">
+                <img
                     src={require("../../../assets/img/get_flash_player.gif")}
                     alt="Get Adobe Flash Player"
-                  />
-                </a>
-                {/* <!--[if !IE]>--> */}
-              </object>
-              {/* <!--<![endif]--> */}
+                />
+              </a>
+              {/* <!--[if !IE]>--> */}
             </object>
-          </div>
+            {/* <!--<![endif]--> */}
+          </object>
         </div>
-        {/* 按钮 */}
-        <div
+      </div>
+      {/* 按钮 */}
+      <div
           className="devCtl-row-div-pc"
           style={displayBtn === true ? { width: "47rem" } : { width: "25rem" }}
-        >
-          <div className="devCtl-row-div-pc-div">
+      >
+        <div className="devCtl-row-div-pc-div">
             <span className="devCtl-row-div-pc-psan">
               {OPS.length > 0 ? OPS[0].equip_type_name : "电脑"}
             </span>
-            <a
+          <a
               className="devCtl-row-div-pc-div-img"
               href={null}
               onClick={this.folding}
-            >
-              {!this.state.displayBtn ? (
+          >
+            {!this.state.displayBtn ? (
                 <img src={require("../../../assets/img/right.png")} />
-              ) : (
+            ) : (
                 <img src={require("../../../assets/img/left.png")} />
-              )}
-            </a>
-            <div className="devMap">
-              {OPS.length > 0 && OPS.map(this.pcView)}
-            </div>
-            {/* 投影 */}
-            <span className="devCtl-row-div-pc-psan">
+            )}
+          </a>
+          <div className="devMap">
+            {OPS.length > 0 && OPS.map(this.pcView)}
+          </div>
+          {/* 投影 */}
+          <span className="devCtl-row-div-pc-psan">
               {projector.length > 0 ? projector[0].equip_type_name : "投影"}
             </span>
-            <div className="devMap">
-              {/*{this.renderButtons(projector.concat(curtainControl))}*/}
-              {projector.concat(curtainControl).map(this.pcView)}
-            </div>
+          <div className="devMap">
+            {/*{this.renderButtons(projector.concat(curtainControl))}*/}
+            {projector.concat(curtainControl).map(this.pcView)}
           </div>
+        </div>
 
-          {/* 折叠隐藏  */}
-          <div className="devCtl-row-div-pc-divs">
+        {/* 折叠隐藏  */}
+        <div className="devCtl-row-div-pc-divs">
             <span className="devCtl-row-div-pc-psan">
               {pc.length > 0 ? pc[0].equip_type_name : " "}
             </span>
-            <div className="devMap ">
-              {pc.length > 0 ? pc.map(this.pcView) : " "}
-            </div>
-            {/* 交互平板 */}
-            <span className="devCtl-row-div-pc-psan">
-              {InteractiveTablet.length > 0 &&
-                InteractiveTablet[0].equip_type_name}
-            </span>
-            <div className="devMap">{InteractiveTablet.map(this.pcView)}</div>
+          <div className="devMap ">
+            {pc.length > 0 ? pc.map(this.pcView) : " "}
           </div>
+          {/* 交互平板 */}
+          <span className="devCtl-row-div-pc-psan">
+              {InteractiveTablet.length > 0 &&
+              InteractiveTablet[0].equip_type_name}
+            </span>
+          <div className="devMap">{InteractiveTablet.map(this.pcView)}</div>
         </div>
-        {rest?<RenderRest {...restProps}/>:null}
       </div>
-    );
+      {rest?<RenderRest {...restProps}/>:null}
+    </div>
+  );
   }
   //折叠展开
   folding = () => {

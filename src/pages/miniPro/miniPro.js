@@ -12,7 +12,7 @@ const MiniPro = ({ form }) => {
   const [list, setL] = useState([]);
   const [id, setId] = useState(null);
   const [version, setVersion] = useState("");
-  const [type, setType] = useState(null);
+  const [type, setType] = useState(false);
   const [v, setV] = useState(false);
   const [title, setT] = useState("新增");
   const [info, setInfo] = useState({});
@@ -20,10 +20,12 @@ const MiniPro = ({ form }) => {
   const initData = () => {
     getList().then(r => {
       if (r.code === 200) {
-        setType(
-          r.data.type === "0" ? false : r.data.type === "1" ? true : null
-        );
-        setVersion(r.data.version);
+        if (r.data.type) {
+          setType(r.data.type === "0" ? false : r.data.type === "1");
+        }
+        if (r.data.version) {
+          setVersion(r.data.version);
+        }
         setId(r.data.id);
         setL(r.data.list);
       }
@@ -60,6 +62,7 @@ const MiniPro = ({ form }) => {
           message: r.msg,
           type: "success"
         });
+        initData();
       }
     });
   };
@@ -71,12 +74,13 @@ const MiniPro = ({ form }) => {
     initData
   };
   const handleSwitch = value => {
-    req({ type: value ? 1 : 0, mark: 1 });
+    let version = getFieldsValue(["version"]).version;
+    req({ type: value ? 1 : 0, mark: 1, version });
     setType(value);
   };
   const confirm = () => {
     let version = getFieldsValue(["version"]).version;
-    req({ mark: 1, version });
+    req({ mark: 1, version, type: type ? 1 : 0 });
   };
   return (
     <div className="miniWrapper">

@@ -3,7 +3,7 @@
 //@flow
 import React, { Component, useState } from "react";
 import Bar from "../component/Bar/bar";
-import { Switch, Checkbox, Button, Row, Modal, Badge, Spin, Alert } from "antd";
+import { Switch, Checkbox, Button, Row, Modal, Badge, Spin, Alert,Progress } from "antd";
 import Video from "./components/DeviceViode";
 import Btn from "./components/DeviceBtn";
 import Api from "./../../api";
@@ -46,6 +46,7 @@ class DeviceControl extends Component<Props, State> {
     super(props);
     //OPS or  pc 都是电脑
     this.state = {
+      selectedId:null,
       sele: null, //属性菜单ID classroomid
       SwitchOf: false, //上下课
       conditioning: [], //空调
@@ -92,8 +93,8 @@ class DeviceControl extends Component<Props, State> {
           });
         }
         let msg_id =
-          this.state.sele !== null
-            ? this.state.sele
+          this.state.selectedId !== null
+            ? this.state.selectedId
             : getCaption(window.localStorage.getItem("CtrClassrommid"), 0); //获取当前的classroomID来判断提示
         let msg = new window.proto.com.yj.itgm.protocol.BaseMsg.deserializeBinary(
           evt.data
@@ -260,10 +261,10 @@ class DeviceControl extends Component<Props, State> {
             dataMsg.getData()
           );
           let detailList = obj.toObject().detailList;
-          console.log(window.location.href);
           if (window.location.href.includes("devicectl")) {
+            console.log(msg_id,detailList[detailList.length - 1].id)
             if (detailList[detailList.length - 1].id != msg_id) {
-              this.props.Socke.jumpCtr(detailList);
+              this.props.Socke.jumpCtr(detailList,1);
             }
           } else {
             this.props.Socke.jumpCtr(detailList);
@@ -313,13 +314,25 @@ class DeviceControl extends Component<Props, State> {
       InteractiveTablet,
       eroomid
     } = this.state;
-    console.log(hot, we);
     return (
       <div className="devCtl" style={top}>
         <Bar Seleshcool={this.Bars} />
+        {/*<Modal visible={true} title='' footer='' className="progressModal">*/}
+        {/*  <div>*/}
+        {/*    <div className="info"><img className='noticeIcon' src={require('../../assets/img/notice.png')}/><span>设备正在执行中，请稍后！</span></div>*/}
+        {/*    <Progress*/}
+        {/*        size="small"*/}
+        {/*        strokeColor={{*/}
+        {/*          '0%': '#19D5B8',*/}
+        {/*          '100%': '#2786F5',*/}
+        {/*        }}*/}
+        {/*        percent={100}*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*</Modal>*/}
         <div className="devCtl-row">
           <Row type="flex">
-            <Spin spinning={spin} size="default" className="spin" />、{" "}
+            <Spin spinning={spin} size="default" className="spin" />
             <div className="devCtl-row-switch">
               <div>
                 <span className="devCtl-row-switch-span">下课</span>
@@ -623,6 +636,9 @@ class DeviceControl extends Component<Props, State> {
   //树形组件返回ID
   Bars = (e: String) => {
     let val = e.split(":");
+    this.setState({
+      selectedId:val[0]
+    })
     if (val[1] === "classroom") {
       if (typeof e !== "undefined") {
         this.props.DeviceDetection.videList(val[0]); //视频地址

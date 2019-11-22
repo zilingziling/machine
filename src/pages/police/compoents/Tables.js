@@ -23,7 +23,7 @@ class Tables extends Component<Props, State> {
 	state = {
 		columns: [
 			{ title: '位置', dataIndex: 'schoolroom', key: 'schoolroom' },
-			{ title: '发生时间', dataIndex: 'event_time', key: 'event_time' },
+			{title: '发生时间', dataIndex: 'event_time', key: 'event_time' },
 			{ title: '事件类型', dataIndex: 'eventtypename', key: 'eventtypename' },
 			{
 				title: '操作',
@@ -41,11 +41,11 @@ class Tables extends Component<Props, State> {
 			}
 		],
 		Have: [
-			{ title: '位置', dataIndex: 'schoolroom', key: 'schoolroom' },
-			{ title: '发生时间', dataIndex: 'event_time', key: 'event_time' },
-			{ title: '事件类型', dataIndex: 'eventtypename', key: 'eventtypename' },
-			{ title: '处理人员', dataIndex: 'handler', key: 'handler' },
-			{ title: '处理时间', dataIndex: 'handletime', key: 'handletime' },
+			{width:"40%", title: '位置', dataIndex: 'schoolroom', key: 'schoolroom' },
+			{width:"15%", title: '发生时间', dataIndex: 'event_time', key: 'event_time' },
+			{width:"15%", title: '事件类型', dataIndex: 'eventtypename', key: 'eventtypename' },
+			{width:"10%", title: '处理人员', dataIndex: 'handler', key: 'handler' },
+			{width:"15%", title: '处理时间', dataIndex: 'handletime', key: 'handletime' },
 			{
 				title: '处理', dataIndex: 'key', key: 'key', render: (text, data) => {
 					return (

@@ -11,7 +11,16 @@ import More from "../../assets/img/more.png";
 import Fd from "../../assets/img/fangda.png";
 //icon
 import update from "./../../assets/img/update.png";
-import { Divider, Dropdown, Menu, Icon, Avatar, Badge, Modal,Select } from "antd";
+import {
+  Divider,
+  Dropdown,
+  Menu,
+  Icon,
+  Avatar,
+  Badge,
+  Modal,
+  Select
+} from "antd";
 import { NavLink, Link } from "react-router-dom";
 import { observable, autorun } from "mobx";
 import { observer, inject } from "mobx-react";
@@ -20,11 +29,11 @@ import "./header.scss";
 import info from "../../assets/img/info.png";
 import google from "../../assets/img/google.png";
 import close from "../../assets/img/close.png";
-import {getDetail, getVer} from "../../api/help";
+import { getDetail, getVer } from "../../api/help";
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const confirm = Modal.confirm;
-const Option=Select.Option
+const Option = Select.Option;
 type Props = {
   match: Object,
   history: Object,
@@ -52,22 +61,24 @@ const HeadetStyle = {
 };
 const Icon_ = {
   marginRight: "1rem",
-  cursor: "pointer"
+  cursor: "pointer",
+  width: "1.4rem",
+  height: "1.4rem"
 };
-const modalStyle={
-  top:"12.5vh",
-  background:"#0C2E4C",
-  height:"80vh",
-  borderRadius:"5px",
-}
+const modalStyle = {
+  top: "12.5vh",
+  background: "#0C2E4C",
+  height: "80vh",
+  borderRadius: "5px"
+};
 
 @inject(
-    "Socke",
-    "DeviceState",
-    "userInfo",
-    "Police",
-    "Devices",
-    "DeviceDetection"
+  "Socke",
+  "DeviceState",
+  "userInfo",
+  "Police",
+  "Devices",
+  "DeviceDetection"
 )
 @observer
 class Home extends Component<Props, State> {
@@ -77,11 +88,12 @@ class Home extends Component<Props, State> {
     dx: false,
     title: "功能菜单",
     _info: [],
-    v:false,
-    href:window.localStorage.getItem("helpdoc"),
-    helpData:[],
-    detailData:""
-  }
+    v: false,
+    href: window.localStorage.getItem("helpdoc"),
+    helpData: [],
+    detailData: "",
+    full: false
+  };
   async componentDidMount() {
     this.props.Devices.validation(); //设备类型
     this.props.DeviceState.schoolList(); //学校treelist
@@ -90,16 +102,16 @@ class Home extends Component<Props, State> {
       this.setState({ title: window.localStorage.getItem("routerName") });
     }
 
-    let r=await getVer()
-    if(r&&r.code===200){
+    let r = await getVer();
+    if (r && r.code === 200) {
       this.setState({
-        helpData:r.data
-      })
+        helpData: r.data
+      });
     }
-    let detail=await getDetail("")
-      this.setState({
-        detailData:detail
-      })
+    let detail = await getDetail("");
+    this.setState({
+      detailData: detail
+    });
   }
 
   componentWillReceiveProps(nextProps: any, prevState: any) {
@@ -114,62 +126,78 @@ class Home extends Component<Props, State> {
     }
   }
 
-  handleSelectV= async v=>{
-    console.log(1)
-    let detail=await getDetail(v)
-      this.setState({
-        detailData:detail
-      })
+  handleSelectV = async v => {
+    console.log(1);
+    let detail = await getDetail(v);
+    this.setState({
+      detailData: detail
+    });
+  };
+  checkFull () {
+    let isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
+    if (isFull === undefined) isFull = false
+    return isFull
   }
-  render(){
-    const {text,v,detailData}=this.state
-    const menu=(
-        <Menu>
-          <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href={this.state.href}>
-              手册
-            </a>
-          </Menu.Item>
-          <Menu.Item onClick={()=>{
+  render() {
+    const { text, v, detailData } = this.state;
+    const menu = (
+      <Menu>
+        {/*<Menu.Item>*/}
+        {/*  <a target="_blank" rel="noopener noreferrer" href={this.state.href}>*/}
+        {/*    手册*/}
+        {/*  </a>*/}
+        {/*</Menu.Item>*/}
+        <Menu.Item
+          onClick={() => {
             this.setState({
-              v:true
-            })
-          }}>
-            更新日志
-          </Menu.Item>
-        </Menu>
-    )
-   const createMarkup=()=>{
-     return {__html: this.state.detailData};
-    }
+              v: true
+            });
+          }}
+        >
+          更新日志
+        </Menu.Item>
+      </Menu>
+    );
+    const createMarkup = () => {
+      return { __html: this.state.detailData };
+    };
+
     return (
-        <>
-          <Modal
-              wrapClassName="helpModal"
-              maskClosable={false}
-              width={646}
-            footer={null}
-            style={modalStyle}
-            visible={this.state.v}
-            onCancel={()=>this.setState({
-              v:false
-            })}
-          >
-            <div className="modalContent">
-              {/*<h1>当前版本:   {detailData.curverion&&detailData.curverion}</h1>*/}
-              <div className="version">
-                <h1>当前版本：{this.state.helpData&&this.state.helpData[0]}</h1>
-                <span>历史更新日志</span>
-                <Select style={{width:"12rem"}} onSelect={this.handleSelectV} defaultValue={this.state.helpData[0]&&this.state.helpData[0]}>
-                  {
-                    this.state.helpData.map((i,index)=><Option  key={index} value={i}>{i}</Option>)
-                  }
-                </Select>
-              </div>
-              <p dangerouslySetInnerHTML={createMarkup()}/>
+      <>
+        <Modal
+          wrapClassName="helpModal"
+          maskClosable={false}
+          width={646}
+          footer={null}
+          style={modalStyle}
+          visible={this.state.v}
+          onCancel={() =>
+            this.setState({
+              v: false
+            })
+          }
+        >
+          <div className="modalContent">
+            {/*<h1>当前版本:   {detailData.curverion&&detailData.curverion}</h1>*/}
+            <div className="version">
+              <h1>当前版本：{this.state.helpData && this.state.helpData[0]}</h1>
+              <span>历史更新日志</span>
+              <Select
+                style={{ width: "12rem" }}
+                onSelect={this.handleSelectV}
+                defaultValue={this.state.helpData[0] && this.state.helpData[0]}
+              >
+                {this.state.helpData.map((i, index) => (
+                  <Option key={index} value={i}>
+                    {i}
+                  </Option>
+                ))}
+              </Select>
             </div>
-          </Modal>
-        <div className="headerWrap" >
+            <p dangerouslySetInnerHTML={createMarkup()} />
+          </div>
+        </Modal>
+        <div className="headerWrap">
           <div className="header">
             <div className="header-top">
               <div className="header-top-left">
@@ -178,44 +206,44 @@ class Home extends Component<Props, State> {
               </div>
               <div className="header-top-right">
                 <img
-                    src={Fd}
-                    // onClick={this.siezof.bind(this, document.documentElement)}
-                    onClick={event => {
-                      if (document.fullscreenElement) {
-                        document.exitFullscreen()
-                      } else {
-                        document.documentElement.requestFullscreen()
-                      }
-                    }}
-                    style={Icon_}
+                  src={Fd}
+                  // onClick={this.siezof.bind(this, document.documentElement)}
+                  onClick={event => {
+                    if (document.fullscreenElement) {
+
+                      document.exitFullscreen();
+                    } else {
+
+                      document.documentElement.requestFullscreen();
+                    }
+                  }}
+                  style={Icon_}
                 />
                 <Divider className="header-top-right-shu" type="vertical" />
-
                 <div className="av" onClick={this.outLog}>
                   <Avatar
-                      className="avTou"
-                      size="large"
-                      src={require("../../assets/img/userImg.png")}
+                    className="avTou"
+                    size="large"
+                    src={require("../../assets/img/userImg.png")}
                   />
                   <span className="header-top-right-span">
-                  {window.localStorage.getItem("name")}
-                </span>
+                    {window.localStorage.getItem("name")}
+                  </span>
                 </div>
                 <Dropdown className="help" overlay={menu}>
-                  <a  href="#">
+                  <a href="#">
                     帮助 <Icon type="down" />
                   </a>
                 </Dropdown>
-
               </div>
             </div>
             <div className="header-second">
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Dropdown
-                    trigger={["click"]}
-                    onVisibleChange={this._Change}
-                    overlay={this.Menus()}
-                    overlayClassName="dropdown"
+                  trigger={["click"]}
+                  onVisibleChange={this._Change}
+                  overlay={this.Menus()}
+                  overlayClassName="dropdown"
                 >
                   <div style={this.state.styles} className="header-second-nav">
                     <img src={Pack} />
@@ -225,28 +253,28 @@ class Home extends Component<Props, State> {
                 <Divider className="header-second-nav-shu" type="vertical" />
               </div>
               <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    height: "50px",
-                    lineHeight: "50px",
-                    justifyContent: "space-around"
-                  }}
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "50px",
+                  lineHeight: "50px",
+                  justifyContent: "space-around"
+                }}
               >
                 <NavLink
-                    to="/police"
-                    exact
-                    strict
-                    activeStyle={ActiveLink}
-                    onClick={this._pushPage.bind(this, "/police", "报警查看")}
+                  to="/police"
+                  exact
+                  strict
+                  activeStyle={ActiveLink}
+                  onClick={this._pushPage.bind(this, "/police", "报警查看")}
                 >
                   <div className="header-second-second">
                     <Badge
-                        className="current"
-                        count={this.props.Police.untreated}
-                        offset={[15]}
-                        showZero
-                        className="AAAAAAAAAAAA"
+                      className="current"
+                      count={this.props.Police.untreated}
+                      offset={[15]}
+                      showZero
+                      className="AAAAAAAAAAAA"
                     >
                       <img src={Police} />
                       <span>报警查看</span>
@@ -254,11 +282,11 @@ class Home extends Component<Props, State> {
                   </div>
                 </NavLink>
                 <NavLink
-                    to="/devicesate"
-                    exact
-                    strict
-                    activeStyle={ActiveLink}
-                    onClick={this._pushPage.bind(this, "/devicesate", "设备状态")}
+                  to="/devicesate"
+                  exact
+                  strict
+                  activeStyle={ActiveLink}
+                  onClick={this._pushPage.bind(this, "/devicesate", "设备状态")}
                 >
                   <div className="header-second-second">
                     <img src={Cp} />
@@ -266,11 +294,11 @@ class Home extends Component<Props, State> {
                   </div>
                 </NavLink>
                 <NavLink
-                    to="/devicectl"
-                    exact
-                    strict
-                    activeStyle={ActiveLink}
-                    onClick={this._pushPage.bind(this, "/devicectl", "设备控制")}
+                  to="/devicectl"
+                  exact
+                  strict
+                  activeStyle={ActiveLink}
+                  onClick={this._pushPage.bind(this, "/devicectl", "设备控制")}
                 >
                   <div className="header-second-second">
                     <img src={Device} />
@@ -278,11 +306,11 @@ class Home extends Component<Props, State> {
                   </div>
                 </NavLink>
                 <NavLink
-                    to="/operating"
-                    exact
-                    strict
-                    activeStyle={ActiveLink}
-                    onClick={this._pushPage.bind(this, "/operating", "运营管理")}
+                  to="/operating"
+                  exact
+                  strict
+                  activeStyle={ActiveLink}
+                  onClick={this._pushPage.bind(this, "/operating", "运营管理")}
                 >
                   <div className="header-second-second">
                     <img src={More} />
@@ -293,7 +321,7 @@ class Home extends Component<Props, State> {
             </div>
           </div>
         </div>
-          </>
+      </>
     );
   }
   openNewWindow = () => {
@@ -301,7 +329,7 @@ class Home extends Component<Props, State> {
   };
   //处理title在右边显示
   _click = (e: Object<string>) => {
-    console.log(e)
+    console.log(e);
     window.localStorage.setItem("routerName", e.key);
     this.setState({ title: e.key });
   };
@@ -372,158 +400,158 @@ class Home extends Component<Props, State> {
   Menus = () => {
     const { _info } = this.state;
     return (
-        <Menu onClick={this._click} className="menu-bodys">
-          <Menu.Item disabled className="menu-bodys-item itmes" key="常用功能">
+      <Menu onClick={this._click} className="menu-bodys">
+        <Menu.Item disabled className="menu-bodys-item itmes" key="常用功能">
+          <img
+            className="menu-bodys-item-img"
+            src={require("./../../assets/img/devices.png")}
+          />
+          常用功能
+          {/*<img*/}
+          {/*    style={HeadetStyle}*/}
+          {/*    src={require("./../../assets/img/jiantou.png")}*/}
+          {/*/>*/}
+        </Menu.Item>
+        <Menu.Item className="menu-bodys-item" key="报警查看">
+          <Link to="/police" style={fonts}>
+            报警查看
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="menu-bodys-item" key="设备状态">
+          <Link to="/devicesate" style={fonts}>
+            设备状态
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="menu-bodys-item" key="设备控制">
+          <Link to="/devicectl" style={fonts}>
+            设备控制
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="menu-bodys-item" key="运营管理">
+          <Link to="/operating" style={fonts}>
+            运营管理
+          </Link>
+        </Menu.Item>
+        {/* 设备管理 */}
+
+        {shoHid(_info, ["devicesele", "device"]) ? ( //这些是你router地址
+          <Menu.Item disabled className="menu-bodys-item itmes" key="设备管理">
             <img
-                className="menu-bodys-item-img"
-                src={require("./../../assets/img/devices.png")}
+              className="menu-bodys-item-img"
+              src={require("./../../assets/img/configs.png")}
             />
-            常用功能
-            {/*<img*/}
-            {/*    style={HeadetStyle}*/}
-            {/*    src={require("./../../assets/img/jiantou.png")}*/}
-            {/*/>*/}
+            设备管理
           </Menu.Item>
-          <Menu.Item className="menu-bodys-item" key="报警查看">
-            <Link to="/police" style={fonts}>
-              报警查看
+        ) : null}
+        {_info.includes("devicesele") ? (
+          <Menu.Item className="menu-bodys-item" key="设备配置">
+            <Link to="/devicesele" style={fonts}>
+              设备配置
             </Link>
           </Menu.Item>
-          <Menu.Item className="menu-bodys-item" key="设备状态">
-            <Link to="/devicesate" style={fonts}>
-              设备状态
+        ) : null}
+
+        {_info.includes("device") ? (
+          <Menu.Item className="menu-bodys-item" key="管理码库">
+            <Link to="/device" style={fonts}>
+              管理码库
             </Link>
           </Menu.Item>
-          <Menu.Item className="menu-bodys-item" key="设备控制">
-            <Link to="/devicectl" style={fonts}>
-              设备控制
+        ) : null}
+
+        {/*高级设置*/}
+        {shoHid(_info, ["role", "user", "menu", "region"]) ? ( //这些是你router地址
+          <Menu.Item disabled className="menu-bodys-item itmes" key="高级设置">
+            <img
+              className="menu-bodys-item-img"
+              src={require("./../../assets/img/permissions.png")}
+            />
+            高级设置
+          </Menu.Item>
+        ) : null}
+        {_info.includes("role") ? (
+          <Menu.Item className="menu-bodys-item" key="角色管理">
+            <Link to="/role" style={fonts}>
+              角色管理
             </Link>
           </Menu.Item>
-          <Menu.Item className="menu-bodys-item" key="运营管理">
-            <Link to="/operating" style={fonts}>
-              运营管理
+        ) : null}
+        {_info.includes("user") ? (
+          <Menu.Item className="menu-bodys-item" key="用户管理">
+            <Link to="/user" style={fonts}>
+              用户管理
             </Link>
           </Menu.Item>
-          {/* 设备管理 */}
+        ) : null}
 
-          {shoHid(_info, ["devicesele", "device"]) ? ( //这些是你router地址
-              <Menu.Item disabled className="menu-bodys-item itmes" key="设备管理">
-                <img
-                    className="menu-bodys-item-img"
-                    src={require("./../../assets/img/configs.png")}
-                />
-                设备管理
-              </Menu.Item>
-          ) : null}
-          {_info.includes("devicesele") ? (
-              <Menu.Item className="menu-bodys-item" key="设备配置">
-                <Link to="/devicesele" style={fonts}>
-                  设备配置
-                </Link>
-              </Menu.Item>
-          ) : null}
+        {_info.includes("region") ? (
+          <Menu.Item className="menu-bodys-item" key="区域管理">
+            <Link to="/region" style={fonts}>
+              区域管理
+            </Link>
+          </Menu.Item>
+        ) : null}
 
-          {_info.includes("device") ? (
-              <Menu.Item className="menu-bodys-item" key="管理码库">
-                <Link to="/device" style={fonts}>
-                  管理码库
-                </Link>
-              </Menu.Item>
-          ) : null}
-
-          {/*高级设置*/}
-          {shoHid(_info, ["role", "user", "menu", "region"]) ? ( //这些是你router地址
-              <Menu.Item disabled className="menu-bodys-item itmes" key="高级设置">
-                <img
-                    className="menu-bodys-item-img"
-                    src={require("./../../assets/img/permissions.png")}
-                />
-                高级设置
-              </Menu.Item>
-          ) : null}
-          {_info.includes("role") ? (
-              <Menu.Item className="menu-bodys-item" key="角色管理">
-                <Link to="/role" style={fonts}>
-                  角色管理
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {_info.includes("user") ? (
-              <Menu.Item className="menu-bodys-item" key="用户管理">
-                <Link to="/user" style={fonts}>
-                  用户管理
-                </Link>
-              </Menu.Item>
-          ) : null}
-
-          {_info.includes("region") ? (
-              <Menu.Item className="menu-bodys-item" key="区域管理">
-                <Link to="/region" style={fonts}>
-                  区域管理
-                </Link>
-              </Menu.Item>
-          ) : null}
-
-          {_info.includes("menu") ? (
-              <Menu.Item className="menu-bodys-item" key="菜单管理">
-                <Link to="/menu" style={fonts}>
-                  菜单管理
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {_info.includes("opeLog") ? (
-              <Menu.Item className="menu-bodys-item" key="操作日志">
-                <Link to="/opeLog" style={fonts}>
-                  操作日志
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {_info.includes("miniProManage") ? (
-              <Menu.Item className="menu-bodys-item" key="小程序管理">
-                <Link to="/miniProManage" style={fonts}>
-                  小程序管理
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {/*中控升级*/}
-          {shoHid(_info, ["update", "TouchUpdate", "aiUpdate"]) ? ( //这些是你router地址
-              <Menu.Item disabled className="menu-bodys-item itmes" key="中控模块">
-                <img
-                    className="menu-bodys-item-img"
-                    src={require("./../../assets/img/updates.png")}
-                />
-                中控模块
-              </Menu.Item>
-          ) : null}
-          {_info.includes("update") ? (
-              <Menu.Item className="menu-bodys-item" key="中控升级">
-                <Link to="/update" style={fonts}>
-                  中控升级
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {_info.includes("TouchUpdate") ? (
-              <Menu.Item className="menu-bodys-item" key="触摸屏升级">
-                <Link to="/TouchUpdate" style={fonts}>
-                  触摸屏升级
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {_info.includes("aiUpdate") ? (
-              <Menu.Item className="menu-bodys-item" key="AI升级">
-                <Link to="/aiUpdate" style={fonts}>
-                  AI升级
-                </Link>
-              </Menu.Item>
-          ) : null}
-          {_info.includes("ceshi") ? (
-              <Menu.Item className="menu-bodys-item" key="ceshi">
-                <Link to="/ceshi" style={fonts}>
-                  ceshi
-                </Link>
-              </Menu.Item>
-          ) : null}
-        </Menu>
+        {_info.includes("menu") ? (
+          <Menu.Item className="menu-bodys-item" key="菜单管理">
+            <Link to="/menu" style={fonts}>
+              菜单管理
+            </Link>
+          </Menu.Item>
+        ) : null}
+        {_info.includes("opeLog") ? (
+          <Menu.Item className="menu-bodys-item" key="操作日志">
+            <Link to="/opeLog" style={fonts}>
+              操作日志
+            </Link>
+          </Menu.Item>
+        ) : null}
+        {_info.includes("miniProManage") ? (
+          <Menu.Item className="menu-bodys-item" key="小程序管理">
+            <Link to="/miniProManage" style={fonts}>
+              小程序管理
+            </Link>
+          </Menu.Item>
+        ) : null}
+        {/*中控升级*/}
+        {shoHid(_info, ["update", "TouchUpdate", "aiUpdate"]) ? ( //这些是你router地址
+          <Menu.Item disabled className="menu-bodys-item itmes" key="中控模块">
+            <img
+              className="menu-bodys-item-img"
+              src={require("./../../assets/img/updates.png")}
+            />
+            中控模块
+          </Menu.Item>
+        ) : null}
+        {_info.includes("update") ? (
+          <Menu.Item className="menu-bodys-item" key="中控升级">
+            <Link to="/update" style={fonts}>
+              中控升级
+            </Link>
+          </Menu.Item>
+        ) : null}
+        {_info.includes("TouchUpdate") ? (
+          <Menu.Item className="menu-bodys-item" key="触摸屏升级">
+            <Link to="/TouchUpdate" style={fonts}>
+              触摸屏升级
+            </Link>
+          </Menu.Item>
+        ) : null}
+        {_info.includes("aiUpdate") ? (
+          <Menu.Item className="menu-bodys-item" key="AI升级">
+            <Link to="/aiUpdate" style={fonts}>
+              AI升级
+            </Link>
+          </Menu.Item>
+        ) : null}
+        {_info.includes("ceshi") ? (
+          <Menu.Item className="menu-bodys-item" key="ceshi">
+            <Link to="/ceshi" style={fonts}>
+              ceshi
+            </Link>
+          </Menu.Item>
+        ) : null}
+      </Menu>
     );
   };
   //退出登录

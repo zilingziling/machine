@@ -16,7 +16,6 @@ class DeviceDetection {
   //列表数据
   list = async (id: Number, page: number) => {
     let res = await Api.DeviceState.get_status_monitor(id, page);
-
     if (res.code === 200) {
       if (res.data.rows.length > 0) {
         this.arrayData = format(res.data.rows);

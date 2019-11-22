@@ -111,7 +111,6 @@ class DeviceSele extends Component<Props> {
         })
     );
     arr.forEach(i => status.push(i.isupgradequeue));
-    if (this.selectedRowKeys.length > 0) {
       try {
         let res = await Api.Device.upgrade_room(ids,status, 3);
         if (res.code === 200) {
@@ -123,12 +122,6 @@ class DeviceSele extends Component<Props> {
       } catch (error) {
         console.log(error);
       }
-    } else {
-      window._guider.Utils.alert({
-        message: '请选择升级的区域',
-        type: 'warning'
-      });
-    }
   }
 
   onSelectChange = (key) => {

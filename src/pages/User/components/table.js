@@ -264,7 +264,7 @@ class Tables extends Component<Props, State> {
 			}
 		});
 	}
-	//add 
+	//add
 	onClick = () => {
 		this.setState({
 			title: '新增账号',

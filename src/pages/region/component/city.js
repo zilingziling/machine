@@ -11,9 +11,17 @@ autorun(() => {
   if (Region.type !== "school_academic_building") {
     columns = [
       { title: "名称", dataIndex: "name", key: "name" },
-      { title: "位置", dataIndex: "locationname", key: "locationname" },
+      {
+        title: "位置",
+        dataIndex: "locationname",
+        key: "locationname"
+      },
 
-      { title: "类型", dataIndex: "schooltypename", key: "schooltypename" },
+      {
+        title: "类型",
+        dataIndex: "schooltypename",
+        key: "schooltypename"
+      },
       { title: "负责人", dataIndex: "charge", key: "charge" },
       { title: "联系电话", dataIndex: "phone", key: "phone" },
       { title: "单位地址", dataIndex: "address", key: "address" },
@@ -53,10 +61,18 @@ autorun(() => {
     ];
   } else if (Region.type === "school_academic_building") {
     columns = [
-      { title: "学校名称", dataIndex: "schoolname", key: "schoolname" },
+      {
+        title: "学校名称",
+        dataIndex: "schoolname",
+        key: "schoolname"
+      },
       { title: "教学楼", dataIndex: "buildname", key: "buildname" },
       { title: "教室号", dataIndex: "name", key: "name" },
-      { title: "教室类型", dataIndex: "roomtypename", key: "roomtypename" },
+      {
+        title: "教室类型",
+        dataIndex: "roomtypename",
+        key: "roomtypename"
+      },
       {
         title: "操作",
         dataIndex: "key",
@@ -94,6 +110,7 @@ autorun(() => {
 class City extends Component {
   render() {
     const { data } = this.props.Region;
+    console.log(toJS(data));
     return (
       <div className="city">
         <div className="city-table">

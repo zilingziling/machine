@@ -50,7 +50,7 @@ class Menu extends Component<Props, State> {
 		data: null, // 列表数据
 		total: null, //总数
 		current: 1, //当前页数
-		visible: false,  //Model 
+		visible: false,  //Model
 		title: '',
 		id: '',  //表格id
 		columns: [
@@ -237,7 +237,7 @@ class Menu extends Component<Props, State> {
 		}
 
 	}
-	//树形菜单返回过来的ID 
+	//树形菜单返回过来的ID
 	treeId = (treeId: string) => {
 		// console.log(treeId);
 		this.setState({ treeId });

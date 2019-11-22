@@ -79,7 +79,7 @@ class Region extends Component {
     this.props.Region.current = 1; //初始化
     this.props.Region.total = null;
     this.props.Region.type = node.dataRef.code; //初始化
-    window.localStorage.setItem("regionType", node.dataRef.code); //treeTitle
+    // window.localStorage.setItem("regionType", node.dataRef.code); //treeTitle
     window.localStorage.setItem("regionTeachingId", e); //treeId
     //教学楼
     this.props.Region.teachingBuilding = node.dataRef.title;

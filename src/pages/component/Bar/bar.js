@@ -21,20 +21,23 @@ const TreeNode = Tree.TreeNode;
 @inject('DeviceState')
 @observer
 class Bar extends Component<Props, State> {
+	@observable selected=['']
+	@observable expandedKeys=[]
 	state = {
-		selected: [''],
+		selected: [],
 		expandedKeys: [],
 	}
 	componentDidMount() {
 		const {origin}=this.props
 		let stateEKeys =JSON.parse(window.localStorage.getItem('stateE'))
 		let selected = window.localStorage.getItem('CtrClassrommid');
-
-		if (stateEKeys&&selected !== null) {
-			this.setState({
-				selected: [selected],
-				expandedKeys:[...new Set(stateEKeys)]
-			});
+		if (stateEKeys&&selected!==null) {
+			this.selected=[selected]
+			this.expandedKeys=[...new Set(stateEKeys)]
+			// this.setState({
+			// 	selected: [selected],
+			// 	expandedKeys:[...new Set(stateEKeys)]
+			// });
 		}
 	}
 	render() {
@@ -51,8 +54,8 @@ class Bar extends Component<Props, State> {
 						showIcon={false}
 						onSelect={this.seleKey}
 						onExpand={this.onExpand}
-						selectedKeys={selected}
-						expandedKeys={expandedKeys}
+						selectedKeys={toJS(this.selected)}
+						expandedKeys={toJS(this.expandedKeys)}
 					>
 						{renderTreeNodes(toJS(this.props.DeviceState.classRoomList))}
 					</DirectoryTree>
@@ -62,13 +65,14 @@ class Bar extends Component<Props, State> {
 	}
 
 	onExpand = (e: any, obj: object) => {
-		console.log(e)
-		this.setState({ expandedKeys: e });
+		this.expandedKeys=e
+		// this.setState({ expandedKeys: e });
 		window.localStorage.setItem('CtrSchoole', JSON.stringify(e));
 		window.localStorage.setItem('stateE', JSON.stringify(e));
 	}
 	seleKey = (e: Array<number>, data: object) => {
-		this.setState({ selected: e });
+		this.selected=e
+		// this.setState({ selected: e });
 		if (data.selectedNodes.length > 0) {
 			this.props.Seleshcool(e[0], data.selectedNodes[0].props.dataRef.row);
 			let obj = data.selectedNodes[0].props.dataRef.row;

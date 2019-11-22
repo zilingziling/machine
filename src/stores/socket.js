@@ -253,7 +253,6 @@ class Socke {
 
   //跳转到设备控制
   @action jumpCtr = async (detailList, mark) => {
-    console.log("tiaoyong");
     let timer_ = 30;
     let last = detailList[detailList.length - 1];
     let array = [];
@@ -274,17 +273,16 @@ class Socke {
     if (res.code === 200 && res.data === 1) {
       let Conf = confirm({
         centered: true,
-        title: `是否需要跳转到${last.name}教室吗?`,
+        title: `是否需要跳转到${last.name}教室?`,
         onOk() {
           array.pop();
           window.localStorage.setItem("CtrSchoole", JSON.stringify(array));
           window.localStorage.setItem("stateE", JSON.stringify(array));
-          console.log("keys", array);
           window.localStorage.setItem(
             "CtrClassrommid",
             last.id + ":" + last.code
           );
-          console.log(last.id + ":" + last.code);
+
           window.localStorage.setItem("classroomid", last.id);
           if (mark === 1) {
             window.location.reload();

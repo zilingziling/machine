@@ -24,7 +24,7 @@ export const ope = ({
   } else {
     params.append("id", id ? id : "");
     params.append("version", version ? version : "");
-    params.append("type", type ? type : "");
+    params.append("type", type);
   }
   return makeRequest(MiniPro.ope, params);
 };

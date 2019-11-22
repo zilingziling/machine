@@ -31,7 +31,7 @@ class Tables extends Component<Props, State> {
       { title: "型号", dataIndex: "equipmodel", key: "equipmodel" },
       { title: "控制方式", dataIndex: "connname", key: "connname" },
       { title: "创建时间", dataIndex: "createtime", key: "createtime" },
-      { title: "添加人员", dataIndex: "account", key: "account" },
+      {title: "添加人员", dataIndex: "account", key: "account" },
       {
         title: "操作",
         dataIndex: "key",
