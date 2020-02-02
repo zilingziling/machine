@@ -257,6 +257,45 @@ const router = {
       },
       delay: 300
     }),
+  brand: () =>
+    //操作日志
+    Loadable({
+      loader: () => import("./../pages/brand/brand"),
+      render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} userStore={Stores} />;
+      },
+      loading() {
+        return <Loading />;
+      },
+      delay: 300
+    }),
+  deviceType: () =>
+    //操作日志
+    Loadable({
+      loader: () => import("./../pages/deviceType/deviceType"),
+      render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} userStore={Stores} />;
+      },
+      loading() {
+        return <Loading />;
+      },
+      delay: 300
+    }),
+  deviceFunc: () =>
+    //操作日志
+    Loadable({
+      loader: () => import("./../pages/deviceFunc/deviceFunc"),
+      render(loaded, props) {
+        const Component = loaded.default;
+        return <Component {...props} userStore={Stores} />;
+      },
+      loading() {
+        return <Loading />;
+      },
+      delay: 300
+    }),
 
   region: () =>
     //区域管理

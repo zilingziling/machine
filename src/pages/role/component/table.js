@@ -268,7 +268,7 @@ const Info = Form.create()(
 							initialValue: info.role_name
 						})(<Input maxLength={20} className="inputs" />)}
 					</FormItem>
-					<FormItem className="tiems" {...formItemLayout} label="角色编码">
+					<FormItem className="tiems" {...formItemLayout} label="角色代码">
 						{getFieldDecorator('code', {
 							rules: [{ required: true, message: '请填写角色编码' }],
 							initialValue: info.role_code

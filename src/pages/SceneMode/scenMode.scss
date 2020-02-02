@@ -258,9 +258,12 @@
   color: #ffffff
 }
 
-.input {
+.sceneInput {
   background: none;
-  color: #ffffff
+  color: #ffffff;
+  input{
+    width: 2.6rem;
+  }
 }
 
 .models {

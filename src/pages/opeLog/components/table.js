@@ -51,7 +51,8 @@ const Content = ({ search, pageNo, setCurrent }) => {
   const pagination = {
     total,
     pageSize,
-    current: pageNo
+    current: pageNo,
+    showQuickJumper: true
   };
   const onChange = p => {
     setCurrent(p.current);

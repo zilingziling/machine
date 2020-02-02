@@ -30,6 +30,7 @@ class DeviceDetection {
   };
 
   //视频uir
+  // getVideoLive
   videList = async (id: String) => {
     try {
       let res = await Api.Ctrl.get_camera(id);
@@ -37,8 +38,6 @@ class DeviceDetection {
         if (JSON.stringify(res.data) !== "{}") {
           let camera = res.data.camera;
           let pc = res.data.pc;
-          console.log(pc[0]);
-          console.log(camera[2]);
           this.videoLive = {
             teacher: typeof camera[1] !== "undefined" ? camera[1] : [],
             students: typeof camera[2] !== "undefined" ? camera[2] : [],

@@ -60,8 +60,8 @@ class DeviceControl extends Component<Props, State> {
       curtainControl: [], //幕布
       screen: [], //屏幕1
       screen2: [], //屏幕2
-      hot: "", // 湿度
-      we: "", //温度
+      hot: "", // 温度
+      we: "", //湿度
       light: "", //光照
       PM: "", //pm
       InteractiveTablet: [], //交互屏蔽
@@ -119,10 +119,10 @@ class DeviceControl extends Component<Props, State> {
           let obj = new window.proto.com.yj.itgm.protocol.EquipStatusReport.deserializeBinary(
             dataMsg.getData()
           );
-          // console.log(obj.toObject().detailList);
           if (obj.toObject().detailList.length > 0) {
             //处理设备状态返回，这个页面状态主要是这这里面判断
             let res = obj.toObject().detailList;
+            console.log("fromWs",res)
             if (res.length > 0) {
               if (res[0].equipStatus !== "视频板故障") {
                 if (this.state.sele === res[0].classroomid) {
@@ -142,6 +142,7 @@ class DeviceControl extends Component<Props, State> {
                         statusdata: res[0].statusValue,
                         equipstatus: res[0].equipStatus
                       };
+                      console.log(res[0])
                       this.setState({
                         conditioning: [param],
                         equip_code: res[0].equipCode
@@ -189,8 +190,8 @@ class DeviceControl extends Component<Props, State> {
                     case "8": {
                       //温度
                       this.setState({
-                        hot: res[0].statusValue,
-                        we: res[1].statusValue
+                        hot:res[0].equipStatus==="温度值"? res[0].statusValue:res[1].statusValue,
+                        we: res[0].equipStatus==="湿度值"? res[0].statusValue:res[1].statusValue,
                       });
                       break;
                     }
@@ -243,18 +244,6 @@ class DeviceControl extends Component<Props, State> {
               }
             }
           }
-
-          // else if (obj.getStatusType() === 'fault_report') { //这里可以不用获取其他页面的socket信息， 在store目录下的socket.js处理
-          // 	this.props.Police.list(0, 1); //报警查看数据
-          // 	// window._guider.History.history.push({ //设备报警跳转
-          // 	// 	pathname: '/police'
-          // 	// });
-          // } else if (obj.getStatusType() === 'classes_report') {
-          // 	this.props.DeviceDetection.list(this.props.DeviceDetection.classroomId, this.props.DeviceDetection.pageNo);
-          // } else if (obj.getAccount() === window.localStorage.getItem('userName')) { //退出登录
-          // 	this.props.userInfo.outLogin();
-          // 	this.props.userInfo.LoginOfline();
-          // }
         } else if (dataMsg.getCommand() === 2002) {
           //设备跳转控制页面
           let obj = new window.proto.com.yj.itgm.protocol.IntercomCall.deserializeBinary(
@@ -262,7 +251,6 @@ class DeviceControl extends Component<Props, State> {
           );
           let detailList = obj.toObject().detailList;
           if (window.location.href.includes("devicectl")) {
-            console.log(msg_id,detailList[detailList.length - 1].id)
             if (detailList[detailList.length - 1].id != msg_id) {
               this.props.Socke.jumpCtr(detailList,1);
             }
@@ -402,26 +390,6 @@ class DeviceControl extends Component<Props, State> {
             </div>
             {/*status*/}
             <div className="rightStatus">
-            {/*  <div className="status">*/}
-            {/*    <ul>*/}
-            {/*      <li>教室名称：</li>*/}
-            {/*      <li>教室座位：</li>*/}
-            {/*      <li>*/}
-            {/*        电脑网络：<span>已断开</span>*/}
-            {/*      </li>*/}
-            {/*      <li>*/}
-            {/*        中控网络：<span>已连接</span>*/}
-            {/*      </li>*/}
-            {/*      <li>电脑IP：</li>*/}
-            {/*      <li>中控IP：</li>*/}
-            {/*      <li>灯光：</li>*/}
-            {/*      <li>空调：</li>*/}
-            {/*      <li>投影：</li>*/}
-            {/*      <li>幕布：</li>*/}
-            {/*      <li>屏幕1视频：</li>*/}
-            {/*      <li>屏幕2视频：</li>*/}
-            {/*    </ul>*/}
-            {/*  </div>*/}
               {/*温湿度*/}
               <div className="devCtl-text">
                 <div className="devCtl-text-imgs">
@@ -758,13 +726,13 @@ class DeviceControl extends Component<Props, State> {
                 ? res.data[14][0]
                 : []; //音量
             let we =
-              typeof res.data[8] !== "undefined" && res.data[8].length > 0
-                ? res.data[8][0].statusdata
-                : ""; //温度
+                typeof res.data[8] !== "undefined" && res.data[8].length > 0
+                    ?res.data[8][0].equipstatus==="湿度值"?res.data[8][0].statusdata
+                    : res.data[8][1].statusdata:""; //湿度
             let hot =
               typeof res.data[8] !== "undefined" && res.data[8].length > 0
-                ? res.data[8][1].statusdata
-                : ""; //温度湿度
+                ?res.data[8][0].equipstatus==="温度值"?res.data[8][0].statusdata
+                : res.data[8][1].statusdata:""; //温度
             let light =
               typeof res.data[9] !== "undefined" && res.data[9].length > 0
                 ? res.data[9][0].statusdata

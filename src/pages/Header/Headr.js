@@ -450,7 +450,27 @@ class Home extends Component<Props, State> {
             </Link>
           </Menu.Item>
         ) : null}
-
+        {_info.includes("brand") ? (
+            <Menu.Item className="menu-bodys-item" key="品牌管理">
+              <Link to="/brand" style={fonts}>
+                品牌管理
+              </Link>
+            </Menu.Item>
+        ) : null}
+        {_info.includes("deviceType") ? (
+            <Menu.Item className="menu-bodys-item" key="设备类型管理">
+              <Link to="/deviceType" style={fonts}>
+                设备类型管理
+              </Link>
+            </Menu.Item>
+        ) : null}
+        {_info.includes("deviceFunc") ? (
+            <Menu.Item className="menu-bodys-item" key="设备功能管理">
+              <Link to="/deviceFunc" style={fonts}>
+                设备功能管理
+              </Link>
+            </Menu.Item>
+        ) : null}
         {_info.includes("device") ? (
           <Menu.Item className="menu-bodys-item" key="管理码库">
             <Link to="/device" style={fonts}>

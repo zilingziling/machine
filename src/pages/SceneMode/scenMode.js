@@ -252,7 +252,8 @@ class ScenMode extends Component<Props, State> {
                                   addonBefore="延迟"
                                   addonAfter="秒"
                                   value={item.time_consuming}
-                                  className="input"
+                                  className="sceneInput"
+
                                   onChange={e => {
                                     this.DeleteArray(e, index);
                                   }}
